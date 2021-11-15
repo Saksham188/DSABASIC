@@ -1,0 +1,81 @@
+/// There are 2 methods for this. One by Making Push method costly  and another by making pop method costly.
+/// Method1: Making Push method Costly.
+///  Logic: take 2 queues q1 and q2.  first we add element in q2 . then  we remove from q1 and add to q2. and then we  swap  q1 and q2 .
+/// And for pop we directly have to pop from q1.
+///
+///
+///
+///
+#include<bits/stdc++.h>
+using namespace std;
+
+class Stack
+{
+    int N; ///its for size of stack.
+    queue<int> q1;
+    queue<int> q2;
+public:
+    Stack()  ///Constructor to initialize size of stack
+    {
+        N=0;
+    }
+
+    void push(int value)
+    {
+        q2.push(value);
+        N++;
+
+        while(!q1.empty())
+        {
+            q2.push(q1.front());
+            q1.pop();
+        }
+
+        queue<int>temp=q1;
+        q1=q2;
+        q2=temp;
+    }
+
+    void pop()    ///It removes an element from stack.
+    {
+        q1.pop();
+        N--;
+    }
+
+    int top()      ///It returns the value present at top of the stack.
+    {
+        return q1.front();
+    }
+
+    int size()     ///It returns size of the stack.
+    {
+        return N;
+    }
+};
+
+int main()
+{
+    Stack s1;
+    s1.push(1);
+    s1.push(2);
+    s1.push(3);
+    s1.push(4);
+
+    cout<<s1.top()<<endl;
+    s1.pop();
+
+    cout<<s1.top()<<endl;
+    s1.pop();
+
+    cout<<s1.top()<<endl;
+    s1.pop();
+
+    cout<<s1.top()<<endl;
+    s1.pop();
+
+    cout<<s1.size();
+
+}
+
+
+
