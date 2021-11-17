@@ -1,0 +1,293 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+    public:
+    int Data;
+    Node* left;
+    Node* right;
+
+    Node(int val)
+    {
+        Data=val;
+        left=NULL;
+        right=NULL;
+    }
+
+};
+
+Node* InsertNode(Node* root,int data)
+{
+    if(root==NULL)
+      return new Node(data);
+
+    if(data<root->Data)
+    {
+       root->left =InsertNode(root->left,data);
+    }
+    else if(data>root->Data)
+    {
+        root->right= InsertNode(root->right,data);
+    }  
+    return root;
+}
+
+void PreOrder(Node* root)
+{
+    if(root==NULL)
+    return;
+    cout<<root->Data<<" ";
+    PreOrder(root->left);
+    PreOrder(root->right);
+}
+
+void PostOrder(Node* root)
+{
+    if(root==NULL)
+    return;
+    PostOrder(root->left);
+    PostOrder(root->right);
+    cout<<root->Data<<" ";
+
+}
+
+void InOrder(Node* root)
+{
+    if(root==NULL)
+    return;
+    InOrder(root->left);
+    cout<<root->Data<<" ";
+    InOrder(root->right);
+}
+
+void LevelOrder(Node* root)
+{
+    if(root==NULL)
+    return;
+
+    queue<Node*>q;
+    q.push(root);
+    q.push(NULL);
+
+    while(!q.empty())
+    {
+        Node* temp=q.front();
+        q.pop();
+        if(temp==NULL)
+        cout<<" NULL ";
+        if(temp!=NULL)
+        {
+            cout<<temp->Data<<" ";
+
+            if(temp->left)
+               q.push(temp->left);
+            if(temp->right)
+               q.push(temp->right);   
+        }
+        else if(!q.empty())
+            q.push(NULL);
+        
+    }
+
+}
+
+Node* Search(Node* root,int val)
+{
+    if(root==NULL)
+      return NULL;
+   
+    if(root->Data==val)
+       return root;
+
+    if(root->Data>val)
+    {
+        Search(root->left,val);
+    }    
+    else if(root->Data<val)
+    {
+        Search(root->right,val);
+    }
+}
+
+Node* LowestNode(Node* root)
+{
+    Node* temp=root;
+    while(temp!=NULL and temp->left!=NULL)
+    {
+        temp=temp->left;
+    }
+    return temp;
+}
+
+Node* Deletion(Node* root,int val)
+{
+    if(root==NULL)
+       return NULL;
+    else if(root->Data>val)
+    {
+       root->left=Deletion(root->left,val);
+    }   
+    else if(root->Data<val)
+    {
+       root->right=Deletion(root->right,val);
+    }
+    else
+    {
+        if (root->left==NULL and root->right==NULL)
+            return NULL;
+
+        else if(root->left==NULL)
+        {
+            Node* temp=root->right;
+            free(root);
+            return temp;
+        }
+        else if(root->right==NULL)
+        {
+            Node* temp=root->left;
+            free(root);
+            return temp;
+        }
+        else if(root->left and root->right)
+        {
+            Node* temp=LowestNode(root->right);   ///here we have 2 options either to find lowest node in right subtree and replace root with that or we can find highest node in left subtree and replace root with that.
+            root->Data=temp->Data;
+            root->right=Deletion(root->right,temp->Data);
+        }
+
+    }
+    return root;
+}
+
+Node* DeletionIterative(Node* root,int key)
+{
+    Node* curr=root; ///here we will take 2 node pointer one for parent and one for child.we will traverse using child.
+    Node* prev=NULL;
+
+    while(curr!=NULL and curr->Data!=key)
+    {
+        prev=curr; ///prev mein root daaldia bcse ab ham aage traverse krenge yani root ke left and right mein.
+
+        if(key<curr->Data)
+        {
+            curr=curr->left;
+        }
+        else
+            curr=curr->right;
+    }
+    ///yaha aane tak ya toh curr mein delete krne vala node hoga ya fir tree mein mila ni node.
+
+    if(curr==NULL)
+    {
+        cout<<"\nKey "<<key<<" not found in BST.\n";
+        return root;
+    }
+    /// yaha aane tak curr mein delete krne vala node hoga.
+    
+    if(curr->left==NULL ||curr->right==NULL) ///yaha check krre ki agar uska ek child null ho
+    {
+        Node* newCurrent;
+
+        ///if left child null then point new current to right child .
+        if(curr->left==NULL)
+           newCurrent=curr->right;
+        else
+           newCurrent=curr->left;  
+
+        ///now check if node to be deleted is root.   
+        ///if curr is root then prev will be null so we will return the newCurrent.
+        if(prev==NULL)
+          return newCurrent;
+        
+        ///check if node to be deleted is prev's left or right child and then replace it with newcurr.
+        if(curr==prev->left)
+           prev->left=newCurrent;
+        else
+           prev->right=newCurrent;   
+    
+
+        free(curr);
+    }
+    ///if node to be deleted has 2 children.
+    else
+    {
+        Node* p=NULL;
+        Node* temp;
+
+        temp=curr->right;
+
+        ///find max node(inorder successor) in right of temp;
+
+        while(temp->left!=NULL)
+        {
+            p=temp;
+            temp=temp->left;
+        }
+
+        ///Now check if parent of inorder successor is current or not(ie curr=the node which has same data as the given data by the user to be deleted.If its not then we make left child of parent =inorder successor's right child)
+        if(p!=NULL)
+        {
+            p->left=temp->right;
+        }
+        ///Now check if the inorder successor was the curr (ie curr =the node which has the same data as given data by the user to be deleted.) then make the right child of the node to be deleted = right child of inorder successor.
+        else
+            curr->right=temp->right;
+
+        curr->Data=temp->Data;
+        free(temp);    
+    }
+    return root;
+
+}
+
+int main()
+{
+    Node* root=NULL;
+    root=InsertNode(root,4);
+    InsertNode(root,2);
+    InsertNode(root,3);
+    InsertNode(root,1);
+    InsertNode(root,5);
+    cout<<"\nPreOrder: ";
+    PreOrder(root);
+    cout<<"\nInOrder: ";
+    InOrder(root);
+    cout<<"\nPostOrder: ";
+    PostOrder(root);
+    cout<<"\nLevelOrder: ";
+    LevelOrder(root);
+
+    cout<<"\nSearch 5:";
+    if(Search(root,5)==NULL)
+       cout<<"Value not present.";
+    else
+        cout<<"Value found";
+
+     cout<<"\nSearch 8:";
+    if(Search(root,8)==NULL)
+       cout<<"Value not present.";
+    else
+        cout<<"Value found";    
+
+    // cout<<"\nAfter deleting 2:\n Inorder: ";
+    // root=Deletion(root,2);
+    // InOrder(root);    
+    // cout<<"\nAfter deleting 3:\n Inorder: ";
+    // root=Deletion(root,3);
+    // InOrder(root);    
+    // cout<<"\nAfter deleting 1:\n Inorder: ";
+    // root=Deletion(root,1);
+    // InOrder(root);    
+    
+    cout<<"\nAfter deleting 2:\n Inorder: ";
+    root=DeletionIterative(root,2);
+    InOrder(root);    
+    cout<<"\nAfter deleting 3:\n Inorder: ";
+    root=DeletionIterative(root,3);
+    InOrder(root);    
+    cout<<"\nAfter deleting 1:\n Inorder: ";
+    root=DeletionIterative(root,1);
+    InOrder(root);    
+
+}
