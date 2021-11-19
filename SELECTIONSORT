@@ -1,0 +1,48 @@
+///Isme ham minimum element dhoondkar usey first pos pe la dete hai.
+
+#include<iostream>
+using namespace std;
+
+void SelectionSort(int arr[],int size)
+{
+    for(int i=0;i<size-1;i++)
+    {
+        int MinIndex=i;    ///here we will find min element 
+        for(int j=i+1;j<size;j++)
+        {
+            if(arr[j]<arr[MinIndex])
+            {
+                MinIndex=j;
+            }
+        }
+        if(MinIndex!=i)      /// and if the lowest element is not at right pos we swap it.
+        {
+            int temp=arr[MinIndex];
+            arr[MinIndex]=arr[i];
+            arr[i]=temp;
+        }
+    }
+    
+    cout<<"Array is: ";
+
+    for(int i=0;i<size;i++)
+    {
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+    
+
+}
+int main()
+{
+     int n;
+    cout<<"Enter size of array: ";
+    cin>>n;
+
+    int arr[n];
+    for(int i=0;i<n;i++)
+        cin>>arr[i];
+
+    SelectionSort(arr,n);
+        
+}
