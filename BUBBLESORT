@@ -1,0 +1,52 @@
+#include <iostream>
+using namespace std;
+
+void BubbleSort(int arr[], int size)
+{
+    int flag;
+    for (int i = 0; i < size - 1; i++)
+    {
+        flag = 0;
+        for (int j = 0; j < size - 1 - i; j++) ///here we took size-1-i bcse in bubble sort after first iteration largest element come to its correct pos.so next time loop will run till size-2 times similarly for i iterations it will run size-i-1 times.
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                flag = 1;
+            }
+        }
+        cout << "Array during sorting: ";
+        for (int i = 0; i < size; i++)
+        {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+        if (flag == 0) ///used flag here to check that if array is sorted then we need not sort it.
+            break;
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+int main()
+{
+    int n;
+
+    cout << "Enter size of array: ";
+    cin >> n;
+    int arr[n];
+
+    cout << "Enter elements of array: ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    BubbleSort(arr, n);
+}
