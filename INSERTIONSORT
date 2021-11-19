@@ -1,0 +1,39 @@
+///In Insertion Sort we start from first element.
+#include <iostream>
+using namespace std;
+
+void InsertionSort(int arr[], int size)
+{
+    for (int i = 1; i < size; i++)
+    {
+        int curr = arr[i]; ///we take the array element as current.
+        int j = i - 1;
+
+        while (arr[j] > curr and j >= 0) ///here we will shift those elements which are greater than current to next place eg we 2 3 1 6 8 at this step, so we need to push 2 3 one place ahead.
+        {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = curr; ///yaha j+1 isliye kia bcse upar loop se j-- hogya and hame j pe insert krna.
+    }
+
+    for (int i = 0; i < size; i++)
+    {
+        cout << arr[i] << " ";
+    }
+}
+int main()
+{
+    int Size;
+
+    cout << "Enter size of array: ";
+    cin >> Size;
+
+    int arr[Size];
+    cout << "Enter Elements of array: ";
+    for (int i = 0; i < Size; i++)
+    {
+        cin >> arr[i];
+    }
+    InsertionSort(arr, Size);
+}
