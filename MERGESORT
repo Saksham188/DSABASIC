@@ -1,0 +1,83 @@
+#include <iostream>
+using namespace std;
+
+void Merge(int arr[], int l, int mid, int r)
+{
+    int n1 = mid - l + 1; ///yaha 2 array banare ek left se leke mid tak ,and ek mid+1 se right.
+    int n2 = r - mid;
+    int arr1[n1], arr2[n2];
+
+    for (int i = 0; i < n1; i++)
+    {
+        arr1[i] = arr[l + i]; ///yaha mid ke left vale elements copy krdie.
+    }
+    for (int j = 0; j < n2; j++)
+    {
+        arr2[j] = arr[mid + 1 + j]; ///yaha mid ke right vale elements copy krdie hai.
+    }
+    int i = 0, j = 0, k = l;
+
+    while (i < n1 and j < n2) ///jab tak arr1 and array 2 puri traverse ni ho jati
+    {
+        if (arr1[i] > arr2[j]) ///agar arr2 ka element chota hai toh initial array mein arr2 ka phele aayega.Its like merging 2 sorted arrays.
+        {
+            arr[k] = arr2[j];
+            k++;
+            j++;
+        }
+        else
+        {
+            arr[k] = arr1[i];
+            k++;
+            i++;
+        }
+    }
+    ///yaha ham check krre ki agar ek array ka size chota ho toh loop toot jayega toh dusri ko direct copy krdo.
+    while (i < n1)
+    {
+        arr[k] = arr1[i];
+        k++;
+        i++;
+    }
+    while (j < n2)
+    {
+        arr[k] = arr2[j];
+        k++;
+        j++;
+    }
+}
+
+void MergeSort(int arr[], int l, int r)
+{
+    if (l < r)
+    {
+        int mid = (l + r) / 2;   ///Here we calculate mid. Divide our array into 2 subarray
+        MergeSort(arr, l, mid);
+        MergeSort(arr, mid + 1, r);
+        Merge(arr, l, mid, r);   ///and now we will merge these subarrays.
+    }
+}
+
+int main()
+{
+   int Size;
+
+    cout<<"Enter size of array: ";
+    cin>>Size;
+
+    int Arr[Size];
+    cout<<"Enter Elements of array: ";
+    for(int i=0;i<Size;i++)
+    {
+        cin>>Arr[i];
+    }
+    MergeSort(Arr,0,Size-1);
+
+    for (int i = 0; i <Size ; i++)
+    {
+        cout<<Arr[i]<<" ";
+    }
+
+
+
+}
