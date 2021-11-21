@@ -1,0 +1,60 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void CountingSort(char arr[],int n)
+{
+   const int Max=256;
+
+    int count[Max]={0};
+    for(int i=0;i<n;i++)
+    {
+        count[arr[i]]++;
+    }
+
+    for(int i=1;i<=Max;i++)
+    {
+        count[i]+=count[i-1];
+    }
+
+    char Output[n];
+
+    for(int i=n-1;i>=0;i--)
+    {
+        Output[--count[arr[i]]]=arr[i];
+    }
+    for(int i=0;i<n;i++)
+    {
+        arr[i]=Output[i];
+    }
+
+}
+
+int main()
+{
+    
+    int n;
+    cout<<"Enter size of array: ";
+    cin>>n;
+
+    char arr[n];
+    cout<<"Enter elements of array: ";
+
+    for(int i=0;i<n;i++)
+    {
+        cin>>arr[i];
+    }
+
+    cout<<"\nInitial Array: ";
+    for(int i=0;i<n;i++)
+    {
+        cout<<arr[i]<<" ";
+    }
+
+    CountingSort(arr,n);
+    cout<<"\nFinal Array: ";
+    for(int i=0;i<n;i++)
+    {
+        cout<<arr[i]<<" ";
+    }
+
+}
