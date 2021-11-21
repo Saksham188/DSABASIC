@@ -1,0 +1,69 @@
+
+///For -ve indexes:
+#include<bits/stdc++.h>
+using namespace std;
+
+void CountingSort(int arr[],int n)
+{
+    int Max=arr[0];
+    int Min=arr[0];
+    for(int i=1;i<n;i++)
+    {
+        Max=max(Max,arr[i]);
+        Min=min(Min,arr[i]);
+    }
+
+    int Range=Max-Min+1;
+
+    int count[Range]={0};     
+    for(int i=0;i<n;i++)
+    {
+        count[arr[i]-Min]++;
+    }
+    for(int i=1;i<Range;i++)
+    {
+        count[i]+=count[i-1];
+    }
+
+    int OutputArr[n];
+    for(int i=n-1;i>=0;i--)
+    {
+        OutputArr[--count[arr[i]-Min]]=arr[i];
+    }
+
+    for(int i=0;i<n;i++)
+    {
+        arr[i]=OutputArr[i];
+    }
+
+}
+
+int main()
+{
+    int n;
+    cout<<"Enter size of array: ";
+    cin>>n;
+
+    int arr[n];
+    cout<<"Enter elements of array: ";
+
+    for(int i=0;i<n;i++)
+    {
+        cin>>arr[i];
+    }
+
+    cout<<"\nInitial Array: ";
+    for(int i=0;i<n;i++)
+    {
+        cout<<arr[i]<<" ";
+    }
+
+    CountingSort(arr,n);
+    cout<<"\nFinal Array: ";
+    for(int i=0;i<n;i++)
+    {
+        cout<<arr[i]<<" ";
+    }
+
+}
+
