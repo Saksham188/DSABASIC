@@ -1,0 +1,94 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+    public:
+    int data;
+    Node* next;
+
+    Node(int val)
+    {
+        data=val;
+        next=NULL;
+    }
+};
+
+Node* InsertNode(Node* head,int val)
+{
+    Node* temp= new Node(val);
+    
+    if(head==NULL)
+    {
+        head=temp;
+    }
+    else
+    {
+        Node* trav=head;
+        while(trav->next!=NULL)
+        {
+            trav=trav->next;
+        }
+        trav->next=temp;
+    }
+}
+
+void Traversal(Node* head)
+{
+    Node* temp=head;
+
+    while(temp!=NULL)
+    {
+        cout<<temp->data<<"->";
+        temp=temp->next;
+    }
+    cout<<"NULL";
+}
+
+Node* SortList(Node* root)
+{
+
+    Node* left;
+    Node* right=NULL;
+    int swapped=1,count=0;
+
+    while(swapped)
+    {
+        left=root;
+        swapped=0;
+        while(left->next!=right)
+        {
+            if(left->data>left->next->data)
+            {
+                int dat=left->data;
+                left->data=left->next->data;
+                left->next->data=dat;
+                count++;
+                swapped=1;
+            }
+            left=left->next;
+        }
+        right=left;
+
+    }
+
+    return root;
+
+}
+
+int main()
+{
+    Node* head=NULL;
+    head=InsertNode(head,4);
+    InsertNode(head,3);
+    InsertNode(head,2);    
+    InsertNode(head,1);
+    InsertNode(head,6);
+    InsertNode(head,5);
+    Traversal(head);
+    head=SortList(head);
+    cout<<endl;
+    Traversal(head);
+}
+
+
