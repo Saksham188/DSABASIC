@@ -1,0 +1,92 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+public:
+    int data;
+    Node *next;
+
+    Node(int val)
+    {
+        data = val;
+        next = NULL;
+    }
+};
+
+Node *InsertNode(Node *head, int val)
+{
+    Node *temp = new Node(val);
+
+    if (head == NULL)
+    {
+        head = temp;
+    }
+    else
+    {
+        Node *trav = head;
+        while (trav->next != NULL)
+        {
+            trav = trav->next;
+        }
+        trav->next = temp;
+    }
+}
+
+void Traversal(Node *head)
+{
+    Node *temp = head;
+
+    while (temp != NULL)
+    {
+        cout << temp->data << "->";
+        temp = temp->next;
+    }
+    cout << "NULL";
+}
+
+void Swap(Node *n1, Node *n2)
+{
+    int temp = n1->data;
+    n1->data = n2->data;
+    n2->data = temp;
+}
+
+void SelectionSort(Node *root)
+{
+    Node *temp = root;
+
+    while (temp != NULL)        ///It here is like our outer loop i=0;i<size-1;i++ in case of array
+    {
+        Node *Min = temp;        
+        Node *temp2 = temp->next;           ///its like inner loop j=i+1 so we took temp->next ;j<size;j++
+
+        while (temp2 != NULL)
+        {
+            if (temp2->data < Min->data)   ///here we count min data;
+            {
+                Min = temp2;
+            }
+            temp2 = temp2->next;
+        }
+
+        Swap(temp,Min);     ///here we swap min data and first index;
+        temp=temp->next;
+        
+    }
+}
+
+int main()
+{
+    Node *head = NULL;
+    head = InsertNode(head, 4);
+    InsertNode(head, 3);
+    InsertNode(head, 2);
+    InsertNode(head, 1);
+    InsertNode(head, 6);
+    InsertNode(head, 5);
+    Traversal(head);
+    SelectionSort(head);
+    cout << endl;
+    Traversal(head);
+}
