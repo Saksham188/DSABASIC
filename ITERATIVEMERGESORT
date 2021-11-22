@@ -1,0 +1,89 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void Merge(int arr[], int left, int mid, int right)
+{
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    int arr1[n1], arr2[n2];
+
+    for (int i = 0; i < n1; i++)
+    {
+        arr1[i] = arr[left+i];
+    }
+
+    for (int i = 0; i < n2; i++)
+    {
+        arr2[i] = arr[mid + i+1];
+    }
+
+    int i = 0, j = 0, k = left;
+
+    while (i < n1 and j < n2)
+    {
+        if (arr1[i] <= arr2[j])
+        {
+            arr[k] = arr1[i];
+            i++;
+        }
+        else
+        {
+            arr[k] = arr2[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1)
+    {
+        arr[k] = arr1[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2)
+    {
+        arr[k] = arr2[j];
+        j++;
+        k++;
+    }
+}
+int min(int x, int y) { return (x<y)? x :y; }
+ 
+void MergeSort(int arr[],int n)
+{
+    int curr,left;
+    for(curr=1;curr<=n-1;curr=curr*2)
+    {
+        for(left=0;left<n-1;left+=curr*2)
+        {
+            int mid=min(left+curr-1 , n-1);
+            int rightend=min(left+2*curr-1,n-1);
+            Merge(arr,left,mid,rightend);
+        }
+    }
+}
+
+int main()
+{
+    int arr[100];
+    for(int i=0;i<100;i++)
+    {
+        arr[i]=rand()%11;
+    }
+
+    cout<<"INITIAL ARRAY: ";
+    for(int i=0;i<100;i++)
+    {
+        cout<<arr[i]<<" ";
+    }
+    MergeSort(arr,100);
+     cout<<"\nFINAL ARRAY: ";
+
+    for(int i=0;i<100;i++)
+    {
+        cout<<arr[i]<<" ";
+    }
+
+}
+
