@@ -1,0 +1,83 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int rows, cols;
+    cout << "Enter number of rows: ";
+    cin >> rows;
+    cout << "Enter number of columns: ";
+    cin >> cols;
+
+    int arr[rows][cols];
+    int size = 0, maxRow = 0;
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            cin >> arr[i][j];
+            if (arr[i][j] != 0)
+                size++;
+        }
+    }
+
+
+    int SparseMatrix[3][size], k = 0; ///it has 3 rows: rownum,colnum and value
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (arr[i][j] != 0)
+            {
+                SparseMatrix[0][k] = i;
+                SparseMatrix[1][k] = j;
+                SparseMatrix[2][k] = arr[i][j];
+                k++;
+            }
+        }
+    }
+
+    cout << "\nFinal Sparse Matrix: \n";
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < size; j++)
+        {
+            cout << SparseMatrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    int LSC = 0, LSR = 0, LeastSparceRow = INT_MIN, LeastSparceCol = INT_MIN;
+
+    for (int i = 0; i < rows; i++)
+    {
+        LSR = 0;
+        LSC = 0;
+        for (int j = 0; j < cols; j++)
+        {
+            if (arr[i][j] != 0)
+            {
+                LSR++;
+            }
+            if (arr[j][i] != 0)
+            {
+                LSC++;
+            }
+        }
+        if (LSR > LeastSparceRow)
+        {
+            LeastSparceRow = i;
+        }
+
+        if (LSC > LeastSparceCol)
+        {
+            LeastSparceCol = i;
+        }
+    }
+
+    cout << "\nLeast sparsed row is: " << LeastSparceRow;
+    cout << "\nLeast sparsed Col is: " << LeastSparceCol;
+}
