@@ -1,0 +1,205 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+public:
+    int data;
+    Node *next;
+    Node *child;
+
+    Node(int val)
+    {
+        data = val;
+        next = child = NULL;
+    }
+};
+
+Node *InsertNode(int *arr, int n)
+{
+    Node *head = NULL;
+    Node *p;
+    for (int i = 0; i < n; i++)
+    {
+        if (head == NULL)
+        {
+            head = p = new Node(arr[i]);
+        }
+        else
+        {
+            p->next = new Node(arr[i]);
+            p = p->next;
+        }
+    }
+    return head;
+}
+
+Node *Insert()
+{
+    int arr1[] = {10, 5, 12, 7, 11};
+    int arr2[] = {4, 20, 13};
+    int arr3[] = {17, 6};
+    int arr4[] = {9, 8};
+    int arr5[] = {2};
+    int arr6[] = {19, 15};
+    int arr7[] = {16};
+    int arr8[] = {3};
+
+    Node *root1 = InsertNode(arr1, (sizeof(arr1) / sizeof(arr1[0])));
+    Node *root2 = InsertNode(arr2, (sizeof(arr2) / sizeof(arr2[0])));
+    Node *root3 = InsertNode(arr3, (sizeof(arr3) / sizeof(arr3[0])));
+    Node *root4 = InsertNode(arr4, (sizeof(arr4) / sizeof(arr4[0])));
+    Node *root5 = InsertNode(arr5, (sizeof(arr5) / sizeof(arr5[0])));
+    Node *root6 = InsertNode(arr6, (sizeof(arr6) / sizeof(arr6[0])));
+    Node *root7 = InsertNode(arr7, (sizeof(arr7) / sizeof(arr7[0])));
+    Node *root8 = InsertNode(arr8, (sizeof(arr8) / sizeof(arr8[0])));
+
+    root1->child = root2;
+    root2->next->child = root5;
+    root2->next->next->child = root7;
+    root7->child = root8;
+    root1->next->next->next->child = root3;
+    root3->child = root4;
+    root4->child = root6;
+
+    return root1;
+}
+
+Node *FlattenListRow(Node *root)
+{
+    if (root == NULL)
+        return root;
+
+    Node *temp = root;
+    Node *lastnode = root;
+
+    while (lastnode->next != NULL)
+    {
+        lastnode = lastnode->next;
+    }
+
+    while (temp != NULL)
+    {
+        if (temp->child != NULL)
+        {
+            lastnode->next = temp->child;
+            while (lastnode->next != NULL)
+            {
+                lastnode = lastnode->next;
+            }
+        }
+
+        temp = temp->next;
+    }
+    return root;
+}
+
+Node *FlattenListCol(Node *root)
+{
+    if (root == NULL)
+        return root;
+
+    static Node *lastNode = root;
+    Node *NextPtr = root->next;
+
+    if (root->child)
+    {
+        root->child = FlattenListCol(root->child);
+    }
+    if (!lastNode)
+    {
+        lastNode->next = FlattenListCol(NextPtr);
+    }
+}
+
+Node *FlattenListColStack(Node *root)
+{
+    Node *head = root;
+
+    stack<Node *> st;
+    st.push(root);
+    Node *prev = NULL;
+
+    while (!st.empty())
+    {
+        Node *temp = st.top();
+        st.pop();
+
+        if (temp->next)
+        {
+            st.push(temp->next);
+        }
+        if (temp->child)
+        {
+            st.push(temp->child);
+        }
+
+        if (prev != NULL)
+        {
+            prev->next = temp;
+        }
+
+        prev = temp;
+    }
+
+    return root;
+}
+
+void Traversal(Node *root)
+{
+    while (root != NULL)
+    {
+        cout << root->data << " ";
+        root = root->next;
+    }
+}
+
+int main()
+{
+    Node *head = NULL;
+    head = Insert();
+    head = FlattenListRow(head);
+    cout<<"ROW :";
+    Traversal(head);
+    cout << endl;
+
+    Node *head2 = new Node(1);
+    head2->next = new Node(2);
+    head2->next->next = new Node(3);
+    head2->next->next->next = new Node(4);
+    head2->next->child = new Node(7);
+
+    head2->next->child->child = new Node(9);
+
+    head2->next->child->child->child = new Node(14);
+
+    head2->next->child->child->child->child = new Node(15);
+
+    head2->next->child->child->child->child->next = new Node(23);
+
+    head2->next->child->child->child->child->next->child = new Node(24);
+    head2->next->child->next = new Node(8);
+
+    head2->next->child->next->child = new Node(16);
+
+    head2->next->child->next->child->child = new Node(17);
+
+    head2->next->child->next->child->child->next = new Node(18);
+
+    head2->next->child->next->child->child->next->next = new Node(19);
+
+    head2->next->child->next->child->child->next->next->next= new Node(20);
+
+    head2->next->child->next->child->child->next->next->next->child= new Node(21);
+
+    head2->next->child->next->next = new Node(10);
+
+    head2->next->child->next->next->child = new Node(11);
+
+    head2->next->child->next->next->next = new Node(12);
+
+    head2=FlattenListColStack(head2);
+    cout<<"COLUMN :";
+    Traversal(head2);
+
+}
