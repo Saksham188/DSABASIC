@@ -1,0 +1,238 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+    public:
+    int data;
+    Node* left,*right;
+
+    Node(int val)
+    {
+        data=val;
+        left=right=NULL;
+    }
+};
+
+Node* Insert(Node* root,int key)
+{
+
+    if(root==NULL)
+    {
+        return new Node(key);
+    }
+
+    else if(root->data>key)
+    {
+       root->left= Insert(root->left,key);
+    }
+    else
+       root->right= Insert(root->right,key);
+       
+
+    return root;   
+}
+
+void PreOrder(Node* root)
+{
+    if(root==NULL)
+    return;
+
+    cout<<root->data<<" ";
+    PreOrder(root->left);
+    PreOrder(root->right);
+}
+
+void InOrder(Node* root)
+{
+    if(root==NULL)
+    return;
+
+    InOrder(root->left);
+    cout<<root->data<<" ";
+    InOrder(root->right);
+}
+
+void PostOrder(Node* root)
+{
+    if(root==NULL)
+    return;
+
+    PostOrder(root->left);
+    PostOrder(root->right);
+    cout<<root->data<<" ";
+}
+
+void LevelOrder(Node* root)
+{
+    queue<Node*>q;
+    q.push(root);
+    
+    while(!q.empty())
+    {
+        Node* temp=q.front();
+        cout<<temp->data<<" ";
+        q.pop();
+        
+        if(temp->left)
+        {
+            q.push(temp->left);
+        }
+        if(temp->right)
+        {
+            q.push(temp->right);
+        }
+    }
+}
+
+bool Search(Node* root,int key)
+{
+    if(root==NULL)
+    return false;
+
+    if(root->data==key)
+     return true;
+    else if(root->data>key)
+    {
+        Search(root->left,key);
+    } 
+    else
+       Search(root->right,key);
+}
+
+Node* GetLeftEle(Node* root)
+{
+    Node* temp=root;
+    while(temp!=NULL and temp->left!=NULL)
+    {
+        temp=temp->left;
+    }
+    return temp;
+
+}
+
+Node* Deletion(Node* root,int key)
+{
+    if(root==NULL)
+    {
+        return NULL;
+    }
+
+    else if(root->data<key)
+    {
+        root->right=Deletion(root->right,key);
+    }
+    else if(root->data>key)
+    {
+        root->left=Deletion(root->left,key);
+    }
+    else
+    {
+        if(root->left==NULL and root->right==NULL)
+        {
+            return NULL;
+        }
+
+        else if(root->left==NULL)
+        {
+            Node* temp=root->right;
+            free(root);
+            return temp;
+
+        }
+
+        else if(root->right==NULL)
+        {
+            Node* temp=root->left;
+            free(root);
+            return temp;
+        }
+
+        else if(root->left!=NULL and root->right!=NULL)
+        {
+            Node* temp=GetLeftEle(root->right);
+            root->data=temp->data;
+            root->right=Deletion(root->right,temp->data);
+
+        }
+
+    }
+    return root;
+}
+
+int main()
+{
+    Node* root=NULL;
+    root=Insert(root,1);
+    Insert(root,6);
+    Insert(root,4);
+    Insert(root,2);
+    Insert(root,4);     ///it will be inserted in right as we r having condition that node>=parent will be at right.
+    Insert(root,3);    
+    Insert(root,7);
+    Insert(root,8);
+    Insert(root,5);
+    
+    cout<<"Level Order: ";
+    LevelOrder(root);
+    cout<<"\nInOrder: ";
+    InOrder(root);
+    cout<<"\nPreOrder: ";
+    PreOrder(root);
+    cout<<"\nPostOrder: ";
+    PostOrder(root);
+
+    if(Search(root,31)==false)
+        cout<<"\nKey not found.";
+    else
+        cout<<"\nKey found";
+
+
+    Deletion(root,5);
+    cout<<"\nLevelOrder after deletion: ";
+    LevelOrder(root);
+
+    Deletion(root,2);
+    cout<<"\nLevelOrder after deletion: ";
+    LevelOrder(root);
+    
+    Deletion(root,6);
+    cout<<"\nLevelOrder after deletion: ";
+    LevelOrder(root);
+    
+    Deletion(root,25);
+    cout<<"\nLevelOrder after deletion: ";
+    LevelOrder(root);
+    
+    /* Our Tree
+                1
+                 \
+                  6
+                 /  \
+               4     7
+             /  \      \
+            2    4      8
+             \    \  
+              3    5    
+
+
+        Final Tree:
+             1
+              \
+               7
+              /  \
+             4    8
+           /  \
+          3    4          
+    */
+
+}
+
+
+
+
+
+
+
+
+
