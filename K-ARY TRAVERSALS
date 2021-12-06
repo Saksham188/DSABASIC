@@ -1,0 +1,97 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+    public:
+    int data;
+    vector<Node*>child;
+
+    Node(int val)
+    {
+        data=val;
+    }
+};
+
+void PreOrder(Node* root)
+{
+    stack<Node*> s;
+    s.push(root);
+
+    while(!s.empty())
+    {
+        Node* temp=s.top();
+        s.pop();
+
+        cout<<temp->data<<" ";
+        for(int i=temp->child.size()-1;i>=0;i--)
+        {
+            s.push(temp->child[i]);
+        }
+
+    }
+}
+
+void PostOrder(Node* root)
+{
+    stack<Node *> s1;
+    stack<Node *> s2;
+
+    s1.push(root);
+    while(!s1.empty())
+    {
+        Node* temp=s1.top();
+        s1.pop();
+        
+        for(int i=0;i<temp->child.size();i++)
+        {
+            s1.push(temp->child[i]);
+        }
+        s2.push(temp);   ///yaha isliye lia stack bcse hamara output ulta aara tha.
+    }
+
+    while(!s2.empty())
+    {
+        cout<<s2.top()->data<<" ";
+        s2.pop();
+    }
+}
+
+
+void LevelOrder(Node* root)
+{
+    queue<Node*>q;
+    q.push(root);
+    while(!q.empty())
+    {
+        Node* temp=q.front();
+        q.pop();
+        cout<<temp->data<<" ";
+        
+        for(int i=0;i<temp->child.size();i++)
+        {
+            q.push(temp->child[i]);
+        }
+
+    }
+}
+
+int main()
+{
+    Node* root=new Node(1);
+    root->child.push_back(new Node(2));
+    root->child.push_back(new Node(3));
+    root->child.push_back(new Node(4));
+    root->child[0]->child.push_back(new Node(5));
+    root->child[0]->child.push_back(new Node(6));
+    root->child[1]->child.push_back(new Node(7));               
+    root->child[2]->child.push_back(new Node(8));               
+    cout<<"PreOrder: ";
+    PreOrder(root);
+    cout<<"\nLevelOrder: ";
+    LevelOrder(root);
+    cout<<"\nPostOrder: ";
+    PostOrder(root);
+
+}
+
