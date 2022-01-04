@@ -1,0 +1,48 @@
+     ///for next smaller element on right we just have to pop larger values.
+        ///for next greater element on left just reverse the loop.
+        
+        
+        
+class Solution {
+public:
+    vector<int>GreaterOnRight(vector<int> nums)
+    {
+   
+        
+        //yaha ham array mein index push krre hai.
+        stack<int>st;
+        vector<int>ans(nums.size());
+        
+        st.push(0);
+        ///logic ye hai ki stack mein index hai.agar array vali value stack ke top ke index
+        ///vali value se badi hui toh stack ke top vali pos pe ye arr ki value daaldo and
+        ///stack se pop krdo.ie ye value uska greater ele hoga.
+//        for(int i=1;i<nums.size();i++)
+          for(int i=nums.size()-1;i>=0;i--)
+        {
+            while(!st.empty() and nums[st.top()]<nums[i])
+            {
+                int pos=st.top();
+                ans[pos]=nums[i];
+                st.pop();
+                
+            }
+            
+            st.push(i);
+        }
+        
+         while(!st.empty())
+            {
+                int pos=st.top();
+                ans[pos]=-1;
+                st.pop();
+                
+            }
+        for(int i=0;i<ans.size();i++)
+        {
+            cout<<ans[i]<<" ";
+        }
+        return ans;
+    }
+   
+};
