@@ -17,8 +17,8 @@ public:
         ///logic ye hai ki stack mein index hai.agar array vali value stack ke top ke index
         ///vali value se badi hui toh stack ke top vali pos pe ye arr ki value daaldo and
         ///stack se pop krdo.ie ye value uska greater ele hoga.
-//        for(int i=1;i<nums.size();i++)
-          for(int i=nums.size()-1;i>=0;i--)
+        for(int i=1;i<nums.size();i++)
+ //         for(int i=nums.size()-1;i>=0;i--)
         {
             while(!st.empty() and nums[st.top()]<nums[i])
             {
