@@ -1,0 +1,133 @@
+///Based on Floyd's Algorithm and HareAnd Tortoise Algorithm .
+///Cycle is when do nodes ka next same jagah ko point kare.
+///Floyd's or hare tortoise algorithm states that for detection of a cycle. we take hare and torto at same pos in begining and move torto by 1 pos and hare by 2 pos.And if they meet again at any node then list contains a cycle.
+///yaha code mein we will take fast and slow ptr.
+
+///Logic for removal of cycle.
+///iske lie hare ko vapas head se 1 ke gap se chalao and ye jis pt pe meet the turtle ko us point se chalao.and jis pont pe meet kar jaye us point pe cycle start hai.toh ham turtle ke next mein NULL point karva denge.
+#include<iostream>
+using namespace std;
+class Node
+{
+    public:
+
+    int Data;
+    Node* Next;
+
+    Node(int value)
+    {
+       Data=value;
+       Next=NULL;
+    }
+};
+void InsertAtTail(Node* &head,int val)  ///here we take by reference and not by value bcse here we have to modify linked list.
+{
+   Node* n = new Node(val);
+
+   if(head==NULL) ///agar linked list empty ho toh traverse ki need nhi.
+   {
+       head=n;
+       return;
+   }
+   Node* temp =head;
+   while(temp->Next!=NULL)
+   {
+       temp=temp->Next;
+   }
+
+   temp->Next=n;
+
+}
+void InsertAtHead(Node* &head, int val)
+{
+    Node* n =new Node(val);
+    n->Next=head;
+    head=n;
+}
+
+void display(Node* head)
+{
+    Node* temp=head;
+    while(temp!=NULL)
+    {
+        cout<<temp->Data<<"->";
+        temp=temp->Next;
+    }
+    cout<<"NULL"<<endl;
+}
+
+void MakeCycle(Node* &head,int pos)
+{
+    ///eg hame bola ki cycle bana do pos 2 pe hamari list hai 12345 toh 5 ke next mein 2 daldo. 
+    Node* temp=head;
+    Node* StartNode;
+
+    int Count=1;
+    while(temp->Next!=NULL)
+    {
+        if(Count==pos)
+        {
+            StartNode=temp;
+        }
+        temp=temp->Next;
+        Count++;
+    }
+    temp->Next=StartNode;  ///Isme Ham last node ko point kara denge us node pe jaha se hame cycle start karni ha.
+}
+
+bool DetectCycle(Node* &head)
+{
+    Node* slow=head;
+    Node* fast=head;
+
+    while(fast!=NULL && fast->Next!=NULL)   ///agar cycle hogi toh loop apne aap break ho jayega.agar nahi hua cycle toh uske lie condition lagani hame.
+    {
+        slow=slow->Next;
+        fast=fast->Next->Next;
+
+        if(fast==slow)
+            return true;
+    }
+    return false;
+}
+
+void RemoveCycle(Node* &head)
+{
+    Node* Slow=head;
+    Node* Fast=head;
+
+    do   ///yaha loop tab tak chalana jab tak slow fast ke equal ni ho jata,but initially dono equal hai isliye ham do while loop use karre.
+    {
+       Slow=Slow->Next;
+       Fast=Fast->Next->Next;  ///yaha phele cycle ka start dhoondre.
+    }while(Slow!=Fast);
+    ///ab yaha cycle start hui jab slow=fast. toh ab slow ko us point se aage badhao eg 12345 hai and cycle 2 pe hai.
+    ///toh 2 pe slow hai abhi ,ab ham slow ko 3 se aage chalare and fast ko starting se ab ye jaha meet krenge vo cycle ka end hua usme NULL daldo.
+    Fast=head;
+    while(Slow->Next!=Fast->Next)
+    {
+        Slow=Slow->Next;
+        Fast=Fast->Next;
+    }
+    Slow->Next=NULL;
+}
+int main()
+{
+   Node* head=NULL;
+   InsertAtTail(head,1);
+   InsertAtTail(head,2);
+   InsertAtTail(head,3);
+   InsertAtTail(head,4);
+   display(head);
+   InsertAtHead(head,5);
+   InsertAtHead(head,9);
+
+   display(head);
+   MakeCycle(head,3);
+   cout<<DetectCycle(head)<<endl;
+   RemoveCycle(head);
+   cout<<DetectCycle(head)<<endl;
+   display(head);
+
+}
+
