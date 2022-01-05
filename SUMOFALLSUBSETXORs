@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int subsetXORSum(vector<int>& nums) {
+      ///We can do this question by calling a helper function .Here we will have 2 cases for
+      /// each array num[i],to include it or exclude it. its like a tree include or exclude.
+///Like our tree diagram in TFCS.here we will have levels.like for first element level=0;then level get increased and so on.if we include that element then it will get XOR else we will not XOR it.
+        
+        return helper(nums,0,0);
+    }
+    
+    int helper(vector<int>nums,int level,int CurrentXOR)
+    {
+        if(level==nums.size())
+            return CurrentXOR;
+        
+        int includeLevel=helper(nums,level+1,CurrentXOR^nums[level]);
+        int excludeLevel=helper(nums,level+1,CurrentXOR);
+        return includeLevel+excludeLevel;
+    }
+};
