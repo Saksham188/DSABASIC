@@ -1,0 +1,147 @@
+///isme k pairs banake reverse krna,like 123456 hai and k is 2 toh phele 2 nodes ko reverse maro,fir next do ko ese.
+///isme first k nodes ko iterative 3 pointers se reverse krdo and baki list pe recursively function call krdo.
+/// ab hamne 12 ka link reverse krdia ,2->1  1 is head and 2 is prev ab ham chahte ki 1 ke next mein 4 aajaye kyunki reverse krdi list
+///isliye ham head->next mein store krenge jo recursion return krega usey.
+#include<iostream>
+using namespace std;
+class Node
+{
+    public:
+
+    int Data;
+    Node* Next;
+
+    Node(int value)
+    {
+       Data=value;
+       Next=NULL;
+    }
+};
+void InsertAtTail(Node* &head,int val)  ///here we take by reference and not by value bcse here we have to modify linked list.
+{
+   Node* n = new Node(val);
+
+   if(head==NULL) ///agar linked list empty ho toh traverse ki need nhi.
+   {
+       head=n;
+       return;
+   }
+   Node* temp =head;
+   while(temp->Next!=NULL)
+   {
+       temp=temp->Next;
+   }
+
+   temp->Next=n;
+
+}
+void InsertAtHead(Node* &head, int val)
+{
+    Node* n =new Node(val);
+    n->Next=head;
+    head=n;
+}
+
+void display(Node* head)
+{
+    Node* temp=head;
+    while(temp!=NULL)
+    {
+        cout<<temp->Data<<"->";
+        temp=temp->Next;
+    }
+    cout<<"NULL"<<endl;
+}
+
+
+bool search(Node* head,int key)
+{
+    Node *temp =head;
+    while(temp!=NULL)
+    {
+        if(temp->Data==key)
+        {
+            return true;
+        }
+        temp=temp->Next;
+    }
+    return false;
+
+
+}
+
+void DeleteAtHead(Node* &head)   ///To delete first node
+{
+    Node* toDelete=head;
+    head=head->Next;
+
+    delete toDelete;
+}
+
+void DeleteNode(Node* &head,int Value)
+{
+    if(head==NULL) ///corner cases
+    {
+        return;
+    }
+    if(head->Next==NULL)    ///jab linked list mein ek hi node ho tab ye use karenge.
+    {
+        DeleteAtHead(head);
+    }
+    ///isme hame n-1 th node ke next mein n+1 th node ka address rakhna hai.toh ham n th node ko delete karenge.
+    Node* temp=head;
+    while(temp->Next->Data!=Value)   ///ham yaha n-1 th node ko dhondre and stop karre loop ko n-1 th node pe.
+    {
+        temp=temp->Next;
+
+    } ///yaha aake temp n-1 node ko point karega.
+    Node* todelete =temp->Next; ///  yaha hoga nth node ka data
+    temp->Next=temp->Next->Next; ///yaha n-1th node mein n+1 th ka address dalre
+
+    delete todelete;
+}
+
+Node* ReverseKNode(Node* &head,int k)
+{
+    Node* Prevptr=NULL;
+    Node* Currptr=head;
+    Node* Nextptr;
+
+    int Count=0;
+
+    while(Currptr!=NULL && Count<k)   ///yaha se phele k nodes reverse honge.Aage ke k nodes ke lie we use recursion.
+    {
+        Nextptr=Currptr->Next;
+        Currptr->Next=Prevptr;    ///yaha reversing kardi hamne.
+
+        Prevptr=Currptr;   ///yaha ab aage badhane ke lie ptrs ko.
+        Currptr=Nextptr;
+        Count++;
+    }
+
+    if(Nextptr!=NULL)
+    {
+        head->Next=ReverseKNode(Nextptr,k); ///hame apni list ese karni eg 123456 thi then now final will be 214365 .So iske lie ham 1 mein 4 ka address dalenge.
+    }
+
+    return Prevptr;
+
+}
+
+int main()
+{
+   Node* head=NULL;
+   InsertAtTail(head,1);
+   InsertAtTail(head,2);
+   InsertAtTail(head,3);
+   InsertAtTail(head,4);
+   display(head);
+   InsertAtHead(head,5);
+   InsertAtHead(head,9);
+
+   display(head);
+
+   int k=3;
+   Node* Newhead =ReverseKNode(head,k);
+   display(Newhead);
+}
