@@ -1,0 +1,57 @@
+//  In BIT MANIPULATION
+//  POWER OF 2   :   1<<n =2^n (1 left shift n is equal to 2 ki power n)
+//  eg 1<<0 =1 =2^0  ,  1<<1 =(1 0) =2^1
+
+// i th bit of x is 1 or not: 
+//  (x and (1<<i))=0 : ith bit of x is not 1.
+//  (x and (1<<i))!=0 : ith bit of x is 1
+// eg  110=6   , for first bit 001=1<<0 000   , so x's ith bit set is not 1.
+
+//1 <<i =  here all bit 0 but at ith place we have 1  so its like  ....0000001 00000..... 
+
+
+// Every array has 2^n subsets. 
+// Best logic for subset generation eg we have {1,2,3}. So we see that if ith bit is 1 we will include it else if ith bit 0 we will not include.
+// Its bit masking. 
+/*
+{1,2,3}:  eg 001 ->1st bit 0 ,2nd bit 0 exclude them ,3rd bit 1 so include it so subset is 3
+    0= 000 ={}
+    1=001  = {3}
+    2=010 = {2}
+    3=011 = {2,3}
+    4=100 = {1}
+    5=101 = {1,3}
+    6=110 ={1,2}
+    7=111 ={1,2,3} (all bit 1 so include 123)
+*/ 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<vector<int> > GetSubsets(vector<int>&num)
+{
+    int size=num.size();  ///phele array ka size nikal lo.
+    int subsetNum=(1<<size); ///kyunki num subsets honge 2^n which is equal to 1 <<n
+/// Ab hamare sare subsets 0 se leke 2^n tak ki binary mein present honge. eg above,
+    
+    vector<vector<int> > AllSubsets;
+    for(int SubsetMask=0;SubsetMask<subsetNum;SubsetMask++)
+    {
+        vector<int>subset;
+        ///har subset mein bits array ke size ke hi equal hongi.as binary 8 is 1000(4 digit) toh 3 letter honge ie 7 tak toh 7 mein 3digits hi
+        for(int i=0;i<size;i++)
+        {
+            if((SubsetMask & (1 << i)) !=0)  ///agar ith bit 1 ho toh usey lelo ans mein.
+            {
+                subset.push_back(num[i]);
+            }
+        }
+        AllSubsets.push_back(subset);
+    }
+    return AllSubsets;
+
+}
+///Time Complexity O(2^N  *N) .It works only for small N like 15,18...
+
+
+
