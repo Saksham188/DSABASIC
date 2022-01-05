@@ -1,0 +1,279 @@
+///There are 2 methods -iterator method-here we take 2 pointers   and 2nd is recursion method.
+//####################
+///Iterator Method Code:
+/*
+#include<iostream>
+using namespace std;
+class Node
+{
+    public:
+
+    int Data;
+    Node* Next;
+
+    Node(int value)
+    {
+       Data=value;
+       Next=NULL;
+    }
+};
+void InsertAtTail(Node* &head,int val)  ///here we take by reference and not by value bcse here we have to modify linked list.
+{
+   Node* n = new Node(val);
+
+   if(head==NULL) ///agar linked list empty ho toh traverse ki need nhi.
+   {
+       head=n;
+       return;
+   }
+   Node* temp =head;
+   while(temp->Next!=NULL)
+   {
+       temp=temp->Next;
+   }
+
+   temp->Next=n;
+
+}
+void InsertAtHead(Node* &head, int val)
+{
+    Node* n =new Node(val);
+    n->Next=head;
+    head=n;
+}
+
+void display(Node* head)
+{
+    Node* temp=head;
+    while(temp!=NULL)
+    {
+        cout<<temp->Data<<"->";
+        temp=temp->Next;
+    }
+    cout<<"NULL"<<endl;
+}
+
+
+bool search(Node* head,int key)
+{
+    Node *temp =head;
+    while(temp!=NULL)
+    {
+        if(temp->Data==key)
+        {
+            return true;
+        }
+        temp=temp->Next;
+    }
+    return false;
+
+
+}
+
+void DeleteAtHead(Node* &head)   ///To delete first node
+{
+    Node* toDelete=head;
+    head=head->Next;
+
+    delete toDelete;
+}
+
+void DeleteNode(Node* &head,int Value)
+{
+    if(head==NULL) ///corner cases
+    {
+        return;
+    }
+    if(head->Next==NULL)    ///jab linked list mein ek hi node ho tab ye use karenge.
+    {
+        DeleteAtHead(head);
+    }
+    ///isme hame n-1 th node ke next mein n+1 th node ka address rakhna hai.toh ham n th node ko delete karenge.
+    Node* temp=head;
+    while(temp->Next->Data!=Value)   ///ham yaha n-1 th node ko dhondre and stop karre loop ko n-1 th node pe.
+    {
+        temp=temp->Next;
+
+    } ///yaha aake temp n-1 node ko point karega.
+    Node* todelete =temp->Next; ///  yaha hoga nth node ka data
+    temp->Next=temp->Next->Next; ///yaha n-1th node mein n+1 th ka address dalre
+
+    delete todelete;
+}
+
+Node* Reverse(Node* &head)
+{
+    Node* Prevptr=NULL;
+    Node* Currptr=head;
+    Node* Nextptr;
+
+    while(Currptr!=NULL)
+    {
+        Nextptr=Currptr->Next;
+        Currptr->Next=Prevptr;    ///yaha reversing kardi hamne.
+
+        Prevptr=Currptr;   ///yaha ab aage badhane ke lie ptrs ko.
+        Currptr=Nextptr;
+    }
+    return Prevptr;
+}
+int main()
+{
+   Node* head=NULL;
+   InsertAtTail(head,1);
+   InsertAtTail(head,2);
+   InsertAtTail(head,3);
+   InsertAtTail(head,4);
+   display(head);
+   InsertAtHead(head,5);
+   InsertAtHead(head,9);
+
+   display(head);
+   cout<<search(head,4)<<endl;
+   cout<<search(head,10)<<endl;
+
+   DeleteNode(head,2);
+   DeleteAtHead(head);
+   display(head);
+
+   Node* newhead =Reverse(head);
+   display(newhead);
+}
+*/
+///Now recursive Approach.
+
+#include<iostream>
+using namespace std;
+class Node
+{
+    public:
+
+    int Data;
+    Node* Next;
+
+    Node(int value)
+    {
+       Data=value;
+       Next=NULL;
+    }
+};
+void InsertAtTail(Node* &head,int val)  ///here we take by reference and not by value bcse here we have to modify linked list.
+{
+   Node* n = new Node(val);
+
+   if(head==NULL) ///agar linked list empty ho toh traverse ki need nhi.
+   {
+       head=n;
+       return;
+   }
+   Node* temp =head;
+   while(temp->Next!=NULL)
+   {
+       temp=temp->Next;
+   }
+
+   temp->Next=n;
+
+}
+void InsertAtHead(Node* &head, int val)
+{
+    Node* n =new Node(val);
+    n->Next=head;
+    head=n;
+}
+
+void display(Node* head)
+{
+    Node* temp=head;
+    while(temp!=NULL)
+    {
+        cout<<temp->Data<<"->";
+        temp=temp->Next;
+    }
+    cout<<"NULL"<<endl;
+}
+
+
+bool search(Node* head,int key)
+{
+    Node *temp =head;
+    while(temp!=NULL)
+    {
+        if(temp->Data==key)
+        {
+            return true;
+        }
+        temp=temp->Next;
+    }
+    return false;
+
+
+}
+
+void DeleteAtHead(Node* &head)   ///To delete first node
+{
+    Node* toDelete=head;
+    head=head->Next;
+
+    delete toDelete;
+}
+
+void DeleteNode(Node* &head,int Value)
+{
+    if(head==NULL) ///corner cases
+    {
+        return;
+    }
+    if(head->Next==NULL)    ///jab linked list mein ek hi node ho tab ye use karenge.
+    {
+        DeleteAtHead(head);
+    }
+    ///isme hame n-1 th node ke next mein n+1 th node ka address rakhna hai.toh ham n th node ko delete karenge.
+    Node* temp=head;
+    while(temp->Next->Data!=Value)   ///ham yaha n-1 th node ko dhondre and stop karre loop ko n-1 th node pe.
+    {
+        temp=temp->Next;
+
+    } ///yaha aake temp n-1 node ko point karega.
+    Node* todelete =temp->Next; ///  yaha hoga nth node ka data
+    temp->Next=temp->Next->Next; ///yaha n-1th node mein n+1 th ka address dalre
+
+    delete todelete;
+}
+
+Node* ReverseRecursive(Node* &head)
+{
+    if(head==NULL || head->Next==NULL )   ///base case agar linked list mein 1 ya ek bhi node na ho
+    {
+        return head;
+    }
+
+
+    Node* Newhead=ReverseRecursive(head->Next); ///yaha starting ke 2 node ke link ke alava baki sare reverse hoge.
+    head->Next->Next = head;   ///yaha 1st and 2nd node ka link reverse kardia.
+    head->Next =NULL;  ///yaha 1 st link ko null ko point kara dia.
+
+    return Newhead;
+}
+int main()
+{
+   Node* head=NULL;
+   InsertAtTail(head,1);
+   InsertAtTail(head,2);
+   InsertAtTail(head,3);
+   InsertAtTail(head,4);
+   display(head);
+   InsertAtHead(head,5);
+   InsertAtHead(head,9);
+
+   display(head);
+   cout<<search(head,4)<<endl;
+   cout<<search(head,10)<<endl;
+
+   DeleteNode(head,2);
+   DeleteAtHead(head);
+   display(head);
+
+   Node* newhead =ReverseRecursive(head);
+   display(newhead);
+}
