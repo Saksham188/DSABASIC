@@ -1,0 +1,58 @@
+/// eg  -+7 * 45 +20   ,ans
+/// In Prefix operand hamara operator ke baad aata hai. here we will use stack and use our lifo property.LastInFirstOut
+///Prefix mein end se start karte and postfix mein ham starting se start karte hai.
+///Logic: Last se shuru karo and jese hi operands aaye push in stack.And when we get an operator we pop the 2 values from stack and operate them and push back in stack and then repeat the same.
+///
+/// Time Complexity O(l) ,l=length of string.
+#include<iostream>
+#include<math.h>
+#include<stack>
+using namespace std;
+
+int PrefixEvaluation(string s)
+{
+    stack<int> Stack1;
+
+    for(int i=s.length()-1;i>=0;i--)
+    {
+        if(s[i]>='0' && s[i]<='9') ///ie operand ho.
+        {
+            Stack1.push(s[i]-'0');///isse as an integer push hoga. bcse eg for 2 we get ascii2-ascii0=2.
+        }
+        else if(s[i]==' ') continue;
+        else
+        {
+            int Operand1=Stack1.top();
+            Stack1.pop();
+            int Operand2=Stack1.top();
+            Stack1.pop();
+
+            switch(s[i])  ///operation perform karne ke lie switch case.
+            {
+            case '+':
+                Stack1.push(Operand1+Operand2);
+                break;
+            case '-':
+                Stack1.push(Operand1-Operand2);
+                break;
+            case '*':
+                Stack1.push(Operand1*Operand2);
+                break;
+            case '/':
+                Stack1.push(Operand1/Operand2);
+                break;
+            case '^':
+                Stack1.push(pow(Operand1,Operand2));
+                break;
+            }
+        }
+    }
+    return Stack1.top(); ///ye stack mein ek hi value hogi final evaluated value.
+}
+int main()
+{
+    cout<<PrefixEvaluation("- + 7 * 45 + 20");
+}
+
+
+
