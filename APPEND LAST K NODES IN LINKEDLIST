@@ -1,0 +1,174 @@
+///Isme Last ke K nodes ko starting mein leke aana list ke.Isme ham ye karenge ki (l-k) pe new-tail pointer laga denge.L length of list.
+///And (l-k+1) pe ham new head laga denge.  first node head hoga and last node tail.
+
+///In short isme phele length nikalo ll ki manlo 123456 hai and k=3 toh hame ans dena 456123, toh ab newhead lagao 4 pe and newtail lagao 3 pe.
+///ab 3 ke next mein null daldo and 6 ke next mein 1.    yaha 6=tail,1=head,4=newhead,3=newtail
+#include <iostream>
+using namespace std;
+class Node
+{
+public:
+    int Data;
+    Node *Next;
+
+    Node(int value)
+    {
+        Data = value;
+        Next = NULL;
+    }
+};
+void InsertAtTail(Node *&head, int val) ///here we take by reference and not by value bcse here we have to modify linked list.
+{
+    Node *n = new Node(val);
+
+    if (head == NULL) ///agar linked list empty ho toh traverse ki need nhi.
+    {
+        head = n;
+        return;
+    }
+    Node *temp = head;
+    while (temp->Next != NULL)
+    {
+        temp = temp->Next;
+    }
+
+    temp->Next = n;
+}
+void InsertAtHead(Node *&head, int val)
+{
+    Node *n = new Node(val);
+    n->Next = head;
+    head = n;
+}
+
+void display(Node *head)
+{
+    Node *temp = head;
+    while (temp != NULL)
+    {
+        cout << temp->Data << "->";
+        temp = temp->Next;
+    }
+    cout << "NULL" << endl;
+}
+
+bool search(Node *head, int key)
+{
+    Node *temp = head;
+    while (temp != NULL)
+    {
+        if (temp->Data == key)
+        {
+            return true;
+        }
+        temp = temp->Next;
+    }
+    return false;
+}
+
+void DeleteAtHead(Node *&head) ///To delete first node
+{
+    Node *toDelete = head;
+    head = head->Next;
+
+    delete toDelete;
+}
+
+void DeleteNode(Node *&head, int Value)
+{
+    if (head == NULL) ///corner cases
+    {
+        return;
+    }
+    if (head->Next == NULL) ///jab linked list mein ek hi node ho tab ye use karenge.
+    {
+        DeleteAtHead(head);
+    }
+    ///isme hame n-1 th node ke next mein n+1 th node ka address rakhna hai.toh ham n th node ko delete karenge.
+    Node *temp = head;
+    while (temp->Next->Data != Value) ///ham yaha n-1 th node ko dhondre and stop karre loop ko n-1 th node pe.
+    {
+        temp = temp->Next;
+
+    }                              ///yaha aake temp n-1 node ko point karega.
+    Node *todelete = temp->Next;   ///  yaha hoga nth node ka data
+    temp->Next = temp->Next->Next; ///yaha n-1th node mein n+1 th ka address dalre
+
+    delete todelete;
+}
+
+int length(Node *head)
+{
+    int l = 0;
+    Node *temp = head;
+
+    while (temp != NULL)
+    {
+        l++;
+        temp = temp->Next;
+    }
+    return l;
+}
+
+
+Node *AppendKNodes(Node *&head, int k)
+{
+    Node *NewHead=NULL;
+    Node *NewTail=NULL;
+    Node *Tail = head;
+
+    int l = length(head);
+    k = k % l; ///ye isliye ki agar k length of list se jyada given ho.
+    int Count = 1;
+
+    if (k == 0)
+    {
+        return head;
+    }
+    
+
+    while (Tail->Next != NULL)
+    {
+        if (Count == l - k) ///discussed above.
+        {
+            NewTail = Tail;
+        }
+        if (Count == l - k + 1)
+        {
+            NewHead = Tail;
+        }
+        Tail = Tail->Next;
+        Count++;
+    }
+    if(k==1)
+    {
+        NewHead=Tail;
+    }
+    
+    NewTail->Next = NULL;
+    Tail->Next = head;
+
+    
+
+    return NewHead;
+}
+
+
+
+
+int main()
+{
+    Node *head = NULL;
+    int arr[] = {1, 2, 3, 4, 5, 6};
+    for (int i = 0; i < 6; i++)
+    {
+        InsertAtTail(head, arr[i]);
+    }
+    display(head);
+    int val;
+    cout << "Enter the last k nodes you want to append: ";
+    cin >> val;
+    Node *newNode = AppendKNodes(head, val);
+
+    display(newNode);
+}
