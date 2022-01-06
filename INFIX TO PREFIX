@@ -1,0 +1,76 @@
+///  eg of infix: (a-b/c)*(a/k-l)
+///In it we traverse from right to left. ie reverse side se karte hai.
+///Logic:  If operand then print. if ( then push to stack , if ) them pop from stack until ( is found. If operator then pop from stack and print until an operator with less precedence is found.
+///Isme phele string reverse karo fir postfix vala same karo and fir end mein jo sol aaye usey bhi reverse kardo.
+
+#include<iostream>
+#include<stack>
+#include<algorithm>
+using namespace std;
+
+int Precedence(char c)
+{
+    if(c=='^')
+        return 3;
+    else if(c=='*'|| c=='/')
+        return 2;
+    else if(c=='+'||c=='-')
+        return 1;
+    else
+        return -1;  ///ye return hoga jab c mein opening bracket ho.
+}
+
+string InfixToPreFix(string s)
+{
+    reverse(s.begin(),s.end());
+    stack<char>Stack1;
+    string Result;
+
+    for(int i=0;i<s.length();i++)
+    {
+          if((s[i]>='a' && s[i]<='z') || (s[i]>='A' && s[i]<='Z'))
+          {
+              Result+=s[i];
+          }
+          else if(s[i]==')')
+          {
+              Stack1.push(s[i]);
+          }
+          else if(s[i]=='(')
+          {
+              while(!Stack1.empty() && Stack1.top()!=')') ///phele check karo stack empty toh ni and opening bracket mil jaye
+              {
+                  Result+=Stack1.top();
+                  Stack1.pop();
+              }
+              if(!Stack1.empty())
+              {
+                  Stack1.pop();
+              }
+          }
+          else
+          {
+              while(!Stack1.empty() && Precedence(Stack1.top())>=Precedence(s[i]))
+              {
+                  Result+=Stack1.top();
+                  Stack1.pop();
+              }
+              Stack1.push(s[i]);
+          }
+    }
+
+    while(!Stack1.empty()) ///check karre agar stack mein kuch reh gya toh use string mein jod do.ie print kardo.
+    {
+         Result+=Stack1.top();
+         Stack1.pop();
+    }
+    reverse(Result.begin(),Result.end());
+
+    return Result;
+}
+int main()
+{
+    cout<<InfixToPreFix("(a-b/c)*(a/k-l)");
+}
+
+
