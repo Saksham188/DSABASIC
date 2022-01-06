@@ -1,0 +1,48 @@
+/// Isme ham ek hi stack ka use karke reverse karenge.
+#include<iostream>
+#include<stack>
+using namespace std;
+///yaha recursion ka use krre ham.yaha insert at bottom call krte jao ek element ko remove kro.jab stack empty ho jaye
+///eg 54321 hai 1234 hai 5 dalna toh pop krke jab empty hua toh 5 daaldo.fir backtrack hoga fir 4 insert fir 3 fir 2 fir 1 
+void InsertAtBottom(stack<int> &st,int element)
+{
+    if(st.empty())
+    {
+        st.push(element);
+        return;
+    }
+    int TopElement=st.top();
+    st.pop();
+    InsertAtBottom(st,element);  ///Recursive call.
+
+    st.push(TopElement);
+}
+
+void Reverse(stack<int> &st ) ///yaha ham stack ko by reference karre bcse ham isi stack mein changes karre hai.
+{
+    if(st.empty())  ///ie stack is empty. base condition for recursion to stop.
+    {
+        return;
+    }
+    int element=st.top();///top element ko store karre variable element mein.
+    st.pop();
+    Reverse(st); ///we call recursively for 1 less element.
+    InsertAtBottom(st,element);
+}
+
+int main()
+{
+    stack<int>st;
+    st.push(1);
+    st.push(2);
+    st.push(3);
+    st.push(4);
+
+    Reverse(st);
+    while(!st.empty())
+    {
+        cout<<st.top()<<" ";
+        st.pop();
+    }
+    cout<<endl;
+}
