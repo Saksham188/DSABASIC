@@ -1,0 +1,35 @@
+///Here we are using inbuilt STL Libraries. We directly use in main stack<typewanted eg int> Stack1;
+/// in this q eg we have hey, how r u?  .our output= u? r how hey, ;
+/// Logic: We will first traverse the string and when we get space we will push it in stack and then we will pop first element.
+#include<iostream>
+#include<stack>
+using namespace std;
+
+void ReverseSentence(string s)
+{
+    stack<string> st;
+
+    for(int i=0;i<s.length();i++)
+    {
+        string Word="";
+        while(s[i]!=' ' && i<s.length()) ///yaha ham space ane pe Word mein char wise dalre and se stack mein push kardenge.
+        {
+             Word+=s[i];
+             i++;
+        }
+        st.push(Word);
+    }
+    while(!st.empty())
+    {
+        cout<<st.top()<<" ";
+        st.pop();
+    }
+    cout<<endl;
+
+}
+
+int main()
+{
+    string s="Hey, how are you doing?";
+    ReverseSentence(s);
+}
