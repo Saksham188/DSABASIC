@@ -1,0 +1,61 @@
+///Using deque we can solve it in O(n) Time Complexity.
+
+// Logic: Here we will make a deque which store elements in decreasing order and it gives us option of push and pop at back and front. 
+// So we will run a loop till size of array and here we will be given K ie size of sliding.
+// So if dq is not empty and front of dq==i-k then we will pop from front.
+// 
+
+// Basically here we are doing that we will take elements till kth index and check for max value and if we get max then remove other index. 
+// and here we are also removing out of bound indexes. eg we want sliding from 4 to 6 and we have index 2,3 in stack so we will remove them first.
+// This will take O(n) Time Complexity. 
+
+//  The first if condition in for loop is for removing out of bound indexes. eg your i is 5 and k is 3 and in stack we have index 2 since it will be out of bound
+//  as i-k (i is index at which u r and k is size of sliding ) so if its equal then its out of bound as i-k+1 would be starting of window for 5.
+// So we simply pop it.
+// 
+// then in next while we are removing all the elements from deque smaller than our current element a[i]. Since deque is storing indexes. so we check eg we have index 0,1 in deque having value -2 and -1
+// And now a[i] which is 5 .So for making 5 as window max when we peek then 5 should be at front.so we will remove indexes less than or equal to a[i].
+//  which we are doing in this loop. So after popping we push it in the deque at back.
+
+// Now in last if condition we are taking ans.Our max index will be pushed in deque only when we will reach end of first window which will be at size k-1 .so for i>=(k-1) we will take subarrays. 
+// like subarray is of size 7 and k is 3. so first max will be taken when i will be 2(0,1,2) ,so for 2,3,4,5 we will get our subarrays 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<int>MaxSlidingWindow(vector<int>&nums,int k)
+{
+    deque<int>dq;
+    vector<int>ans;
+
+    for(int i=0;i<nums.size();i++)
+    {
+        if(!dq.empty() and dq.front()==i-k) ///yaha out of bound index udare ham. Vo index front pe hi honge queue ke isliye hamne pop_front kia.
+        {
+            dq.pop_front();
+        }
+        
+        while(!dq.empty() and nums[dq.back()]<=nums[i])  ///yaha back se isliye check krre bcse deque mein bade se chote ke order mein hota toh smallest element se check kro usse bada hua a[i] toh pop krdo.similarly left mein jate jao.
+        {
+            dq.pop_back(); ///back vale se match krre phele isliye pop bhi back se hi krenge ham.
+        }
+        dq.push_back(i); ///jab sare smaller pop ho jaye toh ham a[i] ko push krdete hai.
+        
+        if(i>=k-1)  ///yaha ham ans mein tbhi push krenge eg 7 size and k=3 toh jab first subarray complete hogi tbhi push krenge ie k-1 pe.
+        {
+            ans.push_back(nums[dq.front()]); ///yaha front se push krre bcse phele vala index aage hi pda hoga fir peeche pichla index.
+        }
+    }
+
+    for(int i=0;i<ans.size();i++)
+    {
+        cout<<ans[i]<<" ";
+    }
+}
+int main()
+{
+    vector<int> v{1,3,-1,-3,5,3,6,7};
+    int k=3;
+    vector<int>ans=MaxSlidingWindow(v,k);
+
+}
