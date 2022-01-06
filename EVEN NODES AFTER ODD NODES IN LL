@@ -1,0 +1,87 @@
+///isme eg list hai 123456 toh hame output dikhana 135246.
+///Logic: 2 ptrs lo odd and even. Odd->next mein daaldo even ka next.isse odd vali jud jayengi. and fir odd=odd->next;
+#include<iostream>
+using namespace std;
+
+class Node
+{
+public:
+    int Data;
+    Node* next;
+
+    Node(int Value)
+    {
+        Data=Value;
+        next=NULL;
+    }
+};
+
+void InsertAtTail(Node* &head,int Id)
+{
+    Node* n= new Node(Id);
+
+    if(head==NULL)
+    {
+        head=n;
+    }
+    else
+    {
+        Node *temp=head;
+        while(temp->next!=NULL)
+        {
+              temp=temp->next;
+        }
+        temp->next=n;
+    }
+
+}
+void InsertAtHead(Node* &head,int Value)
+{
+    Node* n=new Node(Value);
+
+    n->next=head;
+    head = n;
+}
+
+void Traverse(Node* head)
+{
+    Node* n =head;
+    while(n!=NULL)
+    {
+        cout<<n->Data <<" ->";
+        n=n->next;
+    }
+    cout<<"NULL"<<endl;
+}
+
+void EvenAfterOdd(Node* &head)
+{
+    Node* odd=head;
+    Node* even=head->next;
+    Node* EvenStart=even;  ///Iska use hoga odd ke next mein jodne mein taki list connect ho sake.
+
+    while(odd->next!=NULL && even->next!=NULL)
+    {
+        odd->next=even->next; ///isse odd pos ke nodes link ho jayenge.
+        odd=odd->next;
+        even->next=odd->next;  ///isse even pos ke nodes link ho jayenge.
+        even=even->next;
+    }
+    odd->next=EvenStart;
+    return;
+}
+
+int main()
+{
+   Node* head=NULL;
+   int arr[]={1,2,3,4,5,6};
+
+   for(int i=0;i<6;i++)
+   {
+       InsertAtTail(head,arr[i]);
+   }
+
+   Traverse(head);
+   EvenAfterOdd(head);
+   Traverse(head);
+}
