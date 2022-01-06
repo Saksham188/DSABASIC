@@ -1,0 +1,54 @@
+///eg of Postfix: 4 6 + 2 / 5 * 7 +
+
+#include<iostream>
+
+#include<stdio.h>
+#include<math.h>
+#include<stack>
+using namespace std;
+
+int PostFixEvaluator(string s)
+{
+    stack<int>s1;
+    for(int i=0;i<s.length();i++)
+    {
+        if(s[i]>='0' && s[i]<='9')
+        {
+            s1.push(s[i]-'0');
+        }
+        else
+        {
+            int Operand2=s1.top();
+            s1.pop();
+            int Operand1=s1.top();
+            s1.pop();
+
+            switch(s[i])
+            {
+            case '+':
+                s1.push(Operand1+Operand2);
+                break;
+            case '-':
+                s1.push(Operand1-Operand2);
+                break;
+            case '*':
+                s1.push(Operand1*Operand2);
+                break;
+            case '/':
+                s1.push(Operand1/Operand2);
+                break;
+            case '^':
+                s1.push(pow(Operand1,Operand2));
+                break;
+            }
+        }
+    }
+    return s1.top();
+}
+int main()
+{
+    string s;
+    fflush(stdin);
+    getline(cin,s);
+    cout<<PostFixEvaluator(s);
+}
