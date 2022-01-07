@@ -1,0 +1,104 @@
+// Observations: Here for water level we will require at least 3 blocks to store water and if our array is in asc or desc order it cannot store water. 
+// Water level is calculated by calculation left height,right height .then we take min of left and right as water level 
+// and stored water=(waterlevel-height of block)* width of block.
+
+///2 Approaches for this problem: One is to maintain array for maxleft and max right.Its TC O(N),SC O(N)
+// Second Approach: Dont make array update maxleft and maxright as we traverse.
+// 
+// 
+///Approach 1:
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int MaxRainWater(vector<int>rain)
+{
+   int n=rain.size();
+
+   if(n<=2)
+      return 0;
+    
+    vector<int>left(n),right(n);
+    left[0]=0;  ///phele vale ke lie 0 dalo
+    int leftMax=rain[0];
+
+    for(int i=1;i<rain.size();i++)
+    {
+        left[i]=leftMax;
+        leftMax=max(leftMax,rain[i]);
+    }
+
+    right[n-1]=0;
+    int rightMax=rain[n-1];
+
+    for(int i=n-2;i>=0;i--)
+    {
+        right[i]=rightMax;
+        rightMax=max(rightMax,rain[i]);
+    }
+  
+  
+  
+    int ans=0;
+    ///first block and last block pe pani ikhttha ni hoga.
+    for(int i=1;i<rain.size()-1;i++)
+    {
+        if(rain[i]<left[i] and rain[i]<right[i]) ///store tbhi hoga water jab left and right height badi hogi current height se.
+        ans+=(min(left[i],right[i])-rain[i]);
+    }
+
+    return ans;
+}
+int main()
+{
+    vector<int>rain{4,2,0,3,2,5};
+    cout<<MaxRainWater(rain);
+
+}
+
+
+///Approach 2 : O(1) Space and O(N) Time Complexity.
+// here traverse array using 2 pointers.one start from end and one from begin.
+// Isme ye logic ki check kro left chota hai ya right.and chote vali ptr val ki trf se bharna start kro.
+//
+
+int MaxRain(vector<int> &rain)
+{
+    int n = rain.size();
+    if (n <= 2)
+        return 0;
+
+    int MaxLeft = rain[0];
+    int MaxRight = rain[n - 1];
+    int ans = 0;
+    int left = 1; ///Left pointer  isko 1 se use kia bcse 0 pe store ni hoga water.
+    int right = n - 2;
+
+    while (left <= right)
+    {
+        if (MaxLeft < MaxRight)
+        { ///here we have 2 cases either current block has height greater than max left or less than it.If height>maxleft then ans=0 as it will not store any water so we just update maxleft here.
+            if (rain[left] > MaxLeft)
+            {
+                MaxLeft = rain[left];
+            }
+            else
+                ans += MaxLeft - rain[left]; ///yaha add krdo kitna water store hora.
+
+            left++; ///move ptr ahead;
+        }
+        else ///ie here right is smaller so we start filling from right side.
+        {
+             ///here we have 2 cases either current block has height greater than max right or less than it.If height>maxRight then ans=0 as it will not store any water so we just update maxRight here.
+                if (rain[right] > MaxRight)
+                {
+                    MaxRight = rain[right];
+                }
+                else
+                    ans += MaxRight - rain[right]; ///yaha add krdo kitna water store hora.
+
+                right--; ///move ptr backwards.;
+        }
+    }
+    return ans;
+}
