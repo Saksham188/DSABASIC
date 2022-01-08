@@ -1,0 +1,45 @@
+/// Given a mathematical expression,find whether it have redundant paranthesis or not.It contains following operators : +,-,*,/.
+/// We have to tell whether in the expression we have used extra brackets or not.
+/// eg A= "((a+b)) ,ans=1 as it has redundant paranthesis
+/// eg2 A="(a+(a+b))" ,ans=0 it has no redundant paranthesis.
+///  if we get operator or opening bracket insert it to stack. if we get closing bracket ensure that we have some operators before it. ie stack is not empty or not only opening paranthesis left.
+///
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    string s;
+    cin>>s;
+    stack<char>st;
+    bool ans=false;
+
+    for(int i=0;i<s.size();i++)
+    {
+        if(s[i]=='+' or s[i]=='-' or s[i]=='*' or s[i]=='/')
+        {
+            st.push(s[i]);
+        }
+        else if(s[i]=='(')///opening bracket
+        {
+            st.push(s[i]);
+        }
+        else if(s[i]==')') ///yaha ye check krre ki agar stack ke top pe koi operator pada ho toh vo redundant ni hoga.agar opening bracket hua toh redundant hoga.
+        {
+            if(st.top()=='(')
+            {
+                ans=true;
+            }
+            while(st.top()=='+' or st.top()=='-' or st.top()=='*' or st.top()=='/')
+            {
+               st.pop();
+            }
+            st.pop(); ///opening bracket ko pop krne ke lie.
+        }
+    }
+    cout<<ans;
+
+}
+
+
+
