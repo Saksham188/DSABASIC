@@ -1,0 +1,66 @@
+///Problem: Given an array and a value,find if there exists 3 numbers whose sum is equal to given value.
+
+///Brute Force Approach:
+/*
+///here we try all combinations.
+for(int i=0;i<n;i++)
+{
+    for(j=i+1;j<n;j++)
+    {
+        for(k=j+1;k<n;k++)
+        {
+            if(arr[i]+arr[j]+arr[k]==target)
+                found=true;
+        }
+    }
+}
+/// Time Complexity =O(n^3)
+*/
+
+///Two Pointer Technique:
+/// 1.Sort the array. 2. Traverse the array and fix first element of triplet. The problem reduces to find if there exists 2 elements having sum=x-array[i]
+/// Time Complexity: Sort array=O(NlogN) ,Iterating Each element and applying 2sum problem to rest of array :O(N*N)..  Final Time Complexity=O(N^2)
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin>>n;
+    int target;
+    cin>>target;
+    vector<int> a(n);
+
+    for(auto &i:a)
+    {
+        cin>>i;
+    }
+    bool found=false;
+    sort(a.begin(),a.end());
+    for(int i=0;i<n;i++)
+    {
+        int low=i+1, high=n-1;
+        while(low<high)
+        {
+            int current=a[i]+a[low]+a[high];
+            if(current==target)
+            {
+                found=true;
+            }
+            if(current< target)
+            {
+                low++; ///ie agar current sum chota hua toh ham small element ko badha dete.
+            }
+            else
+            {
+                high--;
+            }
+        }
+    }
+    if(found)
+        cout<<"True";
+    else
+        cout<<"False";
+}
+
