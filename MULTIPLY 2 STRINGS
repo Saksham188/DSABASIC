@@ -1,0 +1,42 @@
+  ///Traverse both arrays from end,
+        ///Here we will first store remainder at pos i+j+1 .eg we have 123 , 456 so starting from last at pos 5 we will store (6*3)%10=8  and at pos i+j we will store carry so 18/10=1 at pos 4.  Now for next num ie 6*2 which is 12 we store at i+j+1 and since at pos 2+1+1=4 we already have 1 so first add 12 to 1 which gives 13.Now repeat above steps again.So we will get our desired array.and now we also need to eliminate starting 0's so we traverse and from start and till we dont get non zero and when we  get non zero then use to_string from that index to end of array.
+        ///
+
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        if(num1=="0" or num2=="0")
+        {
+            return "0";
+        }
+        
+        string finalans="";
+        int s1=num1.size(),s2=num2.size();
+        vector<int>ans(s1+s2 ,0);
+        
+        for(int i=s1-1;i>=0;i--) ///ulta traverse kro yahape 
+        {
+            for(int j=s2-1;j>=0;j--)
+            {
+                ans[i+j+1]+=(num1[i]-'0')*(num2[j]-'0'); ///eg yaha 18 aaya toh ab divide krdo aage ke steps mein rem 8 and carry 1 mein.
+                ///here we added like in above eg at index 4 we already had 1 of carry so here first add that.
+                int current=ans[i+j+1];
+                ans[i+j]+=current/10;  ///in every block check if anything present then add it first.
+                ans[i+j+1]=current%10;
+            }
+        }
+        
+        int i=0;
+        while(ans[i]==0) ///here we are calculating how many leading zeroes are there.eg we have 0013 so we want to give only 13 as ans so here i bcmes 2.
+            i++;
+        
+        while(i<ans.size())
+        {
+            finalans+=to_string(ans[i]);
+            i++;
+        }
+        
+        return finalans;
+        
+    }
+};
