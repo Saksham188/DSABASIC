@@ -1,0 +1,70 @@
+///
+///
+///
+///
+///
+
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+    int Data;
+    Node* Left;
+    Node* Right;
+
+    Node(int value)
+    {
+        Data=value;
+        Left=NULL;
+        Right=NULL;
+    }
+};
+int SumAtK(Node*root, int K)
+{
+    if(root==NULL)
+    {
+        return -1; ///agar koi bhi level ni hai toh return kardo.
+    }
+
+    queue<Node*>q;
+    q.push(root);
+    q.push(NULL);
+
+    int level=0,sum=0;
+
+    while(!q.empty())
+    {
+        Node* node= q.front();
+        q.pop();
+        if(node!= NULL)
+        {
+            if(level==K)
+                sum+=node->Data;
+
+            if(node->Left)  ///agar node ka left null ni hai toh queue mein push kardo node ke left ko.
+                q.push(node->Left);
+            if(node->Right)
+                q.push(node->Right);
+        }
+        else if(!q.empty())
+        {
+             q.push(NULL);
+             level++;
+        }
+    }
+    return sum;
+}
+
+int main()
+{
+   Node* root= new Node(1);
+   root->Left= new Node(2);
+   root->Right = new Node(3);
+   root->Left->Left=new Node(4);
+   root->Left->Right= new Node(5);
+   root->Right->Left=new Node(6);
+   root->Right->Right= new Node(7);
+   cout<<SumAtK(root,2);
+}
+
