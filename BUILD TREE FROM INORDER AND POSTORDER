@@ -1,0 +1,75 @@
+/// Algorithm: 1.Start from end of Postorder and an Pick element to create a node , 2.Decrement postorder idx ,3.Search for picked element's pos in inorder.
+/// 4.Call to build right subtree from inorder pos+1 to n    5. Call to build left subtree from inorder's 0 to pos-1     6.Return the node.
+
+///We cannot build binary tree using preorder and postorder. bcse from them many different trees are possible
+/// It is possible only in case of Complete Binary Tree.
+///
+///
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+    int Data;
+    Node* Left;
+    Node* Right;
+
+    Node(int value)
+    {
+        Data=value;
+        Left=NULL;
+        Right=NULL;
+    }
+};
+
+int Search(int InOrder[],int Start,int End, int Value)
+{
+    for(int i=Start;i<=End;i++)
+    {
+        if(InOrder[i]==Value)
+            return i;
+    }
+    return -1;
+}
+
+Node* BuildTree(int PostOrder[],int InOrder[], int Start,int End)  ///Start and end honge hamare inorder ka start and end.
+{
+    static int Index=4;
+
+    if(Start>End)
+        return NULL;
+
+    int Val=PostOrder[Index];
+    Index--;
+    Node* Current=new Node(Val);  ///ye hamara root node bangya.
+
+    if(Start==End)///ie koi child ni hoga jab.
+        return Current;
+
+    int position=Search(InOrder,Start,End,Val);
+    Current->Right=BuildTree(PostOrder,InOrder,position+1,End);
+    Current->Left=BuildTree(PostOrder,InOrder,Start,position-1); ///Pos-1 bcse current vale se phele vale honge left subtree ke elements.
+
+    return Current;
+}
+
+void InOrderPrint(Node* root)
+{
+    if(root==NULL)
+    {
+        return;
+    }
+    InOrderPrint(root->Left);
+    cout<< root->Data <<" ";
+    InOrderPrint(root->Right);
+}
+
+int main()
+{
+    int postorder[]={4,2,5,3,1};
+    int inorder[]={4,2,1,5,3};
+    Node* root=BuildTree(postorder,inorder,0,4);
+    InOrderPrint(root);
+}
