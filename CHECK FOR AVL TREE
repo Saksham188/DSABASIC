@@ -1,0 +1,113 @@
+/// Height Balanced Tree: Its a tree in which for each node the difference between the heights of left subtree and right subtree <=1.
+/// ie mod(left ht - right ht)<=1.
+/// IsBalanced mein Time Complexity hai O(n^2) as in Is Balanced for n roots we call height function which has Time Complexity of O(n) ,so final complexity is O(n^2).
+///
+///
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+    int Data;
+    Node* Left;
+    Node* Right;
+
+    Node(int value)
+    {
+        Data=value;
+        Left=NULL;
+        Right=NULL;
+    }
+};
+
+int height(Node* root)
+{
+    if(root==NULL)
+        return 0;
+    int LeftHeight=height(root->Left);
+    int RightHeight=height(root->Right);
+    return (max(LeftHeight,RightHeight)+1);
+}
+// Time Complexity: O(N^2)
+/*
+bool IsBalanced(Node* root)
+{
+    if(root==NULL)   
+        return true;
+
+    if(IsBalanced(root->Left)==false)
+        return false;
+
+    if(IsBalanced(root->Right)==false)
+        return false;
+
+    int LeftHeight=height(root->Left);
+    int RightHeight=height(root->Right);
+
+    if(abs(LeftHeight-RightHeight) <=1)
+    {
+        return true;
+    }
+    else
+        return false;
+}
+*/
+
+///For Reducing Time Complexity: It has Time Complexity O(n) below one .
+
+bool IsBalanced(Node* root,int * height)
+{
+    if(root==NULL) ///agar root null hai toh true return krdo yani balanced
+        return true;
+
+    int LeftHeight=0,RightHeight=0;
+
+    if(IsBalanced(root->Left,&LeftHeight)==false)  ///agar koi left subtree mein unbalanced node toh return false.
+        return false;
+
+    if(IsBalanced(root->Right,&RightHeight)==false) ///agar koi right subtree mein unbalanced node toh return false.
+        return false;
+
+    *height=max(LeftHeight,RightHeight)+1; ///yaha current root ki height ko update krre.eg lh=1 and rh=2 toh root ki height hogi 2+1=3
+
+    if(abs(LeftHeight-RightHeight) <=1) ///ab yaha avl ka test ki abs(lh-rh<=1)
+    {
+        return true;
+    }
+    else
+        return false;
+}
+
+int main()
+{
+   Node* root= new Node(1);
+   root->Left= new Node(2);
+   root->Right = new Node(3);
+   root->Left->Left=new Node(4);
+   root->Left->Right= new Node(5);
+   root->Right->Left=new Node(6);
+   root->Right->Right= new Node(7);
+    int h=0;
+   if(IsBalanced(root,&h))
+      cout<<"Balanced Tree \n";
+   else
+      cout<<"Unbalanced Tree \n";
+
+
+   Node* root2=new Node(1);
+   root2->Left=new Node(2);
+   root2->Left->Left=new Node(3);
+    int h1=0;
+   if(IsBalanced(root2,&h1))
+      cout<<"Balanced Tree \n";
+   else
+      cout<<"Unbalanced Tree \n";
+
+   int height=0;
+    if(IsBalanced(root2,&height))
+      cout<<"Balanced Tree \n";
+   else
+      cout<<"Unbalanced Tree \n";
+
+}
+
