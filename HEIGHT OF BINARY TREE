@@ -1,0 +1,47 @@
+///Height of BinaryTree=Depth of the tree's deepest node.
+/// Logic: height=Max(Left Height,Right Height)+1   , +1 kia root node ke lie.
+///Time Complexity of CalcHeight=O(n);
+///
+///
+///
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+    int Data;
+    Node* Left;
+    Node* Right;
+
+    Node(int value)
+    {
+        Data=value;
+        Left=NULL;
+        Right=NULL;
+    }
+};
+
+int CalcHeight(Node* root)
+{
+    if(root==NULL)
+        return 0;
+
+    int LeftHeight=CalcHeight(root->Left);
+    int RightHeight=CalcHeight(root->Right);
+    return (max(LeftHeight,RightHeight)+1);
+
+}
+int main()
+{
+   Node* root= new Node(1);
+   root->Left= new Node(2);
+   root->Right = new Node(3);
+   root->Left->Left=new Node(4);
+   root->Left->Right= new Node(5);
+   root->Right->Left=new Node(6);
+   root->Right->Right= new Node(7);
+   cout<<CalcHeight(root);
+}
+
