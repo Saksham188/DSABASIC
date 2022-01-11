@@ -1,0 +1,83 @@
+/// Find distance bw 2 nodes in a BinaryTree.The distance bw 2 nodes is the min num of edges to be traversed to reach one node from another.
+/// Strategy: 1.Find the LCA(lowestCommonAncestor) 2.Find distance of n1(d1) & n2(d2) from LCA.  3.Return(d1+d2).
+/// isme hamara path ban jayega n1 se LCA and LCA se n2.and isi d1+d2 ko ham return kardete.
+///
+///
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+    int Data;
+    Node* Left;
+    Node* Right;
+
+    Node(int value)
+    {
+        Data=value;
+        Left=NULL;
+        Right=NULL;
+    }
+};
+
+Node* LCA(Node* root,int n1,int n2)
+{
+    if(root==NULL)  ///bcse Null hogya root.
+        return NULL;
+
+    if(root->Data ==n1 or root->Data==n2)  ///agar data mil gya koi toh root return krdo.
+        return root;
+
+    Node* left=LCA(root->Left,n1,n2);  ///  left and right mein dhoondo lca.
+    Node* right=LCA(root->Right,n1,n2);
+
+    if(left!=NULL and right!=NULL)  ///agar left right null na ho toh root hoga ans ie left mein ek milgya and right mein ek milgya toh root hoga lca
+        return root;
+
+    if(left==NULL and right==NULL)    
+        return NULL;
+
+    if(left!=NULL)
+        return(LCA(root->Left,n1,n2));     ///agar left null ni hai toh root ka left return kro.
+
+    return LCA(root->Right,n1,n2);     ///agar right null ni toh root ka right return kro.
+}
+
+int FindDistance(Node* root,int k,int dist)
+{
+    if(root==NULL)
+        return -1;
+    if(root->Data==k)
+    {
+        return dist;    ///jo bhi distance ki value thi vo return krdo.
+    }
+///agar upr ni mili toh uske left and right subtree mein dhoondo milti hai value ya ni.
+    int left=FindDistance(root->Left,k,dist+1); ///dist+1 bcse ham level wise distance lere yaha pe.
+
+    if(left!= -1)
+        return left;
+
+    return FindDistance(root->Right,k,dist+1);
+}
+
+int DistanceBtwNodes(Node* root,int n1,int n2)
+{
+    Node* lca=LCA(root,n1,n2);
+
+    int d1=FindDistance(lca,n1,0);       ///hamara shortest distance hoga lca se n1 + distance lca se n2.
+    int d2=FindDistance(lca,n2,0);
+
+    return d1+d2;
+}
+
+int main()
+{
+   Node* root= new Node(1);
+   root->Left= new Node(2);
+   root->Right = new Node(3);
+   root->Left->Left=new Node(4);
+   root->Right->Right= new Node(5);
+
+   cout<<DistanceBtwNodes(root,4,5);
+}
+
