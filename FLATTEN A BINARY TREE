@@ -46,6 +46,8 @@ void Flatten(Node* root)
        }
 
        t->Right=temp; ///yaha hamne root ka right(jo phele left tha) usme jod di root ka left (jo phele root ka right tha).
+        ///eg hamre paas root 1 left mein 2  and right mein 345 ,phele flat hua left and right subtree fir temp mein 345 aagya and tree mein 1 2 bcha ab 2 ke next mein 345 daaldia yaha
+
    }
 
    Flatten(root->Right);  ///ab right subtree ke lie call krdo.
