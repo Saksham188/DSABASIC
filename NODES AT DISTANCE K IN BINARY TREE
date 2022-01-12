@@ -1,0 +1,87 @@
+/// isme hame jo node se bol rakha us node se sare rasto pe dekhenge and k distance vali nodes ko print karenge.
+/// isme 2 case lenge phela subtree mein and dusra ancestors mein.
+///
+///
+///
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+    int Data;
+    Node* Left;
+    Node* Right;
+
+    Node(int value)
+    {
+        Data=value;
+        Left=NULL;
+        Right=NULL;
+    }
+};
+///case1: Subtree mein distance find krna
+void PrintSubtreeNodes(Node* root,int k)
+{
+    if(root==NULL or k<0)
+        return;
+
+    if(k==0)    ///ye hamare possible ans.
+    {
+        cout<<root->Data<<" ";
+        return;
+    }
+
+    ///agar vo distance na mila ho toh child nodes mein dhoondho.
+    PrintSubtreeNodes(root->Left,k-1); ///k-- krte rho har level pe
+    PrintSubtreeNodes(root->Right,k-1);
+}
+
+///case2: Ancestors vala
+int PrintNodesAtK(Node* root,Node* target,int k)
+{
+    if(root==NULL)
+        return -1; ///ie hame hamari target node nahi mili.
+
+    if(root==target)
+    {
+        PrintSubtreeNodes(root,k);  ///target ke subtree nodes ko print kro.
+        return 0;  ///distance returned 0.
+    }
+
+    int DistanceLeft=PrintNodesAtK(root->Left,target,k);///it is the distance of current node's child node from target node.
+    if(DistanceLeft!=-1) ///ie target node mil jaye.
+    {
+        if(DistanceLeft+1==k)///ie haam jis current node pe hai vo hamare target node se kth distance pe hai.
+            cout<<root->Data<<" ";
+        else
+            PrintSubtreeNodes(root->Right,k-DistanceLeft-2); ///-2 isliye bcse ek distance root se left child and fir ek left se right child.
+            ///if node found at left distance then search in right parent subtree for distance else vice versa.
+        return  DistanceLeft+1;
+    }
+
+
+    int DistanceRight=PrintNodesAtK(root->Right,target,k);///it is the distance of current node's child node from target node.
+    if(DistanceRight!=-1) ///ie target node mil jaye.
+    {
+        if(DistanceRight+1==k)///ie haam jis current node pe hai vo hamare target node se kth distance pe hai.
+            cout<<root->Data<<" ";
+        else
+            PrintSubtreeNodes(root->Left,k-DistanceRight-2); ///-2 isliye bcse ek distance root se left child and fir ek left se right child.
+
+        return  DistanceRight+1;
+
+    }
+    return -1;
+
+}
+
+int main()
+{
+    Node* root=new Node(1);
+    root->Left=new Node(2);
+    root->Right=new Node(3);
+    root->Left->Left=new Node(4);
+    PrintNodesAtK(root,root->Left,1);
+}
+
+
