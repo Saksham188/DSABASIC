@@ -1,0 +1,82 @@
+///Isme agar hame koi Binary Search Tree given ho toh first level pe agar ham left to right print karte toh second level pe right to left print karenge. Third pe firse left to right.
+/// Strategy: 1.Use 2 stacks: Current Level and Next Level.  2: Variable LeftToRight  3.If LeftToRight push left child then right  else push right child then left.
+///
+/// Time Complexity: O(n).
+///
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+    int Data;
+    Node *Left;
+    Node *Right;
+
+    Node(int value)
+    {
+        Data = value;
+        Left = NULL;
+        Right = NULL;
+    }
+};
+
+void ZigZagTraversal(Node *root)
+{
+    if (root == NULL)
+        return;
+
+    stack<Node *> CurrentLevel;
+    stack<Node *> NextLevel;
+
+    bool LeftToRight = true;
+
+    CurrentLevel.push(root);  ///phele root push kro and level wise traverse kro tree ko and uske child ko push krte jao.
+
+    while (!CurrentLevel.empty())
+    {
+        Node *temp = CurrentLevel.top(); ///current level se nikalo element and uske childs ko add krdo next level mein lefttoright ki val dekhkr.
+        CurrentLevel.pop();
+
+        if (temp)
+        {
+            cout << temp->Data << " ";
+
+            if (LeftToRight)   ///agar true hai toh phele left child add kro fir right child.
+            {
+                if (temp->Left)
+                    NextLevel.push(temp->Left);
+
+                if (temp->Right)
+                    NextLevel.push(temp->Right);
+            }
+
+            else      ///agar left to right false hai toh right to left traverse krna toh ham phele right child push krte fir left child.
+            {
+                if (temp->Right)
+                    NextLevel.push(temp->Right);
+
+                if (temp->Left)
+                    NextLevel.push(temp->Left);
+            }
+        }
+
+        if (CurrentLevel.empty())
+        {
+            LeftToRight = !LeftToRight;   ///yaha true ko false and vice versa.
+            swap(CurrentLevel, NextLevel);  ///yaha dono stacks ko swap krdo.kyunki ab curlevel mein nextlevel aajayega.
+        }
+    }
+}
+
+int main()
+{
+    Node *root = new Node(12);
+    root->Left = new Node(9);
+    root->Right = new Node(15);
+    root->Left->Left = new Node(5);
+    root->Left->Right = new Node(10);
+
+    ZigZagTraversal(root);
+}
+
