@@ -1,0 +1,31 @@
+/// Catalan Numbers are sequence of natural numbers that occur in various counting problems,often involving recursively defined objects.
+/// Their closed form is in terms of binomial coefficients: Cn= (1/(n+1))*2n C n =Submission of CiC(n-i) ,i=0 to n-1.
+///Catalan values: C0=1, C1=1 ,C2=C0c1+c1c0=2, c3=c0c2+c1c1+c2c0=5, C4=c0c3+c1c2+c2+c1+c3c0 =14
+///
+///
+=
+#include<iostream>
+using namespace std;
+
+int Catalan(int n)
+{
+    if(n<=1)
+        return 1;
+
+    int result=0;
+
+    for(int i=0;i<=n-1;i++)
+        result+=Catalan(i)*Catalan(n-i-1);
+
+    return result;
+}
+int main()
+{
+     for(int i=0;i<10;i++)
+        cout<<Catalan(i)<<" ";
+
+}
+
+///Applications of Catalan Numbers: 1.Possible BSTs 2.Paranthesis/bracket combinations  3.Possible Forests
+///4.Way of triangulations  5.Possible Path in Matrices  6.Dividing a circle using n chords.  7.Dyck Words of given length and much more.
+
