@@ -1,0 +1,56 @@
+/// here we are given sorted array and we have to make a balanced tree.
+/// Strategy: 1.Make middle element the root.
+/// 2.Recursively do same for subtrees : a.start to mid-1 for Left Subtree. b).mid+1 to end for Right Subtree.
+///
+///
+#include<iostream>
+using namespace std;
+
+struct Node
+{
+    int Data;
+    Node* Left;
+    Node* Right;
+
+    Node(int value)
+    {
+        Data=value;
+        Left=NULL;
+        Right=NULL;
+    }
+};
+
+Node* SortedArrayToBST(int arr[],int Start,int End)
+{
+    if(Start>End)
+        return NULL;
+           ///Its like sorting using pivot element.
+    int Mid=(Start+End)/2;
+    Node* root=new Node(arr[Mid]);
+
+    root->Left=SortedArrayToBST(arr,Start,Mid-1);
+    root->Right=SortedArrayToBST(arr,Mid+1,End);
+
+    return root;
+}
+
+void PrintPreOrder(Node* root)
+{
+    if(root==NULL)
+        return;
+
+    cout<<root->Data<<" ";
+    PrintPreOrder(root->Left);
+    PrintPreOrder(root->Right);
+}
+
+
+int main()
+{
+    int arr[]={10,20,30,40,50};
+    Node* root=SortedArrayToBST(arr,0,4);
+
+    PrintPreOrder(root);
+    cout<<endl;
+}
+
