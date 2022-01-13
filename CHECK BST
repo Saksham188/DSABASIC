@@ -1,0 +1,59 @@
+/// We have to check ki valid BST ki condition satisfy karra hai ya ni.
+/// Strategy  : Node(min,max) ->left(min,node)  and right(node,max)
+///
+/// Time Complexity =O(N).
+///
+#include<iostream>
+using namespace std;
+
+struct Node
+{
+    int Data;
+    Node* Left;
+    Node* Right;
+
+    Node(int value)
+    {
+        Data=value;
+        Left=NULL;
+        Right=NULL;
+    }
+};
+///Check for BST
+bool IsBST(Node* root,Node* Min=NULL,Node* Max=NULL) ///yaaha hmne node type ke hi bana lie min and max taki hame baad mein data type change na krna pde.
+{
+    if(root==NULL)
+        return true;
+
+    if(Min!=NULL and root->Data<=Min->Data)  ///agar Min Null ni hai aur root ka data agar chota hai min ke data se toh invalid bst.
+        return false;
+
+    if(Max!=NULL and root->Data>=Max->Data)  ///agar Min Null ni hai aur root ka data agar bada hai max ke data se toh invalid bst.
+        return false;
+
+    bool LeftValid=IsBST(root->Left,Min,root); ///ye ISBST ki val dega root ke left ke lie.
+    bool RightValid=IsBST(root->Right,root,Max);///ye IsBST ki val dega root ke right ke lie.
+    return LeftValid and RightValid;
+}
+
+int main()
+{
+    Node* root1=new Node(1);
+    root1->Left=new Node(2);
+    root1->Right=new Node(3);
+
+    if(IsBST(root1,NULL,NULL))
+        cout<<"Valid BST\n";
+    else
+        cout<<"InValid BST\n";
+
+    Node* root2=new Node(5);
+    root2->Left=new Node(2);
+    root2->Right=new Node(7);
+
+    if(IsBST(root2,NULL,NULL))
+        cout<<"Valid BST\n";
+    else
+        cout<<"InValid BST\n";
+}
+
