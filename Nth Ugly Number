@@ -1,0 +1,48 @@
+// Ugly numbers are numbers which have prime factors 2 ,3,5 only.we have to also include 1 in ans
+// So ugly numbers are 1,2,3,4,5,6,8,9,10,12....  we have to find kth ugly number.
+
+//Brute Force: Generate all ugly numbers ,then sort and print nth ugly number.
+
+// Here we will use dynamic programming to get our ans. as we can see there is an order being followed start from i=1 ,then i*2,i*3,i*5 then i++ and sort.
+// followng this logic we can find all our ans as follows
+// Now DP LOGIC: we keep 3ptrs and we think of it as merging 3 sorted list ,3ptrs ->1st for 2 , 2nd for 3,3rd for 5
+// Now we assume that we already have Uk ie the kth ugly number now our Uk+1 will be min(p1*2,p2*3,p3*5) where p1,p2,p3 are already generated and fir jonsa bhi ans choose kia uska ptr increment krdo. 
+// 
+// 
+// 
+// 
+// 
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+ int UglyNumber(int n)
+{
+    unsigned long long int ans;
+    int p2=0,p3=0,p5=0;
+    vector<int>dp(n+1); ///Is vector mein we will store our ans.
+    dp[0]=1;
+    for(int i=0;i<=n;i++)
+    {
+        dp[i]=min(min(2*dp[p2],3*dp[p3]),5*dp[p5]); ///yani har baar jo bhi value ho usko ya toh *2 krna ya *3 krna ya *5 krna.
+        
+        if(dp[i]==2*dp[p2])
+          p2++;
+        if(dp[i]==3*dp[p3])
+          p3++;
+        if(dp[i]==5*dp[p5])
+          p5++;
+             
+    }
+    cout<<dp[n-1];
+    
+}
+int main()
+{
+    UglyNumber(10);
+}
+
+
+
+
