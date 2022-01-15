@@ -1,0 +1,112 @@
+// 2 nodes of bst are swapped.our task is to restore the BST.
+// As we know inorder of bst is sorted.Now hame bas un dono unsorted ko vapas correct pos pe lana.
+// 2 cases: Swapped elements are not adjacent to each other ,case2 both are adjacent
+// Logic:Maintain 3ptr first,last,mid
+///Case1: eg 1,8,3,4,5,6,7,2    , first=Previous node where 1st number less than previous ie val8, mid will be number where 1st number<previous ie 3,last will be 2nd node where number<previous ie 2.
+///now for case 1 swap first with last and bst is restored.
+
+/// Case 2: 1,2,4,3,5,6,7,8 , here first: prev node where 1st num<prev ie 4, mid : num where 1stnum < prev ie 3, last=NULL ,swap first and mid.
+//
+#include <bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+public:
+    int data;
+    Node *left, *right;
+
+    Node(int val)
+    {
+        data = val;
+        left = right = NULL;
+    }
+};
+
+///In this function we r gonna traverse our tree in inorder fashion and then calculate value of pointers.
+void CalcPtrs(Node *root, Node **first, Node **mid, Node **last, Node **prev) ///**first yaha ** isliye lagaya bcse by reference pass kia hai hmne yani &(Node*) ie **
+{
+    if (root == NULL)
+        return;
+    CalcPtrs(root->left, first, mid, last, prev);
+    ///ab ham check krenge ki hamara current root hamari ascending inorder ki property ko violate krra hai ya ni and violation first time hora ya second time.
+    if (*prev and root->data < (*prev)->data) ///yaha check kia eg dekho 1243 hai ab 1<2 so valid but 4<3 invalid ie violation case.
+    {
+        ///ab check kro property first time violate hori ya second time
+        if (!*first) ///yaha agar first time aaya hoga toh first null hoga.
+        {
+            *first = *prev; ///first mein store hota tha violation ki previous node.
+            *mid = root;    ///mid mein aati hai vo node jaha pe violation hota.
+        }
+        else ///yani yaha 2nd time chalra hoga.
+        {
+            *last = root; ///ye sirf case 1 ke lie chalega.
+        }
+    }
+    *prev = root; ///yani right subtree ke lie hamara prev hamara root contain krega.
+
+    CalcPtrs(root->right, first, mid, last, prev);
+}
+
+void swap(int *a, int *b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void RestoreBST(Node *root)
+{
+    ///declare 3 ptrs:
+    Node *first, *mid, *last, *prev; ///prev hamara previous node ka track rkhne ke lie.
+
+    first = mid = last = prev = NULL; ///initially in ptrs mei NULL dalo.
+
+    CalcPtrs(root, &first, &mid, &last, &prev); ///yaha in charo ptrs mein position set ho jayegi.
+
+    ///Case 1: when first and last not NULL,bcse case 2 mein last null hota tha.
+
+    if (first and last)
+    {
+        swap(&(first->data), &(last->data));
+    }
+    ///ie case 2:
+    else if (first and mid)
+    {
+        swap(&(first->data), &(mid->data));
+    }
+}
+
+void InOrder(Node* root)
+{
+    if(root==NULL)
+    return;
+
+    InOrder(root->left);
+    cout<<root->data<<" ";
+    InOrder(root->right);
+}
+
+int main()
+{
+    /*
+         6
+        / \
+       9   3
+      / \   \
+     1  4   13
+
+     here 9 and 3 are swapped.
+    */
+    Node *root = new Node(6);
+    root->left = new Node(9);
+    root->right = new Node(3);
+    root->left->left = new Node(1);
+    root->left->right = new Node(4);
+    root->right->right = new Node(13);
+    InOrder(root);
+    RestoreBST(root);
+    cout<<"\n";
+    InOrder(root);
+
+}
