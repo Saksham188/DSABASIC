@@ -1,0 +1,79 @@
+/// Problem: Return the size of largest BST in Binary Tree.
+/// Strategy: For each node store the following info: 1.Min in subtree,2.Max in Subtree, 3.Subtree Size ,4.Size of largest BST ,5.IsBST
+/// Recursively traverse in a bottom-up manner and find out the size of largest BST.
+///
+///
+///
+
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Node
+{
+    int Data;
+    Node* Left;
+    Node* Right;
+
+    Node(int value)
+    {
+        Data=value;
+        Left=NULL;
+        Right=NULL;
+    }
+};
+
+struct Information   ///yaha har node ke lie jo sab info leni vo ham yaha store krdenge.
+{
+    int Size;
+    int Max;
+    int Min;
+    int Ans;  ///at last we will return our ans.
+    bool IsBST;
+
+};
+
+Information LargestBSTInBT(Node* root)
+{
+    if(root==NULL)  ///base condition,if root NULL hai toh ye default info.
+        return{0,INT_MIN,INT_MAX,0,true};
+
+    if(root->Left==NULL and root->Right==NULL)  ///its for leaf node ,bcse leaf node BST hoga so its size 1.
+    {
+        return{1,root->Data,root->Data,1,true};
+    }
+
+    Information LeftInfo=LargestBSTInBT(root->Left);  ///yaha ham root ke left ke lie dekhenge.
+    Information RightInfo=LargestBSTInBT(root->Right); ///yaha ham root ke right ke lie dekhenge.
+
+    Information Current; ///It represents information of our current root node.
+    Current.Size=(1+LeftInfo.Size+RightInfo.Size); ///1 isliye bcse ham node ko bhi add karte hai. total size=1+ledtsubtreesize+rightsubtreesize
+
+    /// yaha fir check kre ki leftsubtree and right subtree bst hai kya agar haa toh fir root node ke lie check kro uska isbst true hoga.
+    ///And yaha check krre ki jis node pe hai ham uske left subtree ki max value root se choti ho and uske right ki minimum value root se badi ho.
+    if(LeftInfo.IsBST and RightInfo.IsBST and LeftInfo.Max<root->Data and RightInfo.Min>root->Data)
+    {
+        Current.Min=min(LeftInfo.Min,min(RightInfo.Min,root->Data)); ///aur har node pe min=min(root ka data,left ka data and right ka data)
+        Current.Max=max(RightInfo.Max,max(LeftInfo.Max,root->Data));///aur har node pe max=max(root ka data,left ka data and right ka data)
+
+        Current.Ans=Current.Size;  ///ye ans jo ham return krenge.yaha current size bcse jis node pe hai uska size hoga 1+rightsubtreesize+leftsubtreesize.
+        Current.IsBST=true;  ///isbst ko true krdenge.
+
+        return Current;
+    }
+    ///case 2 agar root pe bst form ni hora.
+    Current.Ans=max(LeftInfo.Ans,RightInfo.Ans);  ///agar root pe ni form hora toh ans mein aajega max of left ka ans and right ka ans.
+    Current.IsBST=false; ///is node ke lie false.
+    return Current;
+}
+
+int main()
+{
+   Node* root=new Node(15);
+   root->Left=new Node(20);
+   root->Right=new Node(30);
+   root->Left->Left=new Node(5);
+
+   cout<<"Largest BST in BT: "<<LargestBSTInBT(root).Ans<<endl;
+
+}
+
