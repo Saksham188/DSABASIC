@@ -1,0 +1,171 @@
+///Works on codeblocks
+
+/// Set: Ordered Set-> It contains elements in an order either only inc or dec.
+/// Unordered Set: Random order.
+
+/// Ordered: Unique elements,implemented using balanced bst,elements in sorted order,random access not possible,ie u cant get ith element in O(1)/O(Log N)
+/// Present in #include<set>  ,pura traverse krna pdega isme random access ke lie.
+
+/// Time Complexity of both set and multiset: Insertion,Deletion,Lower/Upper Bound is O(log N), N elements print krane ka O(N logN) hogi,O(N) find karane ka and log N traverse ka.
+/// Time Complexity of unordered set is : Insertion O(1) in avg case, O(N) in worst case.  Deletion: O(1) in avg case,O(N) in worst case, Lower/Upper_bounds:NA as it dont have elements in sorted order.
+//
+//
+//
+//
+//
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    set<int>st;
+    st.insert(1);
+    st.insert(2);
+    st.insert(2);
+    st.insert(3);
+    st.insert(5);
+
+    ///Print elements:
+    for(auto i:st)
+    {
+        cout<<i<<" ";
+    }
+    cout<<endl<<"Reverse: ";
+    ///reverse print
+
+    for(auto i=st.rbegin(); i!=st.rend(); i++)
+    {
+        cout<<*i<<" ";
+    }
+    cout<<endl<<"Size of set: "<<st.size()<<endl<<endl;
+
+    ///lower_bound in set and upper_bound : Isme lowerbound mein jo num daloge agar num exist kia toh uske equivalent iterator return krega and agar ele not present it returns iterator to next greater element of ele.
+    /// and agar ele> maxelement in set toh ye return krega ptr corresponding to end index.
+    cout<<"\nLower Bounds: ";
+    cout<<*st.lower_bound(5)<<endl;  ///lower bound of 5 will be 5 as it exist.
+    cout<<*st.lower_bound(2)<<endl; ///2 bcse vo exist krta.
+    cout<<*st.lower_bound(4)<<endl;  ///4exist ni toh usse next greater ie 5
+    cout<<*st.lower_bound(7)<<endl; /// print garbage.
+
+    ///Upper bounds return ptr to next element of given ele. If ele>maxeke un set toh ye garbage return krega as it will point to st.end()
+    cout<<"\nUpper Bounds: ";
+    cout<<*st.upper_bound(5)<<endl;  ///upper bound of 5 will be garbage as it is greatest so it returns next of 5's next ie s.end()->next ie garbage.
+    cout<<*st.upper_bound(2)<<endl; ///3 bcse vo exist krta so ans=2 ka next.
+    cout<<*st.upper_bound(4)<<endl;  ///4 exist ni toh usse next greater ie 5
+    cout<<*st.upper_bound(7)<<endl; /// print garbage.
+    cout<<"Garbage: "<<(st.upper_bound(7)==st.end())<<endl; /// print garbage.
+
+    cout<<endl;
+
+    ///to erase from set we use s.erase()
+     st.erase(2); ///isse value 2 erase hogi.
+     st.erase(st.begin());///isse set ka first element erase ho jayega.
+    cout<<"After Erase: ";
+    ///Print elements:
+    for(auto i:st)
+    {
+        cout<<i<<" ";
+    }
+    cout<<endl<<endl;
+
+    ///if we add custom operator like greater<int>>s then our elements will be pushed in descending order.
+    set<int,greater<int> >s;
+    s.insert(1);
+    s.insert(2);
+    s.insert(2);
+    s.insert(3);
+
+    ///Print elements:
+    for(auto i:s)
+    {
+        cout<<i<<" ";
+    }
+    cout<<endl<<"Reverse: ";
+    ///reverse print
+
+    for(auto i=s.rbegin(); i!=s.rend(); i++)
+    {
+        cout<<*i<<" ";
+    }
+    cout<<endl;
+
+
+
+    ///Multiset:Can contain duplicate elements,implemented using balanced bst,elements in sorted order,random access not possible,ie u cant get ith element in O(1)/O(Log N)
+    /// Present in #include<set>  ,pura traverse krna pdega isme random access ke lie.
+    cout<<"\n MULTISET \n";
+    multiset<int> ms;
+
+    ms.insert(1);
+    ms.insert(2);
+    ms.insert(2);
+    ms.insert(3);
+    ms.insert(5);
+
+    ///Print elements:
+    for(auto i:ms)
+    {
+        cout<<i<<" ";
+    }
+
+    ms.erase(ms.find(2)); ///isse bas ek hi value udegi 2 ki.Isme check kr lena ki element exist krta ya ni.
+
+     ///Print elements:
+     cout<<endl<<"\nErase: ";
+    for(auto i:ms)
+    {
+        cout<<i<<" ";
+    }
+    cout<<endl;
+
+    ms.erase(2);  ///isse 2 ke sare instance ud jayenge.
+     ///Print elements:
+    for(auto i:ms)
+    {
+        cout<<i<<" ";
+    }
+
+
+/// UnOrdered Set: Unique elements,implemented using hashing,elements not in sorted order,random access not possible,ie u cant get ith element in O(1)/O(Log N)
+///present in #include<unordered_set> header file.
+
+ cout<<"\n\nUNORDERED SET \n";
+    unordered_set<int> sk;
+
+    sk.insert(1);
+    sk.insert(2);
+    sk.insert(2); ///It dont contain duplicates.
+    sk.insert(3);
+    sk.insert(5);
+
+    ///Print elements:
+    for(auto i:sk)
+    {
+        cout<<i<<" ";
+    }
+
+    sk.erase(sk.begin());
+    sk.erase(2);  ///isse 2 ke sare instance ud jayenge.
+
+     ///Print elements:
+     cout<<endl<<"\nErase: ";
+    for(auto i:sk)
+    {
+        cout<<i<<" ";
+    }
+    cout<<endl;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
