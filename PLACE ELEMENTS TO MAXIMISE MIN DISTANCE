@@ -1,0 +1,80 @@
+///if getting confused here see next code of Page Allocation Problem for more clearity
+####################################################################################
+
+//Binary Search Challange 1
+// Problem: Given is an array with n elements that represents n positions along a straight line.Find K elements such that minimum distance bw any 2 elements is the max possible.
+//  eg in array we have 123 ,then max possible diff bw a pair will be 1and 3 =2, as 1and 2 will have 1 diff.
+
+// Brute force : Find all subsets of size K and compare the minimum distance bw all of them. TC: very high
+
+//Approach: Sort  the array for Binary search. Pick Middle element as element as result and check for its feasibility, If feasible search right half of array with larger minimum distance.
+// else if not feasible result then search left half of array.
+// eg 11 2 7 5 1 12 ,K=3  our task is that we find 3 such elements whose pairwise difference is max possible value.
+
+// First sort the array ,now we find left and right ele of array which is 1 and 12 so we find mid which is 6,so we find 3 such ele whose pairwise min is =6.Since no such possible so not feasible .if we choose 1 and 7 then they result 6 but we dont have 0 so that all 3 return 6 ,similarly for all other cases.
+// so ab ham left half mei search krenge so ab right ko update krke mid ke = ie 6 krdenge.
+// now mid for left and right is 3. so now we search 3 elements in array whose pairwise diff is 3 and we get 1,5,11 as 15 mein diff>3 and 115 mein bhi >3 so hamara sol feasible ho jata as pairwise minimum sum>mid.So now we check in right half of array.So now update left with mid.
+// so now right=6,left=3. now mid=3+6/2=4 .Now we check that whether 3 elements in array have pairwise minimum sum >4 or not and now we get 1,5,11 as inke beech ka diff atleast >min hoga ,so now our ans is again feasible,So search in right half.
+// So again update left as mid,so now left=4,right=6,mid=l+r/2=5. Now 1,7,12 satisfy this sol as pairwise diff>5 for all pairs.So now its feasible.we wanna search in right but now going right not possible so final ans=(1,7,12)
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+bool IsFeasible(int mid,int arr[],int n,int k)
+{
+    int pos=arr[0],elements=1; ///if our element count >=k then our solution is feasible
+    for(int i=1;i<n;i++)
+    {
+        if(arr[i]-pos >=mid)
+        {
+            ///agar >=mid hai toh position ko update krdo.
+            pos=arr[i];
+            elements++;
+
+            if(elements==k)
+              return true;
+        }
+    }   
+    return false;
+}
+
+int LargestMinDistance(int arr[],int n,int k)
+{
+    sort(arr,arr+n); ///yaha sbse phele array ko sort krdo
+
+    int result=-1;
+///now our range will be left=1 and right=arr[n-1]
+    int left=1,right=arr[n-1];
+    ///now we will apply binary search on our array and we will check feasibility of mid element.
+    
+    while (left<right)
+    {
+        int mid=(left+right)/2;
+        ///now after finding mid we check feasiblity of our mid.
+
+        if(IsFeasible(mid,arr,n,k))
+        {
+            result=max(result,mid);
+            ///now to search in right half of array we update left to mid+1 so we can search in right half for larger value.
+            left=mid+1;
+        }
+        else
+        {
+            right=mid;
+            ///acc to next video page aloocation prob this should be
+            ///right=mid-1;
+        }
+    }
+    return result;
+}
+int main()
+{
+    int arr[]={1,2,8,4,9};
+    int n=5,k=3;
+    cout<<"Largest Min distance is: "<<LargestMinDistance(arr,n,k);
+
+}
+
+
+
