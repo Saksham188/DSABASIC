@@ -1,0 +1,90 @@
+// N -Number of pages in n different books ascending order , m=no of students.
+// All books have to be divided among m students consecutively.Allocate the pages in such a way that pages allocated to a student is minimum.
+// eg pages=[12,34,67,90], students(m)=2   , Possible Allocations: {12, [34,67,90]}, {[12,34],[67,90]}, {[12,34,67],90} = 191,157,113  so min is 113 ie last case.
+
+// Strategy: Apply binary search for minimum and maximum possible values of 'max' pages.  Check the feasibility of this chosen value.
+// isme BS se mid value nikalo and feasibility check for.
+// For Feasibility: Assign pages to each student in a sequential manner,while the current number of allocated pages dont exceed value set by Binary Search.
+// If during allocation the no of students dont exceed the limit of 'm' then solution is feasible else not.
+//
+
+#include <bits/stdc++.h>
+using namespace std;
+
+bool IsPossible(int arr[], int n, int m, int min)
+{
+    ///isme hamare paas ek min value aayegi toh yaha ham min ke acc apne pages allocate krne vale students ko
+    ///and ham yaha dekhenge hame kitne students chahiye apne min value vale rule ke saath chalne ke lie
+    ///agar students>m ho jate toh hamare paas utne students hi ni so not feasible.
+    int studentsReq = 1, sum = 0;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (arr[i] > min) ///if arr[i] greater than  min possible max no of pages toh return krdo false.
+        {
+            return false;
+        }
+
+        if (sum + arr[i] > min) ///agar sum+arr[i]>min ho jata toh mtlb is student ko ham aur pages ni deskte toh hame naya student lena pdega.
+        {
+            studentsReq++;
+            sum = arr[i]; ///update sum to arr[i]
+        }
+
+        if (studentsReq > m) ///ie yaha agar students req > total students.
+        {
+            return false;
+        }
+        else
+        {
+            sum += arr[i]; ///yanni agar hamara sum still less than min hai toh sum mei add krdo.
+        }
+    }
+
+    return true;
+}
+
+int AllocateMinimumPages(int arr[], int n, int m) ///this function will return minimum possible value after allocation.
+{                                                 ///m=students, n=books
+                                                  ///now we need to find range for binary search , min will be start and max will change,
+
+    int sum = 0; ///calc sum of all books
+
+    if (n < m) ///if no of students > no of books to allocate.
+    {
+        return -1;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        sum += arr[i];
+    }
+
+    int start = 0, end = sum, ans = INT_MAX; ///range max num pages vo hogi sare pages ek student ko allocate krna.
+    ///start 0 yani ek bhi book na de.
+
+    ///now use Binary Search
+
+    while (start <= end)
+    {
+        int mid = (start + end) / 2;    ///now we will check that value at mid is feasible or not.
+        if (IsPossible(arr, n, m, mid)) ///IsPossible will return whether ans is feasible or not.
+        {
+            ans = min(ans, mid); ///ans ya toh mid hoga ya fir phele vala stored ans.
+            end = mid - 1;       ///ab jab min ans mil jaye toh mid ke left half mein dekho koi aur feasible ans possible hai kya.
+        }
+        else
+        {
+            ///agar feasible ni hai toh uske right half mein search kro.
+            start = mid + 1;
+        }
+    }
+    return ans;
+}
+
+int main()
+{
+    int arr[] = {12, 34, 67, 90};
+    int n = 4, m = 2;
+    cout << "Minimum No of pages: " << AllocateMinimumPages(arr, n, m);
+}
