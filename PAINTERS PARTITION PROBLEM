@@ -1,0 +1,68 @@
+// n-Length of n different boards,m-Painters available
+// A painter paints 1 unit of board in 1 unit time and each painter will paint consecutive boards.Find the minimum time that will be required to paint all the boards.
+// eg boards=[10,20,30,40] ,painters(m)=2 , Possible Partition ={[10],[20,30,40]} , {[10,20 ],[30,40]} , {[10,20,30],[40]} =min time for all-> 90(20+30+40),70(30+40),60(10+20+30), bcse baki ka agar jldi ho bhi gya toh bhi wait krna pdega. so ans=60
+
+// Strategy: Apply Binary Search for minimum and maximum possible values of 'min' length of boards to be painted. Check feasibility of this chosen value. 
+// Checking Feasibility: Assign boards to each painter in a sequential manner,while the current length of assigned boards don't exceed the value set by binary search
+// If during allocation the no of painters dont exceed the limit of 'm' then sol is feasible else not.
+// 
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int FindFeasible(int boards[],int n,int limit) ///limits is the upper limit or mid,ie itna time hai har painter ke paas
+{
+    int sum=0,painters=1;
+  /// yaha sum mein add krte jao phele boards[i] ko ,fir agar sum> limit ho jaye toh sum ko boards[i] daaldo and nye painter ko allocate shuru krdo.
+    for(int i=0;i<n;i++)
+    {
+        sum+=boards[i];
+        if(sum>limit)
+        {
+            sum=boards[i];
+            painters++;
+        }
+    }
+
+    return painters;
+
+}
+
+int PaintersPartition(int boards[],int n,int m)  ///n=boards,m=painters available.
+{
+    int totalLength=0,k=0; ///k to store board size taki Binary search mein max board size ho and min ho k
+
+    for(int i=0;i<n;i++)
+    {
+        k=max(k,boards[i]);
+        totalLength+=boards[i];
+    }
+    int low=k,high=totalLength;  ///Binary search chalegi low to high range ke lie.
+    while (low<high)
+    {
+        int mid=(low+high)/2;
+        int painters=FindFeasible(boards,n,mid);
+        if(painters<=m)
+        {
+            high=mid; ///ie now fir search in right half.
+        }
+        else
+        {
+            low=mid+1; ///else search in left half
+        }
+
+    }
+    return low; ///hamara ans hoga hamara low.    
+
+}
+
+
+int main()
+{
+    int arr[]={10,20,30,40};
+    int n=4,m=2;
+    cout<<PaintersPartition(arr,n,m);
+}
+
+
