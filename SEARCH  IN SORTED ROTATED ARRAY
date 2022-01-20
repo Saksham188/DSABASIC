@@ -1,0 +1,60 @@
+// We are given an ascending sorted array that has been rotated from a pivot point(unknown to us ) and an element X.
+//Search for X in array with complexity less than that of linear search.
+// eg original array={10,20,30,40,50} now rotated at pivot 50 , rotated arr={30,40,50,10,20} , Search for X=10 in this and we need to print index ie 3.
+
+// Idea: Find pivot point,apply Binary search on left half and then on right half. 
+// Find Pivot:Only element that will be greater than next element ie arr[i]>arr[i+1] ,i<=n-1 eg 50 is pivot 50>10
+
+// Recursively traverse to calculate pivot. now we will see if our mid is equal to key value,else acc to conditions we search in left and right half. 
+// Logic: After recursively finding pivot divide array in 2 subarrays left and right,then call binary search for left and right subarrays.
+// Now left mein check kro ki vo element 0th element se bada hai kya. agar hai toh left array mei search kro, else search kro right array mein. 
+// 
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int SearchInRotatedArray(int arr[],int key,int left,int right)
+{
+    if(left>right)
+    return -1;
+
+    int mid=(left+right)/2;
+
+    if(arr[mid]==key)
+    {
+        return mid;
+    }
+    /// 2cases check honge yaha ki right half phele search hoga ya left half.Ye condition hongi acc to pivot position.
+    if(arr[left]<=arr[mid])
+    {
+        if(key>=arr[left] and key<=arr[mid]) ///here we have 2 cases either key lies in left half or in right half.Here if key lies in left half then ok 
+        //else go to right half of it.
+        {
+            return SearchInRotatedArray(arr,key,left,mid-1);
+        }
+        return SearchInRotatedArray(arr,key,mid+1,right);
+    }
+
+     if(key>=arr[mid] and key<=arr[right]) ///if its valid traverse in right half.
+        {
+            return SearchInRotatedArray(arr,key,mid+1,right);
+        }
+        return SearchInRotatedArray(arr,key,left,mid-1);
+    
+}
+
+int main()
+{
+    int arr[]={6,7,8,9,10,1,2,5};
+    int n=8,key=8;
+
+    int index=SearchInRotatedArray(arr,key,0,n-1);
+    if(index==-1)
+    {
+        cout<<"Key don't exist";
+    }
+    else
+    cout<<"Key present at index: "<<index;
+
+}
