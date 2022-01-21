@@ -1,0 +1,50 @@
+// Problem: For a given array and an integer X,find the min subarray size for which sum>X.
+
+// Approach 1: Compute sum of all subarrays and check the condition. Time Complexity: O(n^2)
+
+// Approach 2: Sliding Window Maximum-> Use variables ans,sum and start. 
+// Iterate over array and start adding elements to sum. If sum>X, remove elements  from start.
+// Time Complexity: O(N) 
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int SmallestSubarray(int arr[],int n,int x)
+{
+    int sum=0,minLength=n+1,start=0,end=0;
+
+    while (end<n)
+    {
+        while(sum<=x and end<n)  ///agar sum x se chota hai toh directly add krdo usey ans mein.
+        {
+            sum+=arr[end++];
+        }
+
+        while(sum>x and start<n)
+        {
+            if(end-start <minLength) ///ie cureent subarray ka size less ho minLength se.
+            {
+                minLength=end-start;
+            }
+            
+            sum-=arr[start++]; ///isse first element ko nikalo window ke.
+        }
+    }
+    return minLength;   
+}
+
+int main()
+{
+    int arr[]={1,4,45,6,10,19};
+    int x=51,n=6;
+    ///ans=3 {4,45,6}
+    int minLength=SmallestSubarray(arr,n,x);
+    if(minLength==n+1)
+    {
+        cout<<"No subarray exist.";
+    }
+    else
+        cout<<"Smallest length subarray is: "<<minLength<<endl;
+
+}
