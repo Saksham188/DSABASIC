@@ -1,0 +1,71 @@
+// Problem: For given array and integer K ,check if any subarray of size K exists in array such that element in subarray form a number divisible by 3.
+// FACT: A Number is divisible by 3 if and only if the sum of its digits is divisible by 3.
+//
+// Logic: Find sum of initial K elements from array. Use sliding window technique and start subtracting elements from start and adding from end.
+// And at each step check if  sum divisible by 3 or not .If its print the elements.
+// Time Complexity:O(N)
+//
+//
+//
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void FormNumber(vector<int> arr, int k)
+{
+    pair<int, int> ans;  ///we made a pair to store the first and last index.
+
+    int sum = 0;
+
+    for (int i = 0; i < k; i++)
+    {
+        sum += arr[i];
+    }
+    bool found = false;
+
+    if (sum % 3 == 0)
+    {
+        ans = make_pair(0, k - 1); ///0 and k-1 pass krdie hmne as our index.
+        found = true;
+    }
+
+    for (int i = k; i < arr.size(); i++)
+    {
+        if (found)
+            break;
+
+        sum += arr[i] - arr[i - k]; ///we can also take as start pointer 
+        ///yaha hmne window ko aage badhaya start element remove kia and next ele add.
+        
+        if(sum%3==0)
+        {
+            ans=make_pair(i-k+1,i); ///i-k+1 bcse manlo 3 size lena and ham hai i=4 pe toh ans hoga 234 toh i-k+1=4-3+1=2 
+            found=true;
+        }
+    }
+
+    if(!found)
+    {
+        ans=make_pair(-1,0);
+    }
+
+    if(ans.first==-1)
+    {
+        cout<<"No such subarray exist\n";
+    }
+    else
+    {
+        for(int i=ans.first;i<=ans.second;i++)
+        {
+            cout<<arr[i]<<" ";
+        }
+    }
+}
+
+int main()
+{
+    vector<int> arr ={84,23,45,12,56,82};
+    int k=3;
+
+    FormNumber(arr,k);
+}
