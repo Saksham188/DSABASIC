@@ -1,0 +1,56 @@
+// Max Sum Subarray of size K and sum<X
+// Problem: For a given array and integers K and X ,find max sum subarray of size K and having sum less than X.
+
+// Approach 1 : Compute Sum of all possible subarrays of size K. And then from all subarrays find with max sum. Time Complexity=O(n*K)
+
+// Approach 2: Using Sliding window
+// Calculate sum of first K elements.Initialise ans as this sum.Iterate over the rest of the arr,Keep adding 1 element in sum and removing one from start.Compare new sum with ans in each iteration.
+// ie Add k+1 and remove start element.  TimeComplexity=O(n)
+// 
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+void CalcMaxSum(int arr[],int n,int k,int x)
+{
+    int Sum=0,ans=0;
+
+    for(int i=0;i<k;i++)
+    {
+        Sum+=arr[i];  ///here calculate sum of first k elements .as size of subarray is k.
+    }
+
+    if(Sum<x)  ///x hai max sum given check kro sum x se chota hai agar toh ans mein sum dalo.
+    {
+        ans=Sum;
+    }
+
+    ///ab bas 2ptr ki trh start and next. start ko minus kro sum se and next ko add kro and check kro X se chota ho and ans se bada ho sum toh ans mein sum daldo.
+
+    for(int i=k;i<n;i++)
+    {
+        ///here we can also take an int start=0, sum-=arr[start], start++.
+        Sum-=arr[i-k];  ///i-k is start pointer starting mein 0 fir 1 
+        Sum+=arr[i];
+
+        if(Sum<x)
+        {
+            ans=max(ans,Sum);
+        }
+    }
+    cout<<"Max Sum of Subarray is: "<<ans;
+
+}
+
+int main()
+{
+    int arr[]={7,5,4,6,8,9};
+    int k=3,x=20,n=6;
+
+    CalcMaxSum(arr,n,k,x);
+
+
+}
+
+
