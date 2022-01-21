@@ -1,0 +1,67 @@
+// Find The Peak Element: For given array find peak element in array.Peak element is one which is greater than its left and right neighbour.
+// Corner Case: If array is in ascending order then last element is peak. Descending order:first element is peak, For all same elements: Each element is peak.
+// eg arr=10,20,15,2,23,90,67
+
+// Strategy:Use binary Search ,analyse indices from 0 to n-1. Compute mid and for each mid check if arr[mid] is a peak element.if yes then return mid as ans
+// else if(arr[mid-1]>arr[mid]) check left for peak.  else if arr[mid]<arr[mid+1] check right for peak.
+
+// Used recursion here.
+//
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int findPeakElement(int arr[],int left,int right,int n)
+{
+    
+    int mid=left+(right-left)/2;
+
+    if((mid==0 || arr[mid-1]<=arr[mid] ) and (mid==n-1|| arr[mid+1]<=arr[mid]))
+    {
+        return mid;
+    }
+    
+    else if(mid>0 and arr[mid-1]>arr[mid])
+    {
+        return findPeakElement(arr,left,mid-1,n);
+    }
+    else
+       return findPeakElement(arr,mid+1,right,n);
+  
+}
+
+int main()
+{
+    int arr[]={0,6,8,5,7,9};
+    int n=6;
+
+    cout<<"Peak Element index: "<<findPeakElement(arr,0,n-1,n);
+
+}
+
+
+/// Iterative Binary Search Sol:
+
+class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {
+        int left=0;
+        int right=nums.size()-1;
+
+        while(left<right)
+        {
+            int mid=(left+right)/2;
+
+            if(nums[mid]<nums[mid+1])
+            {
+                left=mid+1;
+            }
+            else
+                right=mid;
+        }
+        return left;
+    }
+};
+
+
+
