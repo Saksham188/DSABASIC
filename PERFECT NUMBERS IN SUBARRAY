@@ -1,0 +1,102 @@
+// Problem: For given array and integer K find max perfect numbers in subarray of size K.
+// Perfect number is a number if its equal to sum of its proper divisors(+ve divisors) except for number itself. eg 6, properdivisors=[1,2,3] whose sum is also 6.
+
+//Approach 1: Generate all subarrays of size K and count number os perfect numbers.  TimeComplexity:O(n*K)   
+
+///Approach 2: Sliding Window
+// Trick: Convert given array into a binary array with values 0 and 1 only.
+// Now we will traverse our array and if number at index i is perfect number then replace value at ith index with '1' else with a '0'. 
+// Initialize a variable to store sum of divisors.Traverse every number less than arr[i] and add it to sum if its divisor of arr[i].
+// If sum of all divisors =arr[i] then only number is a perfect number.
+
+//After this our problem is reduced to find max sum of a subarray from all possible subarrays of size K. 
+// Time Complexity: O(n*sqrt(n))
+// eg 1 2 3 6  , K=2:     ans->1 bcse only 6 is a perfect number.
+// 
+// 
+// 
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+bool IsNumberPerfect(int n)
+{
+    int sum=1; ///it will store sum of all proper divisors of number.
+    
+    for(int i=2;i<sqrt(n);i++)
+    {
+        if(n%i==0) ///ie if its divisor then 
+        {
+            if(i==n/i) ///here in this condition we are checking .eg n=64 so loop will run and for i=2 we check if 64/2==2 which is false so we add 2 and 32 as our ans.
+            { ///in short if number==n/i then we need to add only once else twice,         
+                sum+=i;
+            }
+            else
+            {
+                sum+=i+n/i;
+            }
+        }
+    }
+
+    if(sum==n and n!=1)  ///if sum==sum of divisors
+    {
+        return true;
+    }
+    return false;
+}
+
+int MaxSum(int arr[],int n,int k)
+{
+    ///here logic of sliding window used.
+    if(n<k)
+    {
+        cout<<"Invalid Values \n";
+        return -1;
+
+    }
+
+    int result=0;
+
+    for(int i=0;i<k;i++)
+    {
+        result+=arr[i];
+    }
+    int sum=result;
+
+    for(int i=k;i<n;i++)
+    {
+        sum+=arr[i]-arr[i-k];
+        result=max(sum,result);
+    }
+    return result; ///yaha se hamara max sum ka result chala jayega.
+}
+
+
+int MaxNumOfPerfects(int arr[],int n,int k)
+{
+    for(int i=0;i<n;i++)
+    {
+        if(IsNumberPerfect(arr[i])) ///yaha check krre hai ki ye number perfect hai ya ni.
+        {
+            arr[i]=1;
+        }
+        else
+            arr[i]=0;
+    }
+    ///ab hamari array mein 1 and 0 ki form hogyi.Ab bas hame max sum nikalna k size ke subarray ka.
+
+    return MaxSum(arr,n,k);
+
+
+}
+
+
+int main()
+{
+    int arr[]={28,2,3,6,496,99,8128,24};
+    int k=4,n=8;
+    cout<<MaxNumOfPerfects(arr,n,k);
+    ///Ans=3.
+}
+
