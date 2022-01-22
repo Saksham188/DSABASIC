@@ -1,0 +1,103 @@
+// Heap is a binary tree based data structure.Its not necessarily BST. Heaps are of 2 types: MinHeap ,MaxHeap.
+// MaxHeap: if root element>rest of elements in subtree,ie parent greater than both childs.
+// MinHeap: If root less than rest of elements in subtree ie root ka data chota dono child se.
+
+/*
+ eg of MaxHeap :  
+                       6 
+                      / \
+                     5   4
+                    / \ 
+                   1   2
+
+
+ eg of MinHeap :  
+                       1 
+                      / \
+                     3   2
+                    / \ 
+                   9   8
+
+*/
+
+//To convert array into MaxHeap: Arr: 10,15,21,30,18,19
+///First insert acc to Binary tree insertion and then After every insertion we check whether property of max heap working or violated,if violated then swap them.
+
+/*
+ Popping Elements :  
+                       30 
+                      /  \
+                    21    19
+                   / \    /
+                 10  18  15
+
+
+*/
+
+///Now for popping elements: First swap root node with the last node in tree and now we will heapify down.Now we will swap this root with its greater child node.
+// ie for deleting 30 first swap 30 with 15.Now we swap 15 with its greater child ie 21 ,so swap 21 and 15, ab 21 ko remove krne ke lie same process.
+// 
+
+********************************************
+///Heapify
+********************************************
+#include<bits/stdc++.h>
+using namespace std;
+
+void HeapifyHelper(vector<int>&v,int val,int size)
+{
+    int current=val;
+    int left=2*val+1;
+    int right=2*val+2;
+
+    if(left<size and v[left]>v[size])
+    {
+        current=left;
+    }
+    
+    if(right<size and v[right]>v[size])
+    {
+        current=right;
+    }
+
+    if(current!=val)
+    {
+        swap(v[current],v[val]);
+        HeapifyHelper(v,current,size);
+    }
+}
+
+void Heapify(vector<int>& v)
+{
+    ///Create Heap First.
+    int n=v.size();
+
+    for(int i=n/2 -1; i>=0;i--) ///i=n/2-1 pe we will get our first non leaf node.
+    {
+        HeapifyHelper(v,i,n);
+    }
+}
+
+
+int main()
+{
+    int n;
+
+    cout<<"Enter number of elements: ";
+    cin>>n;
+
+    vector<int>v(n);
+
+    for(int i=0;i<n;i++)
+    {
+        cin>>v[i];
+    }
+    Heapify(v);
+    cout<<"\nElements after creating heap: ";
+    for(int i=0;i<n;i++)
+    {
+        cout<<v[i]<<" ";
+    }
+    ///eg input-> 6 array: 1 4 3 2 5 6     ,After Creating Heap Elements: 6 5 3 2 4 1 
+
+}
