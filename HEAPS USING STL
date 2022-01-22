@@ -1,0 +1,37 @@
+// We have inbuilt maxheap in stl known as priority queue.
+// Maxheap: priority-queue<int,vector<int> > 
+// For making MinHeap:  priority-queue<int,vector<int>,greater<int> >
+
+// push-O(log N), pop=O(log N) , top=O(1), size=O(1) 
+//  In Heap we have syntax: priority-queue<int, container<type> >
+// 
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    ///MaxHeap:
+    priority_queue<int, vector<int> >pq;
+    pq.push(2);
+    pq.push(3);
+    pq.push(1);
+    
+    cout<<"Top Element of MaxHeap: "<<pq.top();
+    pq.pop();
+    cout<<"\nTop Element of MaxHeap: "<<pq.top();
+
+    ///MinHeap:
+    cout<<"\n\nMinHeap:\n";
+    priority_queue<int, vector<int>,greater<int> >pq2;
+    pq2.push(2);
+    pq2.push(3);
+    pq2.push(1);
+    
+    cout<<"\nTop Element of MinHeap: "<<pq2.top();
+    pq2.pop();
+    cout<<"\nTop Element of MinHeap: "<<pq2.top();
+
+}
+
