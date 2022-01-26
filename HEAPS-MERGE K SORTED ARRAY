@@ -2,7 +2,7 @@
 
 // Brute Force: Take 2 arrays and merge them ,repeat this until we are left with 1 array. ie phele ab lelo fir ab ka ans +c
 
-// Efficient Solution(Using Heaps)
+// Efficient Solution(Using Heaps) TC:O(Nlogk)
 // Create a min heap of pairs .And we will insert {firstelement,arrayNumber} of all sorted arrays into MinHeap.
 
 // Main Idea: We will pop element from MinHeap and store it in answer array.Insert next element of sorted array into minheap.
