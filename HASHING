@@ -1,0 +1,35 @@
+///Hashing: Converting elements into smaller elements using some functions(hash functions)
+/// h(x)=x%10 hash function.
+/// After applying hash function we get same keys. This is called Collision.
+/// Collision handling in 2 ways -Separate Chaining and Open Addressing.
+/// Separate Chaining: If collision create chain of values at same key using linked list.
+///  Time Complexity of Separate Chaining is O(n).
+///  Load Factor=n/b  b=No of keys available for mapping and n=no of values to be mapped
+
+/// Open Addressing: If Collision do probing , Probing=Using second argument called probe number in hash function.Probe number depends on key,given by P(k).
+/// Linear Probing: P(k)=a*k+b. Quadratic Probing: P(k)=a*k^2+b*k+c. Double Hashing:P(k,x)=k*h(base2)x ,h(base2)x is a secondary hash function
+///
+
+
+///HASHING USING STL:
+///STL has Maps and unordered maps for hashing.
+/// Insertion: Maps=O(log(n))  Unordered Maps=O(1){on average}
+/// Accesing: Maps=O(log(n))   Unordered Maps=O(1)
+/// MAPS Implemented using Red-Black Trees   Unordered Maps are hash tables(basically array of buckets)
+/// Map has a key-value pair map<int,int>mp   unordered_map<int ,int>ump
+///
+///
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    map<int,int>m;
+    m[8]=2;
+    cout<<m[8]<<endl;
+}
+
+
+
+
