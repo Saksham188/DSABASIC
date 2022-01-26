@@ -1,0 +1,55 @@
+//  Array: 1,5,3,2,8  
+// SubArray: Continuous Block of elements. eg {3,2} {5,3,2,8} {8}
+// Subsequence: Not necessarily Continuous but order should remain as in original array . eg  {3,8} {5,2,8}
+// Every Subarray is subsequence but not vice versa.
+
+// Now our q is possible subsequence which satisfy the condition that sum>=K. 
+
+// Logic: We will take a max heap here and we will count min size all such subarrays with sum>=K. 
+// 
+// 
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n,k;
+    cin>>n>>k;
+
+    vector<int> a(n);
+
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
+    }
+
+    priority_queue<int, vector<int> >MaxHeap;
+
+    for(int i=0;i<n;i++)
+    {
+        MaxHeap.push(a[i]);
+    }
+    int sum=0; ///it will be used to check condition sum<=k
+    int count=0;//it will return min size of subarray.
+
+    while (!MaxHeap.empty())
+    {
+        sum+=MaxHeap.top(); ///add top element to sum.
+        MaxHeap.pop();
+
+        count++;
+
+        if(sum>=k)
+          break;
+    }
+
+    if(sum<k)
+       cout<<"-1"<<endl;
+    else
+       cout<<count<<endl;   
+    
+}
+
+
