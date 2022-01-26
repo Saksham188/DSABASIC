@@ -1,0 +1,181 @@
+/// Here we are given an array we need to tell longest increasing subsequence. eg 1 4 2 5 3 , here longest lis are 1,2,3 and 1,4,5
+// Using DP: Using tabulation method  
+// Make dp array and initialize all dp(i) by 1,as single element is an lis,  for every i from left to right iterate from j=0 to j=i-1
+// Checking if(a[i]>a[j]) dp[i]=max(dp[i],1+dp[j]).  After loop end output dp[n-1]
+// It has TC: O(N^2).
+// Here we check for a[i]>a[j] bcse for longest sequence eg i=4, j=0to 3 now we see if a[4]>a[j] then only lis is possible
+// 
+// 
+// 
+// 
+// 
+///Method 1 : Using memoisation
+/**
+#include<bits/stdc++.h>
+using namespace std;
+
+int dp[100000];
+
+int lis(vector<int>&a,int n)
+{
+    if(dp[n]!=-1) ///yani agar hmne usey phele calculate kr rkha hai.
+    {
+        return dp[n];
+    }
+
+    dp[n]=1; ///As single element is an LIS.
+
+    for(int i=0;i<n;i++)
+    {
+        if(a[n]>a[i])
+        {
+            dp[n]=max(dp[n],1+lis(a,i));
+        }
+    }
+    return dp[n];
+}
+int main()
+{
+    for(int i=0;i<100000;i++)
+    {
+        dp[i]=-1;
+    }
+
+    int n;
+    cin>>n;
+
+    vector<int>a(n);
+
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
+    }
+
+    cout<<lis(a,n-1)<<endl;
+}
+*/
+
+///Method 2: Using tabulation: TC:O(N^2)
+
+/**
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+   
+    int n;
+    cin>>n;
+
+    vector<int>a(n);
+
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
+    }
+
+    vector<int>dp(n,1); ///initialise dp array with 1.
+    int ans=0;
+
+    for(int i=1;i<n;i++)
+    {
+        for(int j=0;j<i;j++)
+        {
+            if(a[i]>a[j])
+            {
+                dp[i]=max(dp[i],1+dp[j]);
+            }
+        }
+        ans=max(ans,dp[i]);
+    }
+    cout<<ans;
+}
+*/
+
+///Method 3:
+///In this we will make a vector and first we will push 1st element at index 0 ,now we will traverse if next ele is greater than last element then push in vector
+///else first find immediate next element to our current element eg we had 2,5,7 and now comes 3 so we need to swap 5 by 3 as its immediate next element.
+///now swap this element with that index. and at last return size of vector.
+
+/*
+#include<bits/stdc++.h>
+using namespace std;
+
+int LIS(int arr[],int n)
+{
+    vector<int>ans;
+    ans.push_back(arr[0]);
+
+    for(int i=1;i<n;i++)
+    {
+        if(ans.back()<arr[i])
+        {
+            ans.push_back(arr[i]);
+        }
+        else
+        {
+            int index=lower_bound(ans.begin(),ans.end(),arr[i]) -ans.begin();
+            ans[index]=arr[i];
+        }
+    }
+    return ans.size();
+}
+
+int main()
+{
+    int arr[]={2,3,5,7,11,8,10,13,6};
+    int n=9;
+    cout<<LIS(arr,n);
+
+}
+
+*/
+///Method 4: More Efficient for long inputs
+#include<bits/stdc++.h>
+using namespace std;
+
+long long int Lis(vector<long long int>p)
+{
+   vector<long long int>ans;
+   
+
+   for(int i=0;i<p.size();i++)
+   {
+       ///if element found upper bound returns last index of its occurence.if element not present then it returns next greater value to element and
+       ///if element > last ele of array then it return end.
+       auto it=upper_bound(ans.begin(),ans.end(),p[i]);
+       if(it==ans.end()) ///yani agar greater value mil gyi toh insert krdo.
+       {
+           ans.push_back(p[i]);
+       }
+       else  ///vrna us pos pe ye element daaldo.
+       {
+         *it=p[i];
+       }
+   }
+   return ans.size();
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
