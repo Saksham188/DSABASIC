@@ -1,0 +1,30 @@
+/// Here we will store frequency and value in a key value pair.
+///
+///
+///
+///
+///
+///
+///
+#include<iostream>
+#include<map>
+using namespace std;
+
+void CountFreq(int arr[],int n)
+{
+    map<int,int> freq;
+    for(int i=0;i<n;i++)
+    {
+        freq[arr[i]]++;
+    }
+
+    for(auto i=freq.begin();i!=freq.end();i++)
+    {
+        cout<<i->first<<" frequency is: "<<i->second<<endl;
+    }
+}
+int main(){
+    int arr[]={10,20,20,10,10,20,5,20};
+    CountFreq(arr,sizeof(arr)/sizeof(arr[0]));
+}
+
