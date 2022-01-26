@@ -1,0 +1,145 @@
+// eg we have k arrays and we wanna merge them. A={1,3,5}, B={4,6,7},C={2,7} ans={1,2,3,4,5,6,7,7}
+
+// Brute Force: Take 2 arrays and merge them ,repeat this until we are left with 1 array. ie phele ab lelo fir ab ka ans +c
+
+// Efficient Solution(Using Heaps)
+// Create a min heap of pairs .And we will insert {firstelement,arrayNumber} of all sorted arrays into MinHeap.
+
+// Main Idea: We will pop element from MinHeap and store it in answer array.Insert next element of sorted array into minheap.
+// We also need to keep track of indices of elements. as we need to find that at which col of our row its present.
+
+/*
+eg  A=[1,4,7] , B=[3,5] , C=[2,6,7]
+now we will make index array which will be initially storing first index of each array
+now we will insert acc to ascending order like {1,1},{2,3},{3,2} now push 4 in min heap and add {4,1}
+*/
+//
+//
+
+#include<bits/stdc++.h>
+using namespace std;
+#define pp pair<int,int>
+int main()
+{
+    int k;
+    cin>>k;
+
+    vector<vector<int> >a(k);
+
+    for(int i=0;i<k;i++)
+    {
+        int size;
+        cin>>size;
+
+        a[i]=vector<int>(size); ///isse a[i] mein size length ka vector ban jayega.
+        for(int j=0;j<size;j++)
+        {
+            cin>>a[i][j];
+        }
+    }
+
+    vector<int>index(k,0);
+
+    priority_queue<pp,vector<pp>,greater<pp> >MinHeap;
+
+    for(int i=0;i<k;i++)
+    {
+        MinHeap.push({a[i][0],i}); /// isme sbke phele elements MinHeap mein push krdie with their array number.
+        ///i will denote array number here.
+        cout<<"Push In MinHeap: "<<a[i][0]<<" "<<i<<"\n";
+    }
+
+    vector<int>ans;
+
+    cout<<"\n\nNow pop: \n\n";
+
+    while(!MinHeap.empty())
+    {
+        ///x will contain element as first and in second it will contain array number.
+        ///its like  eg {4,3} it means x contains element of 3rd array with value=4.
+        pair<int,int> x=MinHeap.top(); 
+        MinHeap.pop();
+        ans.push_back(x.first); ///Push in ans our elements as in Min Heap we pushed values and array number..
+
+        ///ab check krre ki agar stored index given sorted array ke size se bada hai toh ham kaam ni krskte.
+       ///Now in this if condition we are checking we have traversed complete vector at a[i] or not.If not then we will push the next value from that array in Min Heap.
+       ///For more clear explanation see below eg.
+        if(index[x.second] +1  < a[x.second].size())
+        {
+            MinHeap.push({a[x.second][index[x.second]+1],x.second}); ///if its less then push next element in heap.eg a[3][0] was there so Now we will push a[3][index[]]
+        }
+
+        index[x.second]+=1; ///index mein size ka count badha do.
+    }
+
+    cout<<"\n\nans:";
+    for(int i=0;i<ans.size();i++)
+    {
+        cout<<ans[i]<<" ";
+    }
+}
+
+/*
+  eg 
+   a=[  [1,3,5],
+        [2,4,6],
+        [7]
+    ] 
+
+    index vector= {0,0,0}
+    MinHeap= []
+
+    Now first for loop -> i=0 to k push first element of all rows of a in Min Heap.
+    MinHeap=[{1,0},{2,1},{7,2}]  
+    0 represent array number,ie we stored value 1 of array 0 ,then value 2 of array 1 ,then value 7 of array 2.
+ 
+    Now create vector<ans> to store final ans.
+
+
+
+    while(Min Heap not bcme empty)
+    {
+        *******************
+        x={1,0} ///remove top element from min heap. here 1=val,0=array num.
+        ---        ans={1} , MinHeap=[{2,1},{7,2}]
+
+        check if index[0]+1 < a[0].size()  ,index will keep count of elements in the particular row , now a[0] is vector of size 3 and initially index[0]=0
+        so condition satisfy as 0+1<3
+        So we need to push next element to MinHeap ie we need to push (3,0) , for this we see that x.second ie array value will remain same for next element ie 0
+        And we will access our next element with a[0][index[x.second] +1]  , a[0]=a[x.second] , our index[x.second ] ie index[0] will have val 0 initially 
+        now we will push index[0][1] -> ie val=3
+
+        ---    MinHeap=[{2,1},{7,2},{3,0}] 
+
+        Now increment index for that x.second. 
+        ---   Index={1,0,0}
+
+    ***************************
+    Now similarly do for x=2,1 and x=7,2
+    **************************
+    Now for x={3,0}  , our index will be =[1,1,1] 
+    
+     ---        ans={1,2,7} , MinHeap=[... {3,0}]  ...=elements next to 2,1 and 7,2
+
+        check if index[0]+1 < a[0].size()  ,index[0]=1 1+1<3 
+        so condition satisfy as 1+1<3
+        So we need to push next element to MinHeap ie we need to push (5,0) , for this we see that x.second ie array value will remain same for next element ie 0
+        And we will access our next element with a[0][index[x.second] +1]  , a[0]=a[x.second] ie in first array , our index[x.second ] ie index[0] +1  , index[0]=1 
+        now we will have index+1  ie 2 so, we will push index[0][2] -> ie val=5
+
+        ---    MinHeap=[...{5,0}] 
+
+        Now increment index for that x.second. 
+        ---   Index={2,1,1}
+
+    ///Similarly do for all others
+    
+    }
+    ///at end we get sorted array =1,2,3,4,5,6,7
+ 
+ 
+*/
+
+
+
+
