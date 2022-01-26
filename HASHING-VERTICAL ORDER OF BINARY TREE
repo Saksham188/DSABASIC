@@ -1,0 +1,82 @@
+// Here we need to print binary tree in vertical order.
+/*
+                   10
+                 /   \
+                7     4
+               / \   /  \
+              3  11 /    6
+                  14
+
+        Now we will see distance of all nodes from root and print.
+       like for dis -2 we have 3, for dis -1 we have 7 for dis 0 we have 10 11 14, for dis 1 we have 4 , for dis 2 we have 6
+
+*/
+// We will implement it using hashing.  HD=Horizontal Distance.
+//  Approach: Start from root node with HD=0 recursively call left and right childs with (HD-1) and (HD+1) as arguments.
+//  Base Case: When current node=NULL then return
+//  Now make a map with int,vector<int> now for Distance push values in vector
+//
+//
+//
+//
+//
+//
+//
+
+#include<bits/stdc++.h>
+using namespace std;
+
+class Node
+{
+    public:
+    int data;
+    Node *left,*right;
+
+    Node(int val)
+    {
+        data=val;
+        left=right=NULL;
+    }
+};
+
+void GetVerticalOrder(Node* root,int hordist,map<int, vector<int> >&mp)
+{
+    if(root==NULL)
+    return;
+
+    mp[hordist].push_back(root->data); ///push in map for particular distance val and recurse for both child.
+
+    GetVerticalOrder(root->left,hordist-1,mp);
+    GetVerticalOrder(root->right,hordist+1,mp);
+}
+
+int main()
+{
+
+    Node* root=new Node(10);
+    root->left=new Node(7);
+    root->right=new Node(4);
+    root->left->left=new Node(3);
+    root->left->right=new Node(11);
+    root->right->left=new Node(14);
+    root->right->right=new Node(6);
+
+    map<int,vector<int> >mp;
+    int HorizontalDist=0;
+    GetVerticalOrder(root,HorizontalDist,mp);
+
+    map<int,vector<int> >::iterator it;
+
+    for(it=mp.begin();it!=mp.end();it++)
+    {
+        ///it->second=vector.
+        for (int i = 0; i < it->second .size(); i++)
+        {
+            cout<<(it->second) [i]<<" ";
+        }
+        cout<<endl;
+
+    }
+}
+
+
