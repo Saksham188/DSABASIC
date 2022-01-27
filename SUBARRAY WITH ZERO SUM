@@ -72,13 +72,13 @@ int main()
         cin >> arr[i];
     }
 
-    int count=0,sum=0,i=-1;
+    int count=0,sum=0,i=0;  /// can also start i=-1 then while(i<n-1) and then do i++ in start of loop
     map<int,int>mp;
 
     mp[0]=1;
-    while(i<n-1)
+    while(i<n)
     {
-        i++;
+        
         sum+=arr[i];
     ///here first add ele to sum and check if that element occured before or not
 
@@ -92,6 +92,7 @@ int main()
             mp[sum]=1;
             ///if its occurying first time then add 1 as frequency.
         }
+        i++;
     }
 
     cout<<count<<endl;
