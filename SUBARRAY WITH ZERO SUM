@@ -1,0 +1,99 @@
+// Logic:Make a Prefix Sum array for sum at particular index.
+// Approach: Map prefix sum to a map. For every key,choose 2 values from all the occurences of particular prefsum (M c 2).
+// Special Case: For PrefSum 0, we have to also include them.
+//  Here we will return number of subarrays with 0 sum.
+/// Method 1:
+/*
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int>arr(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin>>arr[i];
+    }
+
+    map<int,int>Count;
+    int prefsum=0;
+
+    for (int i = 0; i < n; i++)
+    {
+        prefsum+=arr[i]; ///add kro hr element ko.
+        Count[prefsum]++;  ///count array mein us pos pe increment krdo.
+    }
+
+    map<int,int>::iterator it;
+    int ans=0;
+
+    for(it=Count.begin();it!=Count.end();it++)
+    {
+        int c=it->second;
+        ans+=(c* (c-1))/2;
+
+        if(it->first==0)
+        ans+=it->second;
+    }
+    cout<<ans<<endl;
+
+
+}
+*/
+##################################################
+///Method 2:
+
+
+// Here for subarray we take 2 conditions: If any prefix sum gets repeated increase count and when prefix sum bcme 0 then also increase count.
+//  eg array :       2  8  -3  -5  2  -4  6  1  2  1  -3  4
+//  Prefix Sum:  0   2  10  7  2   4   0  6  7  9  10  7  11
+///frequency :   1   1  1   1  2   1   2  1  2  1  2   3   1
+// Count         0             1       2     3     4   6
+//  as 2 got repeated so inc by previous frequency of that number. and then update the frequency
+
+*******************************************
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    vector<int> arr(n);
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    int count=0,sum=0,i=-1;
+    map<int,int>mp;
+
+    mp[0]=1;
+    while(i<n-1)
+    {
+        i++;
+        sum+=arr[i];
+    ///here first add ele to sum and check if that element occured before or not
+
+        if(mp.find(sum)!=mp.end())  ///if it occured then increment count with frequency as discussed above and insert this new frequency
+        {
+            count+=mp[sum];
+            mp[sum]+=1;
+        }
+        else
+        {
+            mp[sum]=1;
+            ///if its occurying first time then add 1 as frequency.
+        }
+    }
+
+    cout<<count<<endl;
+    return 0;
+}
