@@ -1,0 +1,89 @@
+// Top K most frequent elements in stream.
+// Given array: 1 2 2 2 3 4 and k=2 , We have to output elements in decreasing frequency till we reach (k+1)th distinct elements.
+//  so here insert values in map and when count in map bcme >k then we need to output next element in array ie 3 in this case.
+
+
+///Approach1:
+////More Easy approach can be that we first store all elements with frequency in map and then we will sort map based on frequency and then return top K elements.
+// Time Complexity:: Step1=Hashing->O(N) ,  Step2=BuildHeap-> O(N) , Step3=Extract Max K-Times -> O(KLogN)
+/// Total TC: O(N +N +klogN), inWorst case k=N and TC=O(NlogN)  , SC=O(N)
+
+*******************************************************************************************************************
+///Approach2 Modified: Hashing:O(N), Builf Heap of 1st K elements only. So TC=O(K)
+/// , now slide for rest all N-K and if we get frequency greater than that in heap so remove lowest frequency val from heap and insert this new val.
+eg in heap we have fre: 1,2,3  and now comes val 5 with frequency 4 so pop 1 and add 4 in heap.Now heap is 2 3 4
+///  TCL O(N +K +(N-K)logK) ie TC=O(N+NlogK)
+///Its TC greater than prev so use prev method only.
+*********************************************************************************************************************
+
+/// Approach 1 Code (Unmodified):
+///Here we will create a node of key and frequency to pass in the map.
+
+#include <bits/stdc++.h>
+using namespace std;
+///here we are creating a class to store key and frequency and then sort acc to frequency.
+class Node
+{
+public:
+    int value;
+    int frequency;
+
+    Node(int a, int b)
+    {
+        value = a;
+        frequency = b;
+    }
+};
+class Compare
+{
+    public:
+    ///here we are overloading constructor of this class.
+    bool operator()(Node &a, Node &b) /*It will help to sort on basis of frequency.*/
+    {
+        return a.frequency < b.frequency;
+    }
+};
+
+vector<int> TopKMostFrequent(vector<int> &nums, int k)
+{
+    unordered_map<int, int> mp;
+    ///Step1: Store frequency of all elements in map.
+    ///It Takes O(N) time.
+    for (int ele = 0; ele < nums.size(); ele++)
+    {
+        mp[nums[ele]]++; ///here we are storing in map frequency of each element.
+    }
+
+    ///Step2: Now build a heap. O(N)
+
+    priority_queue<Node, vector<Node>, Compare> heap; //It helps to create maxheap sorted on frequency.
+
+    for(auto it=mp.begin();it!=mp.end();it++)
+    {
+        heap.push(Node(it->first,it->second)); ///here in heap we are creating a node with map and passing it through constructor
+    }
+
+    vector<int>ans; ///It stores top K elements.
+
+    while (k--)
+    {
+        Node temp=heap.top(); ///as its max heap and max heap has largest ele on top.
+        heap.pop();
+        ans.push_back(temp.value); ///we only need to push values in the ans.
+
+    }
+
+    return ans;
+}
+
+int main()
+{
+    vector<int>val={1,7,4,4,1,8,2,1,1,1,9,7,6,0,6};
+    vector<int>ans=TopKMostFrequent(val,4);
+
+    for(int i=0;i<ans.size();i++)
+    {
+        cout<<ans[i]<<" ";
+    }
+}
+///Output: 1 7 4 6
