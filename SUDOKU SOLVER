@@ -1,0 +1,112 @@
+///Code working fine on Leet but not printing here.
+
+// Solve Sudoku by filling empty cells.A sudoku solution must satisfy following rules:
+// Each of digits 1-9 must occur exactly once in each row,exactly once in each column,each of digits must occur exactly once in each of 9 (3*3) sub-boxes of grid.
+// The '.' character indicates empty cells.
+
+//
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+bool IsValid(vector<vector<char> >& board,int row,int col,char c)
+{
+    for(int i=0;i<9;i++) ///run loop for i=0 to 8 as we have 9 col/rows
+    {
+        if(board[i][col]==c) /// here col will be fixed eg 2 so we check 02,12,22,32 ... and if any fail then return false.
+          return false;
+
+        if(board[row][i]==c)  ///here row remain fix and col changes.ie horizontal traversal.
+          return false;
+
+        if(board[3*(row/3) +(i/3)][3*(col/3) + (i%3)] ==c)
+          return false;
+        ///here checking in sub box ,here in 9*9 grid we have 3 subarrays of 3*3 so here do row/3 which will tell us that in which horizontal we lie 
+        //as we have 3 horizantals of 3*3.
+ ///eg we are at (5,7) so row/3=5/3=1 so we are in second horizontal ,here we multiply with length of subarray which is 3 so we get row number of start of subarray 
+ ie [1*3][...] so we got start at row 3. now if we do i/3 we will 0 only for first three iterations
+ /// ie we got row as 3 and now col will change ie we traverse horizontally in 3rd row.   Now for col ->3* col/3 gives start address here 7/3=2 *3 =6 so start at 6th col 
+ now for traversal we add i%3 so it bcmes 36 37 38 and then it bcmes 46
+
+
+    }
+    return true;
+}
+
+
+
+bool solve(vector<vector<char>> &board)
+{
+    for (int i = 0; i < board.size(); i++)
+    {
+        for (int j = 0; j < board[0].size(); j++) ///Its to traverse the 2d board.
+        {
+            if (board[i][j] == '.')
+            {
+                for (char c = '1'; c <= '9'; c++) ///test using all char from 1 to 9.
+                {
+                    if (IsValid(board, i, j, c)) ///if its valid then add number here.
+                    {
+                        board[i][j] = c;
+
+                        /// Now we will test if our ans is valid or not ,we will recursively call for all other empty spaces and if any fail then return false.
+                        if (solve(board) == true)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            board[i][j] = '.'; 
+                       ///agar false ho jata toh us place pe . laga do.and traverse with next value at that place. eg we have 2 spaces in a row and option we have 1 and 4.
+                       ///We fill 1 and then see that in box of other row our condition get failed we cant fill any value so it will return false so we have to place . 
+                       ///at place where we stored 1.
+                        }
+                    }
+                }
+                return false;
+            }
+        }
+    }
+    return true; ///true return har condition satisfy kr jaye toh.
+}
+
+
+void print(vector<vector<char> > arr)
+{
+    int N=arr.size();
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+            cout << arr[i][j] << " ";
+        cout << endl;
+    }
+}
+
+void SolveSudoku(vector<vector<char>> &board)
+{
+    solve(board);
+
+}
+
+int main()
+{
+    vector<vector<char> > board={
+        {'5','3','.','.','7','.','.','.','.'},
+        {'6','.','.','1','9','5','.','.','.'},
+        {'.','9','8','.','.','.','.','6','.'},
+        {'8','.','.','.','6','.','.','.','3'},
+        {'4','.','.','8','.','3','.','.','1'},
+        {'7','.','.','.','2','.','.','.','6'},
+        {'.','6','.','.','.','.','2','8','.'},
+        {'.','.','.','4','1','9','.','.','5'},
+        {'.','.','.','.','8','.','.','7','9'}
+
+    };
+    SolveSudoku(board);
+   print(board);
+   
+}
+
+
+
