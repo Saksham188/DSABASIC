@@ -27,7 +27,7 @@ bool compare(pair<int,int>p1,pair<int,int>p2)
 {
     double ratio1=double(p1.first)/p1.second; ///find ratio of weight/value.
     double ratio2=double(p2.first)/p2.second;
-    return ratio1>ratio2;
+    return ratio1>ratio2;  ///as we want to sort descending
 }
 
 
