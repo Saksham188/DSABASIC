@@ -1,0 +1,54 @@
+// Problem:You are given an array A of n elements.You have to remove exactly n/2 from array A and add it to another array B(initially empty).
+// Find max and min values of differences bw these 2 arrays.
+// We define differences bw these 2 arrays as: submission(abs(A[i]-B[i]))  
+// Constraints: 1<=n<=10^5  , |Ai|<=10^9 
+
+// Idea: To Maximise abs(A[i]-A[j]) : 
+///1. A[i] should be as large as possible ,2.A[j] should be as small as possible.
+// So we use Greedy.
+// So first Sort the array and our Max Diff=(A[n-1]-A[0]) +(A[n-2]-A[1])...(A[n/2]-A[n/2 -1])= {(A[n-1]+ A[n-2]...A[n/2]) - (A[0]+A[1]+A[2]+....A[n/2 -1])}
+// ie for max diff= sum of max n/2 elements - sum of min n/2 elements
+
+
+// Idea: To Minimise abs(A[i]-A[j]):
+// 1.The difference bw A[i] and A[j] should be similar. 
+// For sorted Array:  MinDiff=A[1]-A[0] +A[3]-A[2]...  =(sum of odd elements)-(sum of even elements)
+// 
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> a(n);
+
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
+    }
+
+    sort(a.begin(),a.end());
+
+    long long int MaxDif=0,MinDif=0;
+
+    for(int i=0;i<n/2;i++)
+    {
+        MaxDif+=(a[i+ n/2] - a[i]);
+        MinDif+=(a[2*i +1]-a[2*i]); ///2i+1 will be odd num and 2i will be even.
+    }
+
+    cout<<"MaxDiff: "<<MaxDif<<"   MinDiff: "<<MinDif;
+}
+
+
+/*
+OUTPUT:
+
+    4
+    12 -3 10 0
+    MaxDiff: 25   MinDiff: 5
+*/
