@@ -1,0 +1,58 @@
+// Real Life Example: User connections in fb.
+
+// Components of a Graph: 
+// Nodes=These are states or vertex.eg users in fb
+// Edges: Links bw states in a graph.eg connection bw users.
+// Edges are of 2 types: Undirected- 2 way edges  eg 2->1->4
+//  Directed=1 way edges.eg 2- 1 -3 
+
+// Representation:Adjacency Matrix and Adjacency List.
+/*
+ Adjacency Matrix: 2D Array,where a[i][j]=1 if there is an edge from i to j else a[i][j]=0;
+eg   
+    0 0 0 1
+    0 0 0 1
+    0 0 0 1
+    1 1 1 0
+
+Adjacency List: Array of lists ,where each a[i] is a list of nodes xi that are reachablr from i.
+  eg
+  
+  a-> |  b->d->e->NULL
+  b-> |  c->NULL
+  c-> |  d->NULL
+  d-> |  a->NULL
+  e-> |  NULL
+
+
+*/
+
+
+///Search is of 2 types: Depth First Search,Breadth First Search.
+
+///DFS:
+/*
+   Here  we go depth wise.eg we have 1-7.
+   first start from 1,assume 1 has 2,3 as child. Now first go to 2 and traverse till we reach NULL and then backtrack.
+
+  DFS is implemented using stack.
+
+  It has 3 parts: 
+  PreOrder: First time when call comes on node.
+  In-Order:When the call works inside the subtree(in DFS Tree) of that node.
+  Post-Order: After working on the subtree,call comes back on the node.After this,call wont come on the same node.
+*/
+
+///BFS:
+/*
+   Implemented using queue.  
+   here first take node and push its children to queue and make them visited ,We will only push unvisited node in the queue. 
+    and then traverse.
+*/
+
+///Different properties of components of Graph:
+/// Weighted nodes-Values are associated with nodes.
+/// Weighted edges-Values are associated with edges.
+
+
+
