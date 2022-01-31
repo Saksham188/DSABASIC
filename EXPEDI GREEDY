@@ -1,0 +1,117 @@
+/*
+A group of cows grabbed a truck and ventured on an expedition deep into the jungle. Being rather poor drivers, the cows unfortunately managed to run over a rock 
+and puncture the truck's fuel tank. The truck now leaks one unit of fuel every unit of distance it travels. To repair the truck, the cows need to drive to the nearest town
+(no more than 1,000,000 units distant) down a long, winding road. On this road, between the town and the current location of the truck,
+ there are N (1 <= N <= 10,000) fuel stops where the cows can stop to acquire additional fuel (1..100 units at each stop).
+The jungle is a dangerous place for humans and is especially dangerous for cows. Therefore, the cows want to make the minimum possible number of stops
+for fuel on the way to the town.  Fortunately, the capacity of the fuel tank on their truck is so large that there is effectively no limit to the amount of fuel it can hold 
+The truck is currently L units away from the town and has P units of fuel (1 <= P <= 1,000,000).
+
+Determine the minimum number of stops needed to reach the town, or if the cows cannot reach the town at all.
+
+Input
+The first line of the input contains an integer t representing the number of test cases. Then t test cases follow. Each test case has the follwing form:
+
+Line 1: A single integer, N
+Lines 2..N+1: Each line contains two space-separated integers describing a fuel stop: The first integer is the distance from the town to the stop;
+the second is the amount of fuel available at that stop.
+Line N+2: Two space-separated integers, L and P
+
+Output
+For each test case, output a single integer giving the minimum number of fuel stops necessary to reach the town. If it is not possible to reach the town, output -1.
+*/
+
+///Approach: Create a max heap,which stores the fuels available at the stops that we have traversed.
+/// Sort the stops on basis of distance of stops from initial position of truck.Kepp iterating on stops and whenever fuel in tank of truck bcme empty,take fuel from maxheap 
+///and add it to truck(greedy step)
+// Mantain count of stops from which we have taken fuel
+//
+//
+//
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int T;
+    cin >> T;
+
+    while (T--)
+    {
+        int n;
+        cin >> n;
+
+        vector<pair<int, int> > a(n);
+        //It will contain 2 info :Distance from town and fuel available at stop.
+        for (int i = 0; i < n; i++)
+        {
+            cin >> a[i].first >> a[i].second;
+        }
+
+        int L, P;
+
+        cin >> L >> P;
+
+        for (int i = 0; i < n; i++)
+        {
+            a[i].first = L - a[i].first; ///here we update distance of each station to distance from truck.
+        }
+
+        ///now sort this distance array from truck.
+
+        sort(a.begin(), a.end());
+
+        int ans = 0, curr = P; /// In curr we will store current capacity of petrol in truck.
+
+        // Now make a max heap to push elements.
+
+        priority_queue<int, vector<int> > MaxHeap;
+        int flag = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (curr >= L) ///If current fuel in truck >=L ie distance of town then we need not stop at any station.
+            {
+                break;
+            }
+
+            while (curr < a[i].first) ///ham check krenge ki fuel station tak jane tak ka toh petrol ho.
+            {
+                ///ie here condition is that petrol finishes before we reach fuel station.then return -1 as ans.
+                if (MaxHeap.empty())
+                {
+                    flag = 1;
+                    break;
+                }
+                ///else first increment our ans and then increase our petrol by taking top ele of MaxHeap.and remove top ele.
+                ans++;
+                curr += MaxHeap.top();
+                MaxHeap.pop();
+            }
+            if (flag == 1)
+                break;
+            ///Push fuel in MaxHeap.
+            MaxHeap.push(a[i].second);
+        }
+        if (flag == 1)
+        {
+            cout << "-1\n";
+            continue;
+        }
+
+        while (!MaxHeap.empty() and curr < L)
+        {
+            curr += MaxHeap.top();
+            MaxHeap.pop();
+            ans++;
+        }
+
+        if (curr < L) ///ie if petrol is still not sufficient to reach town.
+        {
+            cout << "-1\n";
+            continue;
+        }
+        
+        cout << ans << endl;
+    }
+}
