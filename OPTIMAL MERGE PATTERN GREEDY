@@ -1,0 +1,78 @@
+// Problem: You are given n files with their computation times in an array
+// Operation: Take any 2 files add their computation times and append it to list of computation times.{Cost=Sum of Computation Time}
+// Do this until we are left with only 1 file in that array.We have to do this operation such that we get min cost finally.
+
+//Approach: Push all elements to a minheap.Take top 2 elements one by one and add cost to ans.Push merged file to minheap.When single element remains output the cost. 
+// eg we have 2 5 7 4 here first pull out 2,4 we get 6 push 6 back,now we have 5 6 7, now remove 5,6 and push 11 ,now 7 11 left,now push 18 and return ,
+//our ans will be 6+11+18=35 min 
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n;
+    cout<<"Enter no of files: ";
+    cin>>n;
+
+    vector<int>a(n);
+
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
+    }
+
+    priority_queue<int,vector<int>,greater<int> >MinHeap;
+
+    for(int i=0;i<n;i++)
+    {
+        MinHeap.push(a[i]);
+    }
+
+    int ans=0;
+
+    while (MinHeap.size()!=1)
+    {
+        int q1=MinHeap.top();
+        MinHeap.pop();
+        int q2=MinHeap.top();
+        MinHeap.pop();
+        ans+=q1+q2;
+        MinHeap.push(q1+q2);
+    }
+    cout<<ans<<" ";
+    
+
+
+}
+
+
+/*
+OUTPUT:
+Enter no of files: 4
+2 7 5 4
+
+35 
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
