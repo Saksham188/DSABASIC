@@ -1,0 +1,99 @@
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+const int N=100000;
+bool Visited[N];
+vector<int>Adjacent[N];
+
+int main()
+{
+    ///step1: Initialize visited array with 0.
+
+    for(int i=0;i<N;i++)
+    {
+        Visited[i]=0;
+    }
+
+    int NumNode,NumEdge;
+    cout<<"Enter Number of Nodes: ";
+    cin>>NumNode;
+    cout<<"Enter Number of edges: ";
+    cin>>NumEdge;
+
+    ///for inputting edges:
+    int x,y;
+    for(int i=0;i<NumEdge;i++)
+    {
+        cin>>x>>y;
+        Adjacent[x].push_back(y);
+        Adjacent[y].push_back(x);
+    }
+
+    ///For BFS we use queue. So declare queue.
+    queue<int>q;
+    q.push(1);
+    Visited[1]=true;
+
+    while (!q.empty())
+    {
+        int Node=q.front();
+        q.pop();
+
+        cout<<Node<<"\n";
+
+        vector<int>::iterator it;
+///here we first insert first node to queue ,pop it and then print it.Now traverse all its adjacent links and if they are unvisited then push them in queue.
+       ///here it will help to traverse every adjacent Node.
+        for(it=Adjacent[Node].begin();it!=Adjacent[Node].end();it++)
+        {
+            ///if this node(val) is not visited then make it visited and push it in queue.
+            if(!Visited[*it])
+            {
+                Visited[*it]=1;
+                q.push(*it);
+            }
+        }
+    }
+    
+
+}
+
+/*
+eg
+2 has node to 7,3 also has to 7.
+         1
+       /  \
+      2    3
+     /|\ \ |
+    4 5 6 \ |
+           7
+
+
+*/
+/*
+OUTPUT:
+Enter Number of Nodes: 7
+Enter Number of edges: 7
+1 2
+1 3
+2 4
+2 5
+2 6
+2 7
+7 3
+BFS:
+1
+2
+3
+4
+5
+6
+7
+ 
+
+ */
+
+
+
+
