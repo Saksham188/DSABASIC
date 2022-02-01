@@ -1,0 +1,136 @@
+///2 Ways to represent graph: Adjacency Matrix and Adjacency List
+
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<int>AdjList[100000];
+
+int main()
+{
+    //  Using Adjacency Matrix.  
+
+    int NumNode,NumEdge;
+    cout<<"Enter Number of Nodes: ";
+    cin>>NumNode;
+    cout<<"Enter Number of edges: ";
+    cin>>NumEdge;
+    ///Make a 2D adjacency matrix and initialise it with 0
+    vector<vector<int> >adjacencymat(NumNode+1, vector<int>(NumNode+1,0));
+
+    for(int i=0;i<NumEdge;i++)
+    {
+        int x,y;
+        cin>>x>>y;
+
+        adjacencymat[x][y]=1;
+        adjacencymat[y][x]=1;
+    }
+
+    cout<<"Adjacency Matrix of above graph is: "<<endl;
+    for(int i=1;i<=NumNode;i++)
+    {
+        for(int j=1;j<=NumNode;j++)
+        {
+            cout<<adjacencymat[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+
+    ///how to check if we have a edge bw 2 nodes or not.
+
+    if(adjacencymat[3][7]==1)
+      cout<<"\nEdge Present";
+    else
+      cout<<"\nEdge Not Present";  
+
+
+    // Adjacency List
+    cout<<"\n\n Adjacency List: \n";
+    cout<<"Enter Number of Nodes: ";
+    cin>>NumNode;
+    cout<<"Enter Number of edges: ";
+    cin>>NumEdge;
+
+    for(int i=0;i<NumEdge;i++)
+    {
+        int x,y;
+        cin>>x>>y;
+
+        AdjList[x].push_back(y);
+        AdjList[y].push_back(x);
+    }
+
+    cout<<"\n\nAdjacency of above graph given by: ";
+
+    for(int i=1;i<NumNode+1;i++)
+    {
+        cout<<i<<" -> ";
+        vector<int>::iterator it;
+        // for(int x:AdjList[i])
+        for(it=AdjList[i].begin();it!=AdjList[i].end();it++)
+        {
+            cout<<*it<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+/*
+eg 
+2 has node to 7,3 also has to 7.
+         1
+       /  \
+      2    3
+     /|\ \ |
+    4 5 6 \ |
+           7
+
+
+*/
+
+/**
+OUTPUT:
+
+Enter Number of Nodes: 7
+Enter Number of edges: 7
+1 2
+1 3
+2 4
+2 5
+2 6
+2 7
+7 3
+Adjacency Matrix of above graph is:
+0 1 1 0 0 0 0
+1 0 0 1 1 1 1
+1 0 0 0 0 0 1
+0 1 0 0 0 0 0
+0 1 0 0 0 0 0
+0 1 0 0 0 0 0
+0 1 1 0 0 0 0
+
+Edge Present
+
+ Adjacency List:
+Enter Number of Nodes: 7
+Enter Number of edges: 7
+1 2
+1 3
+2 4
+2 5
+2 6
+2 7
+7 3
+
+
+Adjacency of above graph given by: 1 -> 2 3
+2 -> 1 4 5 6 7
+3 -> 1 7
+4 -> 2
+5 -> 2
+6 -> 2
+7 -> 2 3
+
+*/
+
+
