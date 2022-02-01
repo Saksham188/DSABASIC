@@ -32,8 +32,8 @@ int main()
 
     ///For BFS we use queue. So declare queue.
     queue<int>q;
-    q.push(1);
-    Visited[1]=true;
+    q.push(1); ///we need to pass first node of graph.
+    Visited[1]=true; ///Make its visited true.
 
     while (!q.empty())
     {
