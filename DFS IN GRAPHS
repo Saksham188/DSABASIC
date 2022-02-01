@@ -1,0 +1,81 @@
+/*
+   Here  we go depth wise.eg we have 1-7.
+   first start from 1,assume 1 has 2,3 as child. Now first go to 2 and traverse till we reach NULL and then backtrack.
+
+  DFS is implemented using stack.
+
+  It has 3 parts: 
+  PreOrder: First time when call comes on node.
+  In-Order:When the call works inside the subtree(in DFS Tree) of that node.
+  Post-Order: After working on the subtree,call comes back on the node.After this,call wont come on the same node.
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+bool Visited[100000];
+// We took array of vectors
+vector<int> Adj[100000];
+
+void DFS(int Node)
+{
+    ///Part 1 :Preorder, here mark visited as true.
+
+    Visited[Node] = 1;
+    // By writing here we will print preorder.
+    cout << Node << " ";
+
+    ///InOrder:Traverse to each Adjacent Node;
+
+    vector<int>::iterator it;
+
+    for (it = Adj[Node].begin(); it != Adj[Node].end(); it++)
+    {
+        if (!Visited[*it]) ///here we check if node is not visited then we call recursively for that node.
+        {
+           DFS(*it);
+        }
+    }
+
+    ///PostOrder:
+    // If we want to print postorder then instead of cout in preorder write cout here.
+}
+
+int main()
+{
+    int n, m;
+    cout << "Enter Num of Nodes: ";
+    cin >> n;
+    cout << "\nEnter Num of Edges: ";
+    cin >> m;
+
+    for (int i = 0; i < m; i++)
+    {
+        int x, y;
+        cin >> x >> y;
+        Adj[x].push_back(y);
+        Adj[y].push_back(x);
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        Visited[i] = 0;
+    }
+
+    DFS(1); ///Lets assume 1 is our first node.
+}
+
+/*
+Enter Num of Nodes: 7
+Enter Num of Edges: 7
+1 2     
+1 3
+2 4
+2 5
+2 6
+2 7
+7 3
+
+PreOrder: 1 2 4 5 6 7 3  
+PostOrder: 4 5 6 3 7 2 1  
+*/
