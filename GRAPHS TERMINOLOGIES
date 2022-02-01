@@ -1,0 +1,76 @@
+// Directed Graph: A graph with directed edges is known as directed graph.
+// Undirected Graph: A graph with undirected edges is known as undirected graph.
+
+/*
+ Adjacent Vertices: 2 vertices with a direct edge connecting them. 
+
+           B
+         / | \ 
+        A  |  \
+           D --C
+
+    eg (A,B),(B,D),(B,C),(C,D)
+*/
+/// Degree of A Vertex: There are 2 types of degrees -Indegree and OutDegree
+//   Indegree-- No of incoming edges to a node. eg Indegree of vertex 4 is 1.
+//   Outerdegree-- No of outgoing edges from a node .eg outdegree of vertex 1 is 2.
+/*
+here our graph is 2 has incoming edge from 1 and 3, 1 has outgoing edge to 2and 3,  3 has incoming from 1 and outgoing to 4 and 2, 4 has outgoing to 3 and incoming from 3,
+        2<-3
+          / A
+         V  \
+        4    4
+
+*/
+
+// Path bw 2 vertices: All vertices which come in path of 2 given vertices is called their path. 
+/*
+   b---c
+   \   | 
+    a  |
+   / \\|
+  e   d
+  
+  Path bw c and d is c->d or c->b->a->d
+*/
+
+// Connected Graph: Each node has path from every other node. 
+// Disconnected Graph: Each node does not have path from every other node.
+
+// Each connected graph in a disconnected graph is called connected component.
+//    1-2  3   4-5     ,here in this graph 1,2 are connected component and 4,5 are connected components
+
+
+// Cycles in a graph: Path from a vertex to the same vertex in a graph is known as cycle. 
+// Cyclic Graph: Graph that contains cycle is called cyclic graph. 
+// Acyclic Graph: Graph that does not contain cycle is called acyclic graph.
+
+
+///Tree: Its connected acyclic graph.
+// Properties of a Tree with n nodes:
+//  1. No of edges=n-1
+//  2. There are no cycles present.
+//  3. Each node has path from every other vertex.
+
+// Directed Acyclic Graph(DAG) 
+// As the name suggests,its properties are:
+// 1. It has directed edges.
+// 2. It is acyclic ie no cycles are present.
+
+// Complete Graph: 
+// A graph in which each vertex is connected to every other vertex by a direct edge.
+/*
+        . ---- .
+        | \  / |
+        | / \  |
+        . ---- .
+
+    Number of edges in a complete graph= n C 2  = (n*(n-1))/2    
+*/
+
+///Weighted Graph: A graph with weighted edges is called weighted graph.
+
+
+
+
+
