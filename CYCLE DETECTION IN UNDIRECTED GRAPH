@@ -1,0 +1,71 @@
+// Undirected Graph is a bidirectional graph.
+// Logic: Keep on traversing the graph.If you found an edge pointing to an already visited node except parent node then a cycle is found.
+//
+//
+//
+//
+//
+
+#include <bits/stdc++.h>
+using namespace std;
+
+bool IsCycle(int i, vector<vector<int> > &AdjList, vector<bool> &Visited, int parent)
+{
+    ///first make this node visited.
+    Visited[i] = true;
+    vector<int>::iterator it;
+    for (it = AdjList[i].begin(); it != AdjList[i].end(); it++)
+    {
+        ///ie here we check.eg we have A->B and B->A
+        ///If it is not parent.
+        if(*it!=parent)
+        { 
+            if(Visited[*it]) ///here if its visited then return true.
+               return true;
+
+            ///If node is not visited then check its parent if its parent return true then return true.
+            if(!Visited[*it] and IsCycle(*it,AdjList,Visited,i))   
+            {
+                return true;
+            }
+        }
+    }
+    ///else here return false.
+    return false;
+
+}
+
+int main()
+{
+    int n, m;
+    cout << "Enter Num of Nodes: ";
+    cin >> n;
+    cout << "\nEnter Num of Edges: ";
+    cin >> m;
+
+    vector<vector<int> > AdjList(n);
+
+    for (int i = 0; i < m; i++)
+    {
+        int x, y;
+        cin >> x >> y;
+        AdjList[x].push_back(y);
+        AdjList[y].push_back(x);
+    }
+    bool cycle = false;
+
+    vector<bool> Visited(n, false);
+    for (int i = 0; i < m; i++)
+    {
+        ///Here if node is not visited and IsCycle return true then cycle is formed.
+        if (!Visited[i] and IsCycle(i, AdjList, Visited, -1))  ///here pass -1 as top node has no parent.
+        {
+            cycle = true;
+        }
+    }
+
+    if (cycle)
+        cout << "\nCycle Present.";
+    else
+        cout << "\nCycle Not Present.";
+}
