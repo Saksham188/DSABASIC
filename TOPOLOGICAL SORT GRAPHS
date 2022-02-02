@@ -1,0 +1,93 @@
+// A Topological Ordering is an ordering of the nodes in a directed graph where for each directed edge from node A to node B ,Node A appears before Node B in the ordering.
+// Topological Ordering are not Unique.
+// Not every graph has a topological sort. eg a cycle of ABCD
+
+// Directed Cyclic Graph cannot have Topological Sort.
+// Only Directed Acyclic Graph (DAG) have a valid Topological Sort.
+//
+// 
+/*
+   here all arrows are pointing upwards.
+       A
+      / \ \
+      B  C D
+     /\   \ 
+     E F   G 
+
+     Topological Sort : EFGDBCA  
+     here we first take nodes which have only outgoing edge ie leaf nodes and then move up and add to ans.
+*/
+
+///InDegree: The no of inward directed edges on vertex in a directed graph.
+// 
+
+//Algorithm: While(All the nodes are not visited): 
+// Nodes with 0 indegree can be added to the output array.
+// All the nodes which are adjacent to terminal nodes,gets their indegree subtracted. 
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int n,m,count=0;
+    cout<<"Enter Num of Nodes: ";
+    cin>>n;
+    cout<<"\nEnter Num of Edges: ";
+    cin>>m;
+
+    vector<vector<int> >AdjList(n);
+    vector<int>InDegree(n,0);
+
+    for (int i = 0; i < m; i++)
+    {
+        int x,y;
+        cin>>x>>y;
+        ///x->y
+        AdjList[x].push_back(y);
+        InDegree[y]++;  ///Since here we need indegree so we will increment for y.
+    }
+
+    ///We will push those nodes in ans which have indegree 0.
+    queue<int>Q;
+
+    for (int i = 0; i < n; i++)
+    {
+        if(InDegree[i]==0) ///First push all the nodes with indegree 0.
+          Q.push(i);  
+    }
+
+    while (!Q.empty())
+    {
+        count++;
+        int val=Q.front();
+        Q.pop();
+        cout<<val<<" ";
+        ///Now after printing we need to subtract degree of its neighbours and if their indegree bcme 0 push to queue.
+        vector<int>::iterator it;
+        for(it=AdjList[val].begin();it!=AdjList[val].end();it++)
+        {
+            InDegree[*it]--;  ///reduce adjacent node degree by 1.
+            if(InDegree[*it]==0)
+            {
+                Q.push(*it);
+            }
+        }
+
+    }
+        
+}
+
+/*
+OUTPUT:
+Enter Num of Nodes: 4
+Enter Num of Edges: 3
+
+0 1
+1 2
+2 3
+Topological Sort: 0 1 2 3 
+
+*/
+
