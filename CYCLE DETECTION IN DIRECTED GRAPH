@@ -30,6 +30,7 @@ bool IsCycle(int i, vector<vector<int> > &AdjList, vector<bool> &Visited, vector
             return true;
         }
     }
+    ///here we did false to remove that vertex from recursion stack.
     Stack[i]=false;
     ///else here return false.
     return false;
