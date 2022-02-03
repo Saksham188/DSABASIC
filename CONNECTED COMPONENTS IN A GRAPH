@@ -1,0 +1,121 @@
+//Connected Component: A connected component is a subgraph in which any 2 vertices are connected to each other by paths,and which is connected to no additional 
+vertices in a supergraph.
+///In Short Connected components are components connected in a disconnected graph.
+
+// Idea: 1.Visit the nodes in a depth-first fashion
+// 2.If the node is not visited,visit that node and its neighbour recursively.
+// Each time an unvisited node is found,a new component will be found.
+
+//Q1: Find no of connected components in a graph and its size. 
+///In this q we need to find number and size of connected components in a disconnected graph. 
+
+
+///Q2: There are N friends numbered from 0 to N-1.You have to choose 2 person such that they are not related to each other.
+// You are given information in form of M pairs (X,Y) ie there is link bw friend X and Y.
+// Find out min number of ways in which 2 persons from different groups can be choosen.
+
+ANS: Same as ans 1 just add 1 condition in end .Traverse the vector components and then add components[i]*(n-components[i]) into the ans.
+
+//Idea: 1.Find the components and their sizes. 
+// At ith component,choose one person from it and other person from rest of the groups.
+// 
+// 
+
+
+########################################
+CODE:
+########################################
+
+#include<bits/stdc++.h>
+using namespace std;
+vector<bool>Visited;
+int n,m;
+
+vector<vector<int> >Adjacent;
+vector<int>Components;
+
+int GetComponents(int Index)
+{
+    // Here if that node is visited then we return 0.
+    if(Visited[Index]) 
+      return 0;
+
+    ///If its not visited then mark this node as visited.
+    Visited[Index]=true;
+    int ans=1; ///we added here 1 of index value.
+
+    vector<int>::iterator it;
+    for (it = Adjacent[Index].begin(); it != Adjacent[Index].end(); it++)
+    {
+        ///if its neighbour component is not visited then add it to ans.
+        if(!Visited[*it])
+        {
+            ans+=GetComponents(*it); ///insert adjacent connected node and then make it visited
+            Visited[*it]=true;
+        }
+    }
+    return ans;
+}
+
+int main()
+{
+    cout << "Enter Num of Nodes: ";
+    cin >> n;
+    cout << "\nEnter Num of Edges: ";
+    cin >> m;
+    Adjacent=vector<vector<int> >(n);
+    Visited=vector<bool>(n);
+
+    for (int i = 0; i < m; i++)
+    {
+        int x, y;
+        cin >> x >> y;
+        Adjacent[x].push_back(y);
+        Adjacent[y].push_back(x);
+    }
+
+///here we take a loop for 0 to n so as to take care of corner cases ie disconnected components of that graph.
+    for(int i=0;i<n;i++)
+    {
+        if(!Visited[i])
+        {
+            Components.push_back(GetComponents(i));
+        }
+    }
+    
+    for(int i=0;i<Components.size();i++)
+    {
+        cout<<Components[i]<<" ";
+    }
+
+    long long ans=0;
+    for(int i=0;i<Components.size();i++)
+    {
+        cout<<" Components[i]: "<<Components[i]<<" n-Components[i]: "<<n-Components[i]<<" ans: "<<ans<<endl;
+        ans+=Components[i]*(n-Components[i]); ///No of ways to select are i from one and n-i from other.
+    }
+
+    cout<<ans/2; ///bcse it will contain overcounting.eg we have 2,3 then 3,2 and it must be counted only once.
+
+}
+
+
+/*
+  OUTPUT:
+  No of Nodes = 5
+  No of edges = 3
+  Edges:
+  0 1
+  2 3 
+  0 4
+  Connected Components Array: 3 2
+ /// 0,1,4 of size 3 and 2,3 of size 2
+
+  ///Min Num of Ways=6 
+  as 3*(5-3) + 2*(5-2)=6+6=12  , ans=12/2=6 
+*/
+
+
+
+
+
