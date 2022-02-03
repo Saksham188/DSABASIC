@@ -1,0 +1,71 @@
+// Logic: Here we will mantain a stack and here we see in stack rather than visited array.
+
+// Approach: 1.Make the current Node as visited and also mark the index in recursion stack.
+// Find all the vertices which are not visited and are adjacent to the current node.
+// If adjacent vertices are already found in the recursion stack then a cycle is found.
+//
+
+#include <bits/stdc++.h>
+using namespace std;
+
+bool IsCycle(int i, vector<vector<int> > &AdjList, vector<bool> &Visited, vector<int> &Stack)
+{
+    ///first make this node visited in stack.
+    Stack[i] = true;
+
+    ///if this node is not visited then make it visited
+    if (!Visited[i])
+    {
+        Visited[i] = true;
+        ///Now traverse its neighbours
+        vector<int>::iterator it;
+        for (it = AdjList[i].begin(); it != AdjList[i].end(); it++)
+        {
+            if (!Visited[*it] and IsCycle(*it, AdjList, Visited, Stack))
+            {
+                return true;  ///if it returns true then cycle present.
+            }
+
+            if(Stack[*it]) ///If that node is already present in stack then return true.
+            return true;
+        }
+    }
+    Stack[i]=false;
+    ///else here return false.
+    return false;
+}
+
+int main()
+{
+    int n, m;
+    cout << "Enter Num of Nodes: ";
+    cin >> n;
+    cout << "\nEnter Num of Edges: ";
+    cin >> m;
+
+    vector<vector<int> > AdjList(n);
+
+    for (int i = 0; i < m; i++)
+    {
+        int x, y;
+        cin >> x >> y;
+        AdjList[x].push_back(y);
+    }
+    bool cycle = false;
+
+    vector<bool> Visited(n, false);
+    vector<int> Stack(n, 0); ///make a stack array
+    for (int i = 0; i < m; i++)
+    {
+        ///Here if node is not visited and IsCycle return true then cycle is formed.
+        if (!Visited[i] and IsCycle(i, AdjList, Visited, Stack)) ///here pass -1 as top node has no parent.
+        {
+            cycle = true;
+        }
+    }
+
+    if(cycle)
+        cout << "\nCycle Present.";
+    else
+        cout << "\nCycle Not Present.";
+}
