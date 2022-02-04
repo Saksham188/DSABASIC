@@ -1,0 +1,77 @@
+// Bipartite Graph: Its vertices can be divided into 2 disjoint and independent sets U and V such that every edge connects a vetex in U to one in V.
+// The graph does not contain any odd length cycles. The graph is 2 colorable.
+
+//Logic: Traverse the graph.If current node is of red color,paint its neighbours as blue. If you are able to color the graph successfully then graph is coloured. 
+// denote colors red as 1,blue as 0 and unvisited -1.
+// 
+// 
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<bool>Visited;
+int n,m;
+vector<vector<int> >Adjacent;
+vector<int>color;
+bool BiPartite;
+
+void Color(int u,int curr)
+{
+    // yani agar vo coloured hai node and color match ni krra jo hame color dena usse toh vo bipartite ni hoga.
+    if(color[u]!=-1 and color[u]!=curr)
+    {
+        BiPartite=false;
+        return;
+    }
+
+    color[u]=curr;
+    if(Visited[u]) ///if its visited then return true,else make it visited.
+       return;
+    Visited[u]=true;
+
+    vector<int>::iterator it;
+    for (it = Adjacent[u].begin(); it != Adjacent[u].end(); it++)
+    {
+       ///Now if this node is 1 we want neighbour as 0 and vice versa.we can do this by just writing curr xor 1.
+        Color(*it,curr xor 1 );
+    }
+
+    
+}
+
+int main()
+{
+    
+    cout << "Enter Num of Nodes: ";
+    cin >> n;
+    cout << "\nEnter Num of Edges: ";
+    cin >> m;
+    
+    BiPartite=true;
+    Adjacent=vector<vector<int> >(n);
+    Visited=vector<bool>(n,false);
+    color=vector<int>(n,-1);
+
+    for (int i = 0; i < m; i++)
+    {
+        int x, y;
+        cin >> x >> y;
+        Adjacent[x].push_back(y);
+        Adjacent[y].push_back(x);
+    }
+
+    for(int i=0;i<n;i++)
+    {
+        if(!Visited[i])
+        {
+            Color(i,0); ///color it with blue
+        }
+    }
+    
+    if(BiPartite)
+        cout<<"Graph is Bipartite.";
+    else
+        cout<<"Graph is not Bipartite.";
+}
+
