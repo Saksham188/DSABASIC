@@ -1,0 +1,106 @@
+// Leading Element/Parent:  Element which can be regraded as the leader element for that set.
+// eg Set S={1,3,5,7}  , P={2,4,6,8}  lets give parent to S elements as 1, and to p's elements as 2. ie now all elements can be identified using 1 or 2.  
+
+/*
+eg Basic Implementation of DSU: 
+   we have 1 2 3 4
+
+   Union (1,2)
+     2->1
+
+    Union (3,4) 
+    2->1  4->3
+
+    Union(2,4) ///here we will have union of leaders,ie 2 jis set mein hai uske leader ka union with leader of set having 4.
+    //So here we have union of 1 and 3
+    ///this is our final graph now after all unions.
+   2->1 <-3<-4
+
+*/
+
+///Naive Implementation:
+/*
+void make(int v)
+{
+    ///every individual element will be a parent of itself.
+   parent[v]=v;
+}
+
+///Find Set takes O(N) TimeComplexity
+int find_set(int v)
+{
+    ///here find parent of the set.
+   if(v==parent[v])
+      return v;
+
+///if found then return v else recursively call
+   return find_set(parent[v]);
+}
+
+void union_sets(int a,int b)
+{
+   a=find_set(a);
+   b=find_set(b);
+
+///here find parent of both sets.if both belong to same set then nothing to do,else add a as parent of b.
+   if(a!=b)
+   {
+       parent[b]=a;
+   }
+}
+
+*/
+
+
+///Path Compression:
+///To reduce TC from O(N) to O(log N) we do one thing that if parent[i]!=i in findset then attach that node to parent ie here attach 2,3,5 to 1 and then 7 also to 1. 
+///Code Modification->
+/*
+int find_set(int v)
+{
+    ///here find parent of the set.
+   if(v==parent[v])
+      return v;
+
+   return parent[v]=find_set(parent[v]);
+   ///Now it will take O(log N) TC
+}
+
+*/
+
+/// In Naive Implementation, Union(a,b) b gets attached to a
+/// Long chains can be formed which leads to O(n) complexity.
+
+/// Union by Size/Rank: Final TC=O(alpha(N))
+/*
+
+  Alpha n is very small number.known as inverse Ackermann functn. ie we can assume it gives ans in O(1) time.
+  Here we will add parent of smaller node to larger node.
+  
+  
+  void make(int v)
+  {
+      parent[v]=v;
+      size[v]=1;
+  }
+
+  void Union_Sets(int a,int b)
+  {
+      a=find_set(a);
+      b=find_set(b);
+
+      if(a!=b)
+      {
+          if(size[a]<size[b])
+          {
+              swap(a,b);
+          }
+          parent[b]=a;
+          size[a]+=size[b];
+      }
+  }
+*/
+
+///Conclusion: Disjoint Set Union in O(1) TC and O(N) SC.
+///Applications: MST,Connected Components in a graph,cycle detection and many more.
+
