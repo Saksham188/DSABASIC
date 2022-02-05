@@ -1,0 +1,137 @@
+// Logic:Here for all edges find its set and if they lie in same set then there is a cycle else not.
+
+/*
+Pseudo Code: 
+
+For al edge(u,v) in edges: 
+ x=find_set(u);
+ y=find_set(v);
+ if(x==y)
+ {
+     ///Same set ,cycle is found.
+    return true;
+ }
+ union(u,v);
+ return false;
+
+
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e5+6;
+
+vector<int>parent(N);  ///make a vector for parent
+vector<int>Size(N);  ///make a vector to store the size.
+
+void make_set(int v)  ///here make set for DSU.
+{
+    parent[v]=v;  ///single node is parent of itself.
+    Size[v]=1;   ///Single node has size 1.
+}
+
+int find_set(int v)
+{
+    if(v==parent[v])   ///here we will return the parent of that set.
+       return v;
+    ///Here do path compression.
+    return parent[v]=find_set(parent[v]);
+}
+
+void Union_Sets(int a,int b)
+{
+    a=find_set(a);
+    b=find_set(b);
+
+    if(a!=b)  ///if both dont lie in same set 
+    {
+    /// we make a as greater size so if size b is greater then swap a and b.
+        if(Size[a]<Size[b])
+        {
+            swap(a,b);
+        }
+        ///here everytime size of A will be greater.
+        parent[b]=a;  ///now assign a as parent of b.
+        Size[a]+=Size[b];  ///and increase size of a.
+    }
+
+}
+
+int main()
+{
+  
+    for (int i = 0; i < N; i++)
+    {
+        make_set(i);    ///make set of i elements.
+    }
+
+    int n,m,count=0;
+    cout<<"Enter Num of Nodes: ";
+    cin>>n;
+    cout<<"\nEnter Num of Edges: ";
+    cin>>m;
+
+    vector<vector<int> >Edges;
+
+    for (int i = 0; i < m; i++)
+    {
+        int x,y;
+        cin>>x>>y;
+        Edges.push_back({x,y});  ///here make our edge.
+    }
+
+    bool cycle=false;
+    
+    for(auto i:Edges)
+    {
+    /// here traverse our edges and first find their set.
+        int u=i[0];
+        int v=i[1];
+        int x=find_set(u),y=find_set(v);
+       
+       ///and if both lie in same set then there is cycle.else we union them.
+        if(x==y)
+        {
+            cycle=true;
+        }
+        else
+        {
+            Union_Sets(u,v);
+        }
+
+    }
+    if(cycle)
+    {
+        cout<<"Cycle is Present.";
+    }   
+    else
+       cout<<"Cycle not Present.";
+
+}
+
+
+/**
+OUTPUT:
+
+Enter Num of Nodes: 4
+Enter Num of Edges: 4
+0 1
+1 2
+2 3
+3 0
+Cycle is Present.
+
+
+***********************
+
+Enter Num of Nodes: 4
+Enter Num of Edges: 4
+0 1
+1 2
+2 3
+3 4
+Cycle not Present.
+
+
+*/
+
