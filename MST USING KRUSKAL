@@ -1,0 +1,144 @@
+// Kruskal:Also Known as MST(Minimum Spanning Tree)
+
+//Spanning Tree: Given an undirected and connected graph G(V,E), a spanning tree of graph G is a tree that spans G(ie includes every vertex of G) and 
+is a subgraph of G(every edge in the tree belongs to G).
+// ie spanning tree is a tree which contains all vertex of G and every edge of tree belongs to graph G.
+
+// The cost of the spanning tree is the sum of weights of all edges in the tree.There can be many spanning trees.
+
+// Minimum Spanning Tree(MST): MST is the spanning tree where the cost is minimum among all spanning trees. There also can be many MST.
+// Implemented using Kruskal. 
+
+
+///Kruskal: In kruskal we sort all edges acc to weights and then if after including an edge cycle is formed then dont include it else include it.
+
+// PseudoCode: 
+// 1.Sort the edges in increasing order of their weights.
+// 2.Iterate in sorted edges,
+//  If inclusion of i'th edge leads to a cycle,then skip this edge 
+//  else include the edge in MST.
+
+// Complexity Analysis: TimeComplexity: O(E logV)  , SpaceComplexity: O(E+V) 
+// 
+// 
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e5+6;
+
+vector<int>parent(N);  ///make a vector for parent
+vector<int>Size(N);  ///make a vector to store the size.
+
+void make_set(int v)  ///here make set for DSU.
+{
+    parent[v]=v;  ///single node is parent of itself.
+    Size[v]=1;   ///Single node has size 1.
+}
+
+int find_set(int v)
+{
+    if(v==parent[v])   ///here we will return the parent of that set.
+       return v;
+    ///Here do path compression.
+    return parent[v]=find_set(parent[v]);
+}
+
+void Union_Sets(int a,int b)
+{
+    a=find_set(a);
+    b=find_set(b);
+
+    if(a!=b)  ///if both dont lie in same set 
+    {
+    /// we make a as greater size so if size b is greater then swap a and b.
+        if(Size[a]<Size[b])
+        {
+            swap(a,b);
+        }
+        ///here everytime size of A will be greater.
+        parent[b]=a;  ///now assign a as parent of b.
+        Size[a]+=Size[b];  ///and increase size of a.
+    }
+
+}
+
+int main()
+{
+  
+    for (int i = 0; i < N; i++)
+    {
+        make_set(i);    ///make set of i elements.
+    }
+    
+    int n,m;
+
+    cout<<"Enter Num of Nodes: ";
+    cin>>n;
+    cout<<"Enter Num of Edges: ";
+    cin>>m;
+
+    vector<vector<int> >Edges;
+
+    for (int i = 0; i < m; i++)
+    {
+        int x,y,weight;
+        cin>>x>>y>>weight;
+        Edges.push_back({weight,x,y});  ///here make our weighted edge.
+    }
+
+    sort(Edges.begin(),Edges.end()); ///here it will get sort acc to weight
+
+    int cost=0;
+    for(auto i:Edges)
+    {
+    /// here traverse our edges and first find their set.
+        int weight=i[0];
+        int u=i[1];
+        int v=i[2];
+        int x=find_set(u),y=find_set(v);
+       
+       ///and if both lie in same set then there is cycle.else we union them.
+        if(x==y) ///here if cycle form we dont take it.
+        {
+            continue;
+        }
+        else
+        {
+            cout<<u<<" "<<v<<"\n";
+            cost+=weight;
+            Union_Sets(u,v);
+        }
+
+    }
+
+    cout<<cost<<"\n";
+}
+
+
+/* 
+OUTPUT:
+
+Enter Num of Nodes: 8
+Enter Num of Edges: 9
+Edges and weight:
+1 2 5
+2 3 6
+4 3 2
+1 4 9
+3 5 5
+5 6 10
+6 7 7
+7 8 1
+8 5 1
+
+Included Edges:
+7 8
+8 5
+4 3
+1 2
+3 5
+2 3
+6 7
+
+MST weight: 27
+
+*/
