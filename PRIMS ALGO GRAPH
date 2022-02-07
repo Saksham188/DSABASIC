@@ -1,0 +1,108 @@
+// Idea: Select an arbitrary vertex s to start the tree from. While(there are still non tree vertices)
+// Select edge of minimum weight bw a tree and non tree vertex.Add selected edge and vertex to the tree.
+
+//Logic: First add some vertex to set and mark visited,now add its adjacent vertex acc to weight.then pop one and now add its adjacent and repeat. 
+// 
+
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N=1e5+5 , D=1e9;
+
+vector<int>Parent(N),Distance(N);
+vector<bool>Visited(N);
+vector<vector<int> >Edges[N];
+int Cost=0;
+
+void PrimsMST(int source)
+{
+    for (int i = 0; i < N; i++)
+    {
+        Distance[i]=D; 
+        ///first initialize all distances as infinity as in MST we take lower distances.
+        ///as for 0th node distance will be 0 as its starting node.
+    }
+    
+    set<vector<int> >s; ///here value inserted as {weight,vertex}
+    Distance[source]=0;
+    s.insert({0,source}); ///first insert source into the set.
+
+    while(!s.empty())
+    {
+        auto x=*(s.begin()); ///take first element from set and make its visited as 1.
+        s.erase(x);
+        Visited[x[1]]=true; ///as set has format weight,vertex. So for vertex we need x[1]
+        int edge=x[1]; ///store vertex here
+        int par=Parent[x[1]]; ///store from where this edge start.
+        int weight=x[0];
+        cout<<edge<<" "<<par<<" "<<weight<<endl;
+        ///add Cost for MST. 
+        Cost+=weight;
+
+        ///Now push its adjacent neighbours
+        for(auto it:Edges[x[1]]) ///add neighbouring vertex.
+        {
+            ///if neighbour visited then do nothing.
+            if(Visited[it[0]])
+              continue;
+            
+            ///it[1] is weight and it[0] is vertex.
+            ///if prev distance is more then remove that and add new distance. here we check if current weight is less than distance of that node
+            ///eg for vertex 1 we had distance[1]=9, and now it[1] is 3 .so now we need to modify for current weight
+            if(Distance[it[0]]>it[1])
+            {
+                s.erase({Distance[it[0]],it[0]});
+                Distance[it[0]]=it[1]; ///store new weight in distance.
+                s.insert({Distance[it[0]],it[0]});///insert new distance to the set.
+                Parent[it[0]]=x[1]; ///store its parent as x[1] as we r traversing x[1]'s neighbour.
+
+            }
+        }
+    }
+
+}
+
+int main()
+{
+
+    int n,m;
+    cout<<"Enter Num of Nodes: ";
+    cin>>n;
+    cout<<"Enter Num of Edges: ";
+    cin>>m;
+
+
+    for (int i = 0; i < m; i++)
+    {
+        int x,y,weight;
+        cin>>x>>y>>weight;
+        Edges[x].push_back({y,weight});  ///here make our weighted edge.
+        Edges[y].push_back({x,weight});
+    }
+    
+    PrimsMST(0);
+    cout<<Cost;
+}
+
+/*
+OUTPUT:
+
+Enter Num of Nodes: 4
+Enter Num of Edges: 5
+Edges:
+0 1 10
+1 2 15
+0 2 5
+3 1 2
+3 2 40
+
+MST:
+0 0 0
+2 0 5
+1 0 10
+3 1 2
+
+Cost: 17
+
+*/
+
