@@ -1,0 +1,103 @@
+// Use Of Dijkstra: Given a weighted graph.Find the single source shortest path from vertex u to all the vertices in the graph.If node is unreachable then print -1.
+// Note: Weights of edges must be positive.
+
+//In dijkstra we r given a starting point and we need to calculate minimum distance to each node.
+
+// Idea: 1.Assign a distance value to all vertices in the input graph.Initialize all distance values as Infinite.Assign distance value as 0 for source vertex.
+// 2. While set is not empty: A.Pick a vertex u from set s that has minimum distance value.
+// B. Update distance value of all adjacent vertices of u.
+//  If new updated distance is smaller than current then remove that edge from set and add new sum to set.
+
+// It works for both directed and undirected graph.
+//
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N=1e5+5 , D=1e9;
+
+
+
+int main()
+{
+    int n,m;
+    cout<<"Enter Num of Nodes: ";
+    cin>>n;
+    cout<<"Enter Num of Edges: ";
+    cin>>m;
+
+    vector<int>Distance(N+1,D);
+    // vector<bool>Visited(N);
+    vector<vector<pair<int,int> > >Edges(N+1); ///here we took pair as we will also insert weight along with it.
+
+    for (int i = 0; i < m; i++)
+    {
+        int x,y,weight;
+        cin>>x>>y>>weight;
+        Edges[x].push_back({y,weight});  ///here make our weighted edge.
+        Edges[y].push_back({x,weight}); ///if we take directed then we dont add this line.
+    }
+
+    int source;
+
+    cout<<"Enter starting point: ";
+    cin>>source;
+
+    Distance[source]=0;
+
+    set<pair<int,int> >s;
+    ///here set contain {weight,vertex}
+    s.insert({0,source});
+
+    while (!s.empty())
+    {
+        auto x=*(s.begin());
+        s.erase(x);
+
+        ///Now update distance of its neighbours.
+        for(auto i:Edges[x.second])
+        {
+            ///here we check if on adding this new distance our current distance bcme less than old one then update it.
+            ///it.second=weight
+            if(Distance[i.first] > Distance[x.second] +i.second)
+            {
+                s.erase({Distance[i.first],i.first});
+                Distance[i.first] = Distance[x.second] +i.second;
+                s.insert({Distance[i.first],i.first});
+            }
+        }
+    }
+
+    for(int i=1;i<=n;i++)
+    {
+        if(Distance[i]<D)
+        {
+            cout<<Distance[i]<<" ";
+        }
+        else
+            cout<<"-1 ";
+
+    }
+
+
+}
+
+/*
+OUTPUT:
+
+Enter Num of Nodes: 4
+Enter Num of Edges: 4
+Enter edges:
+1 2 24
+1 4 20
+3 1 3
+4 3 12
+
+Enter starting point: 1
+Min Distance of all nodes from 1:
+0 24 3 15
+
+
+
+*/
+
+
