@@ -1,0 +1,67 @@
+// To find all pair shortest paths ie for every u,v in Graph G,find the shortest path from u to v.
+//here we will relax every 2 nodes.relax means taking min distance ,eg A->B dis=11 ,now we add c and A->c=5,B->c=5 so A->B=10 we will take this 10 now as distance instead of 11.
+This is relaxing.
+
+/*
+    PseudoCode:
+
+    for(int k=0;k<n;k++)
+    {
+        for(int k=0;k<n;k++)
+        {
+            for(int k=0;k<n;k++)
+            {
+                d[i][j]=min(d[i][j],d[i][k]+d[k][j]);
+            }
+        }
+
+    }
+
+*/
+//
+//
+//
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N=1e5+5 , D=1e9;
+
+int main()
+{
+    vector<vector<int> > Graph= {   {0,5,D,10},
+    {D,0,3,D},
+    {D,D,0,1},
+    {D,D,D,0}
+    };
+
+    int n=Graph.size();
+
+    vector<vector<int> >Distance=Graph;
+    for(int k=0;k<n;k++)
+    {
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                Distance[i][j]=min(Distance[i][j],Distance[i][k]+Distance[k][j]);
+            }
+        }
+    }
+
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(Distance[i][j]==D)
+                  cout<<"INFINITY ";
+                else
+                  cout<<Distance[i][j]<<" ";
+            }
+            cout<<endl;
+        }
+
+        cout<<"\nDistance of 2->3 is "<<Distance[2][3];
+
+}
