@@ -1,0 +1,86 @@
+// Problem: From a source vertex v,find shortest distance to all other nodes in the graph.
+
+// Idea: Initially d[v]=0 and for all other elements d[]=INT_MAX ,In each pass,relax all the edge
+// ie for edge (a,b) having weight w, d[b]=min(d[b],d[a]+w)
+// Assuming no -ve edge cycle since there are n vertices,shortest path can contain only n-1 edges.Therefore we will get our ans in at most n-1 passes.
+//
+
+///Better then dijkstra as: It will work for -ve edges and -ve cycles,can detect -ve cycles as well.
+///we check for -ve cycle as if after n-1 passes if our ans still get updated then it has -ve cycle.
+
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N=1e5+5 , D=1e9;
+
+int main()
+
+
+{
+    int n,m;
+    cout<<"Enter Num of Nodes: ";
+    cin>>n;
+    cout<<"Enter Num of Edges: ";
+    cin>>m;
+
+    vector<vector<int> >Edges; ///here we took pair as we will also insert weight along with it.
+
+    for (int i = 0; i < m; i++)
+    {
+        int x,y,weight;
+        cin>>x>>y>>weight;
+        Edges.push_back({x,y,weight});  ///here make our weighted edge.
+    }
+
+    int source;
+    cout<<"Enter Source: ";
+    cin>>source;
+
+    vector<int>Distance(n,D);
+    Distance[source]=0;
+
+    ///n-1 passes
+    for (int i = 0; i < n-1; i++)
+    {
+        bool change=false;  ///by this we can detect -ve cycle.
+        for(auto e:Edges)
+        {
+            int u=e[0];
+            int v=e[1];
+            int weight=e[2];
+
+            if(Distance[v]>weight+Distance[u])
+                change=true;
+            Distance[v]=min(Distance[v],weight+Distance[u]);
+
+        }
+
+    }
+
+    for(auto i:Distance)
+    {
+        cout<<i<<" ";
+    }
+
+
+
+}
+
+/**
+OUTPUT:
+
+Enter Num of Nodes: 5
+Enter Num of Edges: 8
+Edges:
+
+1 2 3
+3 2 5
+1 3 2
+3 1 1
+1 4 2
+0 2 4
+4 3 -3
+0 1 -1
+Enter Source: 0
+Distances: 0 -1 2 -2 1
+*/
