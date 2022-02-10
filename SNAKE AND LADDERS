@@ -1,0 +1,120 @@
+// The game of Snake and Letters.U are at square 1 and have to reach square 100.U have complete control over die and can get any num from 1-6.Find min steps to reach.
+// Idea: 1.BFS, 2.Push 1 to queue, For all possibilities in dice:
+// Check if the next position is ladder,snake or empty. Mark the square as visited and push into queue.
+// 3. Stop the traversal,when u reached 100.
+// 
+// 
+// 
+// 
+// 
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int ladders,snakes;
+    cout<<"Enter number of ladders: ";
+    cin>>ladders;
+
+    cout<<"\nEnter the ladders start and end pos: ";
+
+    map<int,int>Ladder;
+    map<int,int>Snake;
+
+    for(int i=0;i<ladders;i++)
+    {
+        int u,v;
+        cin>>u>>v;
+        Ladder[u]=v;
+    }
+
+    cout<<"Enter number of Snakes: ";
+    cin>>snakes;
+    cout<<"\nEnter the Snakes start and end pos: ";
+    
+    for(int i=0;i<snakes;i++)
+    {
+        int u,v;
+        cin>>u>>v;
+        Snake[u]=v;
+    }
+    ///Now do BFS traversal.
+    int moves=0;
+    queue<int>q;
+    q.push(1); ///as initial pos will be 1.
+    bool found=false;
+
+    vector<int>Visited(101,0); ///we took 101 here as max will be 100
+    Visited[1]=true;
+
+    ///here we check if size of q not bcme empty or our 100th square is not found.
+    while (!q.empty() and !found)
+    {
+        int size=q.size();
+        ///here we check for all elements of the queue.
+        while (size--)
+        {
+            int t=q.front();
+            q.pop();
+            ///now we will check for each die choice here
+            for (int die = 0; die < 6; die++)
+            {
+                if(t+die==100)  ///we reach our ans.
+                   found=true;
+
+            ///here check 3 condition: We dont get out of board,if there is ladder at that pos or not and if its visited or not.
+                if(t+die<=100 and Ladder[t+die] and !Visited[Ladder[t+die]])    
+                {
+                    Visited[Ladder[t+die]]=true; ///make it visited first.
+                    if(Ladder[t+die]==100) ///if ladder take to 100 then return true.
+                    {
+                        found=true;
+                    }
+                    q.push(Ladder[t+die]);
+                }
+                else if(t+die<=100 and Snake[t+die] and !Visited[Snake[t+die]])    
+                {
+                    Visited[Snake[t+die]]=true; ///make it visited first.
+                    if(Snake[t+die]==100) ///if Snake take to 100 then return true.
+                    {
+                        found=true;
+                    }
+                    q.push(Snake[t+die]); ///push it in queue.
+                }
+                ///if we get empty square then directly push it to queue.
+                else if(t+die<=100 and !Visited[t+die] and !Snake[t+die] and !Ladder[t+die])
+                {
+                    Visited[t+die]=true;
+                    q.push(t+die);
+                }
+            }
+            
+
+        }
+        moves++;
+        
+
+    }
+    ///ie we found 100th square then print min Moves and if queue bcme empty ie we cant reach 100th square then print -1.
+    if(found)    
+      cout<<moves;
+    else
+      cout<<"-1";  
+}
+
+
+/*
+OUTPUT:
+Enter number of ladders: 2
+Enter the ladders start and end pos: 
+3 90
+56 76
+
+Enter number of Snakes: 3
+Enter the Snakes start and end pos: 99 10
+30 20
+20 5
+
+Min Moves: 3
+
+*/
