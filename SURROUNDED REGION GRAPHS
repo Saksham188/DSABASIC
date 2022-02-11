@@ -1,0 +1,127 @@
+// Problem: Given a 2D board containing 'X' and 'O'(letter O) ,capture all regions surrounded by 'X'.
+// A region is captured by flipping all 'O's into 'X's in that surrounded region.
+
+// eg 
+/*
+Input: 4 4
+X X X X
+X O O X
+X X O X
+X O X X
+
+Output:
+X X X X
+X X X X
+X X X X
+X O X X
+
+*/
+
+// Idea: 
+// 1. Traverse the 'O' components around the edges of the grid an change it to '*'.
+// 2. The remaining 'O' components will be surrounded regions that can be captured.
+// 3. Change the '*' back to 'O'
+
+// ie here first make all O's around edges as * and convert all other O to X and at last convert * to O. 
+
+/* Dry Run
+X X X X        X X X X        X X X X       X X X X 
+X O O X   ->   X O O X   ->   X X X X   ->  X X X X 
+X X O X        X X O X        X X X X       X X X X 
+X O X X        X * X X        X * X X       X O X X 
+
+                                            Output
+
+
+*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+void change(vector<vector<char> >&A,int x,int y)
+{
+    A[x][y]='*';
+    ///only 4possibilities are possible (1,0) (0,-1) (1,0),(-1,0) which here means top bottom left and right traversal.
+    int dx[]={0,0,-1,1};
+    int dy[]={1,-1,0,0};
+
+    for (int i = 0; i < 4; i++)
+    {
+        cout<<"\n dx: "<<dx[i]<<" dy: "<<dy[i]<<" ";
+        int cx=x+dx[i];
+        int cy=y+dy[i];
+        
+        cout<<"cx: "<<cx<<" cy: "<<cy<<endl;
+        if(cx>=0 and cx<A.size() and cy>=0 and cy<A[0].size() and A[cx][cy]=='O')
+        {
+            ///if we get 'O' then check its neighbours and if its also 'O' then traverse again
+            ///here basically we are making all those edges connected to corner which were O as star ie we cant change them.
+            change(A,cx,cy);
+        }
+    }
+    
+
+}
+int main()
+{
+    int n,m;
+    cout<<"Enter Num of Nodes: ";
+    cin>>n;
+    cout<<"\nEnter Num of Edges: ";
+    cin>>m;
+
+    vector<vector<char> >A(n,vector<char>(m));
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cin>>A[i][j];
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            ///all corner edges
+            if(i==0 or i==n-1 or j==0 or j==m-1)
+            {
+                if(A[i][j]=='O')
+                change(A,i,j); ///For converting to *
+
+            }
+
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            ///all corner edges
+            if(A[i][j]=='O')
+              A[i][j]='X';
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            ///convert back star to O
+            if(A[i][j]=='*')
+               A[i][j]='O';
+        }
+    }
+    cout<<endl<<endl;
+     for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cout<<A[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    
+}
