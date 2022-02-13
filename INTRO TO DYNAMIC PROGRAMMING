@@ -1,0 +1,73 @@
+// Dynamic Programming: We can handle smaller problems and then use their learning to solve bigger problem.Similar understanding applied in DP.
+
+// Properties of DP:
+// 1.Optimal Substructure: If we can write a recurrence relation,then a problem is said to have optimal substructure.
+// 2.Overlapping Subproblem: If our subproblems repeat,then a problem is said to have overlapping subproblem.
+
+//  eg which satisfy both properties is fibonacci series,here fib(1) repeats in fib(2) and fib(3) so 2nd prop satisfy and fib(n)=fib(n-1)+fib(n-2)
+//  So now no need to compute twice. We will save time using extra memory.
+
+// Ways to handle Overlapping Subproblem:ie repeatition problem.
+/*
+ There are 2 ways: Memoization(Top-Down), Tabulation(Bottom-Up)
+
+Memoization: A lookup table is maintained and checked before computation of any state.Recursion is involved.
+Tabulation: Solution is built from base.It is an iterative process.
+
+*/
+///eg for Fibonacci:
+
+/*
+Using Memoization:
+
+int fib[200]={-1};
+
+int ComputeFib(int n)
+{
+    if(n==0 || n==1)
+    {
+        return n;
+    }
+
+    if(fib!= -1)
+      return fib[n];
+
+    int res=fib[n-1] + fib[n-2];
+
+    fib[n]=res; ///Memoisation Part
+
+    return res;  
+}
+
+*/
+/*
+Using Tabulation(Bottom Up)
+
+int n;
+cin>>n;
+
+vector<int>Fib(n+1);
+fib[1]=0, fib[2]=1;
+
+for(int i=2;i<=n;i++)
+{
+    Fib[i]=Fib[i-1] +Fib[i-2];  ///Bottom Up Approach.
+}
+
+cout<<Fib[n]<<endl;
+
+
+*/
+
+/*
+   KeyPoints:
+
+1. Minimization and Maximization Problems are generally solved with dp where we want exhaustive solution.(Sometimes with binary search on answer).
+2. Find number of ways is also a very popular type of DP problems.
+3. Wherever we can form recurrence relation or given in question can be solved using Dp(Sometimes with matrix Exponentiation) 
+
+*/
+
+
+
+
