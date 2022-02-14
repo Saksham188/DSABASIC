@@ -1,0 +1,76 @@
+// It follow optimal substructure and overlapping subproblem property.
+// fib[n]=fib[n-1]+fib[n-2] 
+// TC: Without DP->O(2^n)  , With DP->O(n)
+// 
+// 
+// 
+
+// Using memoisation.It gives wrong output for large numbers like fib(100). 
+//
+/*
+#include<bits/stdc++.h>
+using namespace std;
+const int size=1e5+5;
+
+int DP[size];
+
+// fib fun without dp.
+int fib(int n)
+{
+    if(n==0) return 0;
+    if(n==1) return 0; ///1st fibonacci num is 0.
+    if(n==2) return 1;
+
+    if(DP[n]!=-1)
+    {
+        return DP[n];
+    }
+    DP[n]= fib(n-1)+fib(n-2);
+
+    return DP[n];
+}
+
+int main()
+{
+    int N;
+    cin>>N;
+
+    for (int i = 0; i < size; i++)
+    {
+        DP[i]=-1;
+    }
+    
+
+
+
+    cout<<fib(N);
+}
+*/
+
+///Using tabulation
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int N;
+    cin>>N;
+
+    vector<long long int>dp(N+1);
+    dp[0]=0;
+    dp[1]=0;
+    dp[2]=1;
+
+    for (int i = 3; i <= N; i++)
+    {
+        dp[i]=dp[i-1] +dp[i-2];
+    }
+    
+    cout<<dp[N];
+
+
+
+}
+
+
