@@ -3,8 +3,8 @@
 // Components of a Graph: 
 // Nodes=These are states or vertex.eg users in fb
 // Edges: Links bw states in a graph.eg connection bw users.
-// Edges are of 2 types: Undirected- 2 way edges  eg 2->1->4
-//  Directed=1 way edges.eg 2- 1 -3 
+// Edges are of 2 types: Undirected- 2 way edges  eg 2- 1 -3
+//  Directed=1 way edges.eg  2->1->4
 
 // Representation:Adjacency Matrix and Adjacency List.
 /*
